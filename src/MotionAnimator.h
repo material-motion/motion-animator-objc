@@ -14,3 +14,5 @@
  limitations under the License.
  */
 
+#import "MDMMotionAnimator.h"
+

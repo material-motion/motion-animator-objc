@@ -16,6 +16,7 @@
 		667A3F491DEE269400CB3A99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 667A3F481DEE269400CB3A99 /* Assets.xcassets */; };
 		667A3F4C1DEE269400CB3A99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 667A3F4A1DEE269400CB3A99 /* LaunchScreen.storyboard */; };
 		667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A3F531DEE273000CB3A99 /* TableOfContents.swift */; };
+		66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		667A3F4B1DEE269400CB3A99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		667A3F4D1DEE269400CB3A99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		667A3F531DEE273000CB3A99 /* TableOfContents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContents.swift; sourceTree = "<group>"; };
+		66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MotionAnimatorTests.m; sourceTree = "<group>"; };
 		6EB4A3E0A8428C89A9BE95EE /* Pods-MotionAnimatorCatalog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MotionAnimatorCatalog.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog.release.xcconfig"; sourceTree = "<group>"; };
 		9DE90426033EDF40C65232A9 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C7621CF512F6BD38831740F6 /* Pods-MotionAnimatorCatalog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MotionAnimatorCatalog.debug.xcconfig"; path = "../../../Pods/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog.debug.xcconfig"; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 		66FD99F81EE9FBA000C53A82 /* unit */ = {
 			isa = PBXGroup;
 			children = (
+				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
 			);
 			path = unit;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
