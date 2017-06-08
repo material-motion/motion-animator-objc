@@ -13,13 +13,13 @@
   "arc.feature.start.default": "origin/develop",
   "unit.xcode": {
     "build": {
-      "workspace": "MaterialMotionAnimator.xcworkspace",
+      "workspace": "MotionAnimator.xcworkspace",
       "scheme": "UnitTests",
       "configuration": "Debug",
       "destination": "platform=iOS Simulator,name=iPhone 6s"
     },
     "coverage": {
-      "product": "MaterialMotionAnimator.framework/MaterialMotionAnimator"
+      "product": "MotionAnimator.framework/MotionAnimator"
     },
     "pre-build": "pod install"
   }

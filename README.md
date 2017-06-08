@@ -1,10 +1,10 @@
 # Motion Animator
 
-[![Build Status](https://travis-ci.org/material-motion/motionanimator-objc.svg?branch=develop)](https://travis-ci.org/material-motion/motionanimator-objc)
-[![codecov](https://codecov.io/gh/material-motion/motionanimator-objc/branch/develop/graph/badge.svg)](https://codecov.io/gh/material-motion/motionanimator-objc)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/MaterialMotionAnimator.svg)](https://cocoapods.org/pods/MaterialMotionAnimator)
-[![Platform](https://img.shields.io/cocoapods/p/MaterialMotionAnimator.svg)](http://cocoadocs.org/docsets/MaterialMotionAnimator)
-[![Docs](https://img.shields.io/cocoapods/metrics/doc-percent/MaterialMotionAnimator.svg)](http://cocoadocs.org/docsets/MaterialMotionAnimator)
+[![Build Status](https://travis-ci.org/material-motion/motion-animator-objc.svg?branch=develop)](https://travis-ci.org/material-motion/motion-animator-objc)
+[![codecov](https://codecov.io/gh/material-motion/motion-animator-objc/branch/develop/graph/badge.svg)](https://codecov.io/gh/material-motion/motion-animator-objc)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/motion-animator.svg)](https://cocoapods.org/pods/motion-animator)
+[![Platform](https://img.shields.io/cocoapods/p/motion-animator.svg)](http://cocoadocs.org/docsets/motion-animator)
+[![Docs](https://img.shields.io/cocoapods/metrics/doc-percent/motion-animator.svg)](http://cocoadocs.org/docsets/motion-animator)
 
 ## Installation
 
@@ -17,9 +17,9 @@
 >
 >     gem install cocoapods
 
-Add `MaterialMotionAnimator` to your `Podfile`:
+Add `motion-animator` to your `Podfile`:
 
-    pod 'MaterialMotionAnimator'
+    pod 'motion-animator'
 
 Then run the following command:
 
@@ -29,7 +29,7 @@ Then run the following command:
 
 Import the framework:
 
-    @import MaterialMotionAnimator;
+    @import motion-animator;
 
 You will now have access to all of the APIs.
 
@@ -38,10 +38,10 @@ You will now have access to all of the APIs.
 Check out a local copy of the repo to access the Catalog application by running the following
 commands:
 
-    git clone https://github.com/material-motion/motionanimator-objc.git
-    cd motionanimator-objc
+    git clone https://github.com/material-motion/motion-animator-objc.git
+    cd motion-animator-objc
     pod install
-    open MaterialMotionAnimator.xcworkspace
+    open motion-animator.xcworkspace
 
 ## Guides
 
@@ -56,7 +56,7 @@ commands:
 
 We welcome contributions!
 
-Check out our [upcoming milestones](https://github.com/material-motion/motionanimator-objc/milestones).
+Check out our [upcoming milestones](https://github.com/material-motion/motion-animator-objc/milestones).
 
 Learn more about [our team](https://material-motion.github.io/material-motion/team/),
 [our community](https://material-motion.github.io/material-motion/team/community/), and
