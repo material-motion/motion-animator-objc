@@ -177,7 +177,11 @@ static CABasicAnimation *animationFromTiming(MDMMotionTiming timing) {
       spring.mass = timing.curve.data[MDMSpringMotionCurveDataIndexMass];
       spring.stiffness = timing.curve.data[MDMSpringMotionCurveDataIndexTension];
       spring.damping = timing.curve.data[MDMSpringMotionCurveDataIndexFriction];
-      spring.duration = spring.settlingDuration;
+      if ([spring respondsToSelector:@selector(settlingDuration)]) {
+        spring.duration = spring.settlingDuration;
+      } else {
+        spring.duration = 1;
+      }
       animation = spring;
       break;
     }
