@@ -11,7 +11,7 @@
 This library turns [Motion Interchange](https://github.com/material-motion/motion-interchange-objc)
 data structures into performant Core Animation animations using a lightweight animator object.
 
-<img src="assets/calendar-chip.gif" />
+<img src="assets/chip.gif" />
 
 In the above example we're animating the expansion and collapse of a calendar event using the
 following motion specification:
