@@ -100,10 +100,10 @@ commands:
 
 ### Architecture
 
-`MDMMotionAnimator` is the primary API provided by this library and its external API is fairly
-straight forward. Once an instance is created, you can configure its behavior by modifying its
-properties. When you're ready to add an animation to a CALayer instance, simply call one of the
-`animate` method variants and an animation will instantly be added to the layer.
+`MDMMotionAnimator` is the primary API provided by this library. You can configure the animations
+that an animator creates by modifying its configuration properties. When you're ready to add an
+animation to a CALayer instance, call one of the `animate` method variants and an animation will
+be added to the layer.
 
 This library depends on [MotionInterchange](https://github.com/material-motion/motion-interchange-objc)
 in order to represent motion timing in a consistent fashion.
