@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "MotionAnimator"
-  s.summary      = "Motion Animator"
+  s.summary      = "A Motion Animator creates performant, interruptible animations from motion specs."
   s.version      = "1.0.0"
   s.authors      = "The Material Motion Authors"
   s.license      = "Apache 2.0"
