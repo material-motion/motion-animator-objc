@@ -1,0 +1,22 @@
+PODS:
+  - CatalogByConvention (2.1.1)
+  - MotionAnimator (1.0.0):
+    - MotionInterchange
+  - MotionInterchange (1.0.1)
+
+DEPENDENCIES:
+  - CatalogByConvention
+  - MotionAnimator (from `./`)
+
+EXTERNAL SOURCES:
+  MotionAnimator:
+    :path: "./"
+
+SPEC CHECKSUMS:
+  CatalogByConvention: c3a5319de04250a7cd4649127fcfca5fe3322a43
+  MotionAnimator: 554b22116cbbcae6bf90fdad0042a87604225d0e
+  MotionInterchange: 7a7c355ba2ed5d36c5cf2ceb76cacd3d3680dbf5
+
+PODFILE CHECKSUM: 634239e7b183e669593b273198da9227ed207777
+
+COCOAPODS: 1.2.1

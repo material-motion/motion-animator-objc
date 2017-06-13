@@ -14,14 +14,25 @@
  limitations under the License.
  */
 
-// MARK: Catalog by convention
+#import <Foundation/Foundation.h>
+#import <MotionInterchange/MotionInterchange.h>
 
-// Example entry in the table of contents:
-// Extend a UIViewController instance and implement catalogBreadcrumbs(), returning the list of
-// breadcrumbs required to navigate to an instance of this view controller.
-//
-//extension ExampleViewController {
-//  class func catalogBreadcrumbs() -> [String] {
-//    return ["Example"]
-//  }
-//}
+struct CalendarChipTiming {
+  MDMMotionTiming chipWidth;
+  MDMMotionTiming chipHeight;
+  MDMMotionTiming chipY;
+
+  MDMMotionTiming chipContentOpacity;
+  MDMMotionTiming headerContentOpacity;
+
+  MDMMotionTiming navigationBarY;
+};
+typedef struct CalendarChipTiming CalendarChipTiming;
+
+struct CalendarChipMotionSpec {
+  CalendarChipTiming expansion;
+  CalendarChipTiming collapse;
+};
+typedef struct CalendarChipMotionSpec CalendarChipMotionSpec;
+
+FOUNDATION_EXTERN struct CalendarChipMotionSpec CalendarChipSpec;

@@ -1,15 +1,15 @@
-workspace 'MaterialMotionAnimator.xcworkspace'
+workspace 'MotionAnimator.xcworkspace'
 use_frameworks!
 
-target "Catalog" do
+target "MotionAnimatorCatalog" do
   pod 'CatalogByConvention'
-  pod 'MaterialMotionAnimator/examples', :path => './'
-  project 'examples/apps/Catalog/Catalog.xcodeproj'
+  pod 'MotionAnimator', :path => './'
+  project 'examples/apps/Catalog/MotionAnimatorCatalog.xcodeproj'
 end
 
 target "UnitTests" do
-  project 'examples/apps/Catalog/Catalog.xcodeproj'
-  pod 'MaterialMotionAnimator/tests', :path => './'
+  project 'examples/apps/Catalog/MotionAnimatorCatalog.xcodeproj'
+  pod 'MotionAnimator', :path => './'
 end
 
 post_install do |installer|

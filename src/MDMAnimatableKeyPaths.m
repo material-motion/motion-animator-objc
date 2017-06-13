@@ -14,14 +14,11 @@
  limitations under the License.
  */
 
-// MARK: Catalog by convention
+#import "MDMAnimatableKeyPaths.h"
 
-// Example entry in the table of contents:
-// Extend a UIViewController instance and implement catalogBreadcrumbs(), returning the list of
-// breadcrumbs required to navigate to an instance of this view controller.
-//
-//extension ExampleViewController {
-//  class func catalogBreadcrumbs() -> [String] {
-//    return ["Example"]
-//  }
-//}
+MDMAnimatableKeyPath MDMKeyPathCornerRadius = @"cornerRadius";
+MDMAnimatableKeyPath MDMKeyPathHeight = @"bounds.size.height";
+MDMAnimatableKeyPath MDMKeyPathOpacity = @"opacity";
+MDMAnimatableKeyPath MDMKeyPathWidth = @"bounds.size.width";
+MDMAnimatableKeyPath MDMKeyPathX = @"position.x";
+MDMAnimatableKeyPath MDMKeyPathY = @"position.y";
