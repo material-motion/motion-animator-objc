@@ -15,5 +15,10 @@
  */
 
 #import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
 
+MDMAnimatableKeyPath MDMKeyPathCornerRadius = @"cornerRadius";
+MDMAnimatableKeyPath MDMKeyPathHeight = @"bounds.size.height";
+MDMAnimatableKeyPath MDMKeyPathOpacity = @"opacity";
+MDMAnimatableKeyPath MDMKeyPathWidth = @"bounds.size.width";
+MDMAnimatableKeyPath MDMKeyPathX = @"position.x";
+MDMAnimatableKeyPath MDMKeyPathY = @"position.y";

@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
+#import <UIKit/UIKit.h>
 
+@interface CalendarCardExpansionExampleViewController : UIViewController
+@end

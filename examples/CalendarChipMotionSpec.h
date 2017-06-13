@@ -14,6 +14,25 @@
  limitations under the License.
  */
 
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
+#import <Foundation/Foundation.h>
+#import <MotionInterchange/MotionInterchange.h>
 
+struct CalendarChipTiming {
+  MDMMotionTiming chipWidth;
+  MDMMotionTiming chipHeight;
+  MDMMotionTiming chipY;
+
+  MDMMotionTiming chipContentOpacity;
+  MDMMotionTiming headerContentOpacity;
+
+  MDMMotionTiming navigationBarY;
+};
+typedef struct CalendarChipTiming CalendarChipTiming;
+
+struct CalendarChipMotionSpec {
+  CalendarChipTiming expansion;
+  CalendarChipTiming collapse;
+};
+typedef struct CalendarChipMotionSpec CalendarChipMotionSpec;
+
+FOUNDATION_EXTERN struct CalendarChipMotionSpec CalendarChipSpec;
