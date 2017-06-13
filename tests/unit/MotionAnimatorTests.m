@@ -38,6 +38,26 @@
   XCTAssertEqual(layer.opacity, 1);
 }
 
+- (void)testNoDurationCallsCompletionHandler {
+  MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
+
+  CALayer *layer = [[CALayer alloc] init];
+
+  MDMMotionTiming timing = {
+    .duration = 0,
+  };
+
+  layer.opacity = 0.5;
+
+  __block BOOL didInvokeCompletion = false;
+  [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:@"opacity" completion:^{
+    didInvokeCompletion = true;
+  }];
+
+  XCTAssertEqual(layer.opacity, 1);
+  XCTAssertTrue(didInvokeCompletion);
+}
+
 - (void)testReversingSetsTheFirstValue {
   MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
   animator.shouldReverseValues = true;

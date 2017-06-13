@@ -16,6 +16,7 @@
 		667A3F491DEE269400CB3A99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 667A3F481DEE269400CB3A99 /* Assets.xcassets */; };
 		667A3F4C1DEE269400CB3A99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 667A3F4A1DEE269400CB3A99 /* LaunchScreen.storyboard */; };
 		667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A3F531DEE273000CB3A99 /* TableOfContents.swift */; };
+		6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668726491EF04B4C00113675 /* MotionAnimatorTests.swift */; };
 		66DD4BF51EEF0ECB00207119 /* CalendarCardExpansionExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */; };
 		66DD4BF81EEF1C4B00207119 /* CalendarChipMotionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF71EEF1C4B00207119 /* CalendarChipMotionSpec.m */; };
 		66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */; };
@@ -54,6 +55,7 @@
 		667A3F4B1DEE269400CB3A99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		667A3F4D1DEE269400CB3A99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		667A3F531DEE273000CB3A99 /* TableOfContents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContents.swift; sourceTree = "<group>"; };
+		668726491EF04B4C00113675 /* MotionAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorTests.swift; sourceTree = "<group>"; };
 		66DD4BF31EEF0ECB00207119 /* CalendarCardExpansionExample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarCardExpansionExample.h; sourceTree = "<group>"; };
 		66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarCardExpansionExample.m; sourceTree = "<group>"; };
 		66DD4BF61EEF1C4B00207119 /* CalendarChipMotionSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarChipMotionSpec.h; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
+				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
 			);
 			path = unit;
 			sourceTree = "<group>";
@@ -292,7 +295,7 @@
 					};
 					666FAA931D384A6B000363DA = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 						TestTargetID = 667A3F3E1DEE269400CB3A99;
 					};
 					667A3F3E1DEE269400CB3A99 = {
@@ -458,6 +461,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */,
 				66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

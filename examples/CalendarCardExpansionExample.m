@@ -20,13 +20,122 @@
 
 #import <MotionAnimator/MotionAnimator.h>
 
+// This example demonstrates how to use a motion timing specification to build a complex
+// bi-directional animation using the MDMMotionAnimator object. MDMMotionAnimator is designed for
+// building fine-tuned explicit animations. Unlike UIView's implicit animation API, which can be
+// used to cause cascading animations on a variety of properties, MDMMotionAnimator will always add
+// exactly one animation per key path to the layer. This means you don't get as much for "free", but
+// you do gain more control over the timing and motion of the animation.
+
 @implementation CalendarCardExpansionExampleViewController {
+  // In a real-world scenario we'd likely create a separate view to manage all of these subviews so
+  // that our view controller doesn't balloon in complexity.
   UIView *_chipView;
   UIView *_collapsedContent;
   UIView *_expandedContent;
   UIView *_shapeView;
   BOOL _expanded;
 }
+
+- (void)didTap {
+  _expanded = !_expanded;
+
+  CalendarChipTiming timing = _expanded ? CalendarChipSpec.expansion : CalendarChipSpec.collapse;
+
+  MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
+  animator.shouldReverseValues = !_expanded;
+
+  if (_expanded) {
+    // We can't easily animate the hiding of the navigation bar because UIKit sets the hidden
+    // property on the navigation bar immediately if animated: is false.
+    [self.navigationController setNavigationBarHidden:true animated:true];
+
+  } else {
+    // Cache the previous value because we want to restore it in a moment.
+    BOOL wasReversingValues = animator.shouldReverseValues;
+    animator.shouldReverseValues = false;
+
+    // Let UIKit do the layout calculations for us.
+    CGFloat currentPosition = self.navigationController.navigationBar.layer.position.y;
+    [self.navigationController setNavigationBarHidden:false animated:false];
+    CGFloat desiredPosition = self.navigationController.navigationBar.layer.position.y;
+
+    [animator animateWithTiming:timing.navigationBarY
+                        toLayer:self.navigationController.navigationBar.layer
+                     withValues:@[ @(currentPosition), @(desiredPosition) ]
+                        keyPath:MDMKeyPathY];
+
+    // Restore the previous value.
+    animator.shouldReverseValues = wasReversingValues;
+  }
+
+  CGRect chipFrame = [self frameForChip];
+  CGRect headerFrame = [self frameForHeader];
+
+  // Animate the chip itself.
+  [animator animateWithTiming:timing.chipHeight
+                      toLayer:_chipView.layer
+                   withValues:@[ @(chipFrame.size.height), @(headerFrame.size.height) ]
+                      keyPath:MDMKeyPathHeight];
+  [animator animateWithTiming:timing.chipWidth
+                      toLayer:_chipView.layer
+                   withValues:@[ @(chipFrame.size.width), @(headerFrame.size.width) ]
+                      keyPath:MDMKeyPathWidth];
+  [animator animateWithTiming:timing.chipWidth
+                      toLayer:_chipView.layer
+                   withValues:@[ @(CGRectGetMidX(chipFrame)), @(CGRectGetMidX(headerFrame)) ]
+                      keyPath:MDMKeyPathX];
+  [animator animateWithTiming:timing.chipY
+                      toLayer:_chipView.layer
+                   withValues:@[ @(CGRectGetMidY(chipFrame)), @(CGRectGetMidY(headerFrame)) ]
+                      keyPath:MDMKeyPathY];
+  [animator animateWithTiming:timing.chipHeight
+                      toLayer:_chipView.layer
+                   withValues:@[ @([self chipCornerRadius]), @0 ]
+                      keyPath:MDMKeyPathCornerRadius];
+
+  // Cross-fade the chip's contents.
+  [animator animateWithTiming:timing.chipContentOpacity
+                      toLayer:_collapsedContent.layer
+                   withValues:@[ @1, @0 ]
+                      keyPath:MDMKeyPathOpacity];
+  [animator animateWithTiming:timing.headerContentOpacity
+                      toLayer:_expandedContent.layer
+                   withValues:@[ @0, @1 ]
+                      keyPath:MDMKeyPathOpacity];
+
+  // Keeps the expandec content aligned to the bottom of the card by taking into consideration the
+  // extra height.
+  CGFloat excessTopMargin = chipFrame.size.height - headerFrame.size.height;
+  [animator animateWithTiming:timing.chipHeight
+                      toLayer:_expandedContent.layer
+                   withValues:@[ @(CGRectGetMidY([self expandedContentFrame]) + excessTopMargin),
+                                 @(CGRectGetMidY([self expandedContentFrame])) ]
+                      keyPath:MDMKeyPathY];
+
+  // Keeps the collapsed content aligned to its position on screen by taking into consideration the
+  // excess left margin.
+  CGFloat excessLeftMargin = chipFrame.origin.x - headerFrame.origin.x;
+  [animator animateWithTiming:timing.chipWidth
+                      toLayer:_collapsedContent.layer
+                   withValues:@[ @(CGRectGetMidX([self collapsedContentFrame])),
+                                 @(CGRectGetMidX([self collapsedContentFrame]) + excessLeftMargin) ]
+                      keyPath:MDMKeyPathX];
+
+  // Keeps the shape anchored to the bottom right of the chip.
+  CGRect shapeFrameInChip = [self shapeFrameInRect:chipFrame];
+  CGRect shapeFrameInHeader = [self shapeFrameInRect:headerFrame];
+  [animator animateWithTiming:timing.chipWidth
+                      toLayer:_shapeView.layer
+                   withValues:@[ @(CGRectGetMidX(shapeFrameInChip)), @(CGRectGetMidX(shapeFrameInHeader)) ]
+                      keyPath:MDMKeyPathX];
+  [animator animateWithTiming:timing.chipHeight
+                      toLayer:_shapeView.layer
+                   withValues:@[ @(CGRectGetMidY(shapeFrameInChip)), @(CGRectGetMidY(shapeFrameInHeader)) ]
+                      keyPath:MDMKeyPathY];
+}
+
+#pragma mark - View creation and initial layout
 
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -75,87 +184,7 @@
   [self.view addGestureRecognizer:tap];
 }
 
-- (void)didTap {
-  _expanded = !_expanded;
-
-  CalendarChipTiming timing = _expanded ? CalendarChipSpec.expansion : CalendarChipSpec.collapse;
-
-  MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
-  animator.shouldReverseValues = !_expanded;
-
-  if (_expanded) {
-    [self.navigationController setNavigationBarHidden:_expanded animated:true];
-
-  } else {
-    [UIView animateWithDuration:timing.navigationBarY.duration
-                          delay:timing.navigationBarY.delay
-                        options:0
-                     animations:^{
-                       [self.navigationController setNavigationBarHidden:_expanded animated:false];
-                     } completion:nil];
-  }
-
-  CGRect chipFrame = [self frameForChip];
-  CGRect headerFrame = [self frameForHeader];
-  [animator animateWithTiming:timing.chipHeight
-                      toLayer:_chipView.layer
-                   withValues:@[ @(chipFrame.size.height), @(headerFrame.size.height) ]
-                      keyPath:@"bounds.size.height"];
-  [animator animateWithTiming:timing.chipWidth
-                      toLayer:_chipView.layer
-                   withValues:@[ @(chipFrame.size.width), @(headerFrame.size.width) ]
-                      keyPath:@"bounds.size.width"];
-  [animator animateWithTiming:timing.chipWidth
-                      toLayer:_chipView.layer
-                   withValues:@[ @(CGRectGetMidX(chipFrame)), @(CGRectGetMidX(headerFrame)) ]
-                      keyPath:@"position.x"];
-  [animator animateWithTiming:timing.chipY
-                      toLayer:_chipView.layer
-                   withValues:@[ @(CGRectGetMidY(chipFrame)), @(CGRectGetMidY(headerFrame)) ]
-                      keyPath:@"position.y"];
-  [animator animateWithTiming:timing.chipHeight
-                      toLayer:_chipView.layer
-                   withValues:@[ @([self chipCornerRadius]), @0 ]
-                      keyPath:@"cornerRadius"];
-
-  [animator animateWithTiming:timing.chipContentOpacity
-                      toLayer:_collapsedContent.layer
-                   withValues:@[ @1, @0 ]
-                      keyPath:@"opacity"];
-  [animator animateWithTiming:timing.headerContentOpacity
-                      toLayer:_expandedContent.layer
-                   withValues:@[ @0, @1 ]
-                      keyPath:@"opacity"];
-
-  // Keeps the expandec content aligned to the bottom of the card by taking into consideration the
-  // extra height.
-  [animator animateWithTiming:timing.chipHeight
-                      toLayer:_expandedContent.layer
-                   withValues:@[ @(CGRectGetMidY([self expandedContentFrame])
-                                 + (chipFrame.size.height - headerFrame.size.height)),
-                                 @(CGRectGetMidY([self expandedContentFrame])) ]
-                      keyPath:@"position.y"];
-
-  // Keeps the collapsed content aligned to its position on screen by taking into consideration the
-  // excess left margin.
-  [animator animateWithTiming:timing.chipWidth
-                      toLayer:_collapsedContent.layer
-                   withValues:@[ @(CGRectGetMidX([self collapsedContentFrame])),
-                                 @(CGRectGetMidX([self collapsedContentFrame])
-                                 + (chipFrame.origin.x - headerFrame.origin.x)) ]
-                      keyPath:@"position.x"];
-
-  CGRect shapeFrameInChip = [self shapeFrameInRect:chipFrame];
-  CGRect shapeFrameInHeader = [self shapeFrameInRect:headerFrame];
-  [animator animateWithTiming:timing.chipWidth
-                      toLayer:_shapeView.layer
-                   withValues:@[ @(CGRectGetMidX(shapeFrameInChip)), @(CGRectGetMidX(shapeFrameInHeader)) ]
-                      keyPath:@"position.x"];
-  [animator animateWithTiming:timing.chipHeight
-                      toLayer:_shapeView.layer
-                   withValues:@[ @(CGRectGetMidY(shapeFrameInChip)), @(CGRectGetMidY(shapeFrameInHeader)) ]
-                      keyPath:@"position.y"];
-}
+#pragma mark - View metrics
 
 - (CGFloat)chipCornerRadius {
   return 2;
@@ -185,9 +214,13 @@
   return CGRectOffset(CGRectInset(rect, 32, 32), 0, 32);
 }
 
+#pragma mark - View controller metrics
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
   return UIStatusBarStyleLightContent;
 }
+
+#pragma mark - Catalog by convention
 
 + (NSArray<NSString *> *)catalogBreadcrumbs {
   return @[ @"Calendar card expansion" ];

@@ -48,14 +48,14 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
 - (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
-                  keyPath:(NSString *)keyPath {
+                  keyPath:(MDMAnimatableKeyPath)keyPath {
   [self animateWithTiming:timing toLayer:layer withValues:values keyPath:keyPath completion:nil];
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
-                  keyPath:(NSString *)keyPath
+                  keyPath:(MDMAnimatableKeyPath)keyPath
                completion:(void(^)())completion {
   NSAssert([values count] == 2, @"The values array must contain exactly two values.");
 
@@ -64,8 +64,11 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
   }
   values = coerceUIKitValuesToCoreAnimationValues(values);
 
-  if (timing.duration == 0) {
+  if (timing.duration == 0 || timing.curve.type == MDMMotionCurveTypeInstant) {
     [layer setValue:[values lastObject] forKeyPath:keyPath];
+    if (completion) {
+      completion();
+    }
     return;
   }
 

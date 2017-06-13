@@ -17,6 +17,8 @@
 #import <Foundation/Foundation.h>
 #import <MotionInterchange/MotionInterchange.h>
 
+#import "MDMAnimatableKeyPaths.h"
+
 /**
  An animator adds Core Animation animations to a layer based on a provided motion timing.
  */
@@ -62,7 +64,7 @@ NS_SWIFT_NAME(MotionAnimator)
 - (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(nonnull CALayer *)layer
                withValues:(nonnull NSArray *)values
-                  keyPath:(nonnull NSString *)keyPath;
+                  keyPath:(nonnull MDMAnimatableKeyPath)keyPath;
 
 /**
  Adds a single animation to the layer with the given timing structure.
@@ -78,7 +80,7 @@ NS_SWIFT_NAME(MotionAnimator)
 - (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(nonnull CALayer *)layer
                withValues:(nonnull NSArray *)values
-                  keyPath:(nonnull NSString *)keyPath
+                  keyPath:(nonnull MDMAnimatableKeyPath)keyPath
                completion:(nullable void(^)())completion;
 
 /**

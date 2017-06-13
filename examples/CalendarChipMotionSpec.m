@@ -39,7 +39,7 @@ struct CalendarChipMotionSpec CalendarChipSpec = {
       .delay = 0.075, .duration = 0.150, .curve = MDMLinear,
     },
     .navigationBarY = {
-      .curve = { .type = MDMMotionCurveTypeInstant },
+      .delay = 0.015, .duration = 0.360, .curve = MDMEightyForty,
     },
   },
   .collapse = {
