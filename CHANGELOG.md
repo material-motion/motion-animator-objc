@@ -1,3 +1,11 @@
+# 1.0.1
+
+This is a patch fix release to address build issues within Google's build environment.
+
+## Source changes
+
+* [Add missing header imports.](https://github.com/material-motion/motion-animator-objc/commit/2895dd3e586340018297041d8fce367bf29586c6) (Jeff Verkoeyen)
+
 # 1.0.0
 
 Initial release.
