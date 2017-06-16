@@ -15,6 +15,8 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
+
 #import <MotionInterchange/MotionInterchange.h>
 
 #import "MDMAnimatableKeyPaths.h"

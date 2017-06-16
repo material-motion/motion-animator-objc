@@ -16,6 +16,8 @@
 
 #import "MDMMotionAnimator.h"
 
+#import <UIKit/UIKit.h>
+
 #if TARGET_IPHONE_SIMULATOR
 UIKIT_EXTERN float UIAnimationDragCoefficient(void); // UIKit private drag coefficient.
 #endif
