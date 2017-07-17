@@ -19,6 +19,7 @@
 MDMAnimatableKeyPath MDMKeyPathCornerRadius = @"cornerRadius";
 MDMAnimatableKeyPath MDMKeyPathHeight = @"bounds.size.height";
 MDMAnimatableKeyPath MDMKeyPathOpacity = @"opacity";
+MDMAnimatableKeyPath MDMKeyPathScale = @"transform.scale";
 MDMAnimatableKeyPath MDMKeyPathWidth = @"bounds.size.width";
 MDMAnimatableKeyPath MDMKeyPathX = @"position.x";
 MDMAnimatableKeyPath MDMKeyPathY = @"position.y";
