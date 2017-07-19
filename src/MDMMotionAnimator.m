@@ -184,7 +184,7 @@ static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat tim
       if ([spring respondsToSelector:@selector(settlingDuration)]) {
         spring.duration = spring.settlingDuration;
       } else {
-        spring.duration = 1;
+        spring.duration = timing.duration;
       }
       animation = spring;
       break;
