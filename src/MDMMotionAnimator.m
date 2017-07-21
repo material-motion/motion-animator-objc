@@ -59,7 +59,7 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
                   keyPath:(MDMAnimatableKeyPath)keyPath
-               completion:(void(^)())completion {
+               completion:(void(^)(void))completion {
   NSAssert([values count] == 2, @"The values array must contain exactly two values.");
 
   if (_shouldReverseValues) {
