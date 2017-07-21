@@ -28,6 +28,15 @@ NS_SWIFT_NAME(MotionAnimator)
 @interface MDMMotionAnimator : NSObject
 
 /**
+ The scaling factor to apply to all time-related values.
+
+ For example, a timeScaleFactor of 2 will double the length of all animations.
+
+ 1.0 by default.
+ */
+@property(nonatomic, assign) CGFloat timeScaleFactor;
+
+/**
  If enabled, all animations will be added with their values reversed.
 
  Disabled by default.
