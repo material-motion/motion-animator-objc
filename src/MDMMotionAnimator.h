@@ -83,7 +83,7 @@ NS_SWIFT_NAME(MotionAnimator)
                   toLayer:(nonnull CALayer *)layer
                withValues:(nonnull NSArray *)values
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath
-               completion:(nullable void(^)())completion;
+               completion:(nullable void(^)(void))completion;
 
 /**
  Adds a block that will be invoked each time an animation is added to a layer.
