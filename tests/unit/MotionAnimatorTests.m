@@ -146,7 +146,11 @@
 
     XCTAssertEqual(springAnimation.keyPath, keyPath);
 
-    XCTAssertEqual(springAnimation.duration, springAnimation.settlingDuration);
+    if ([springAnimation respondsToSelector:@selector(settlingDuration)]) {
+      XCTAssertEqual(springAnimation.duration, springAnimation.settlingDuration);
+    } else {
+      XCTAssertEqual(springAnimation.duration, timing.duration);
+    }
     XCTAssertGreaterThan(springAnimation.beginTime, 0);
 
     XCTAssertTrue(springAnimation.additive);
