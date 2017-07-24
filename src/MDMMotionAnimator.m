@@ -32,7 +32,7 @@ static CGFloat simulatorAnimationDragCoefficient(void) {
 
 static CAMediaTimingFunction* timingFunctionWithControlPoints(CGFloat controlPoints[4]);
 static NSArray* coerceUIKitValuesToCoreAnimationValues(NSArray *values);
-static CABasicAnimation *animationFromTiming(MDMMotionTiming timing);
+static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor);
 static void makeAnimationAdditive(CABasicAnimation *animation);
 
 @implementation MDMMotionAnimator {
@@ -42,6 +42,7 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
 - (instancetype)init {
   self = [super init];
   if (self) {
+    _timeScaleFactor = 1;
     _additive = true;
   }
   return self;
@@ -58,7 +59,7 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
                   keyPath:(MDMAnimatableKeyPath)keyPath
-               completion:(void(^)())completion {
+               completion:(void(^)(void))completion {
   NSAssert([values count] == 2, @"The values array must contain exactly two values.");
 
   if (_shouldReverseValues) {
@@ -74,7 +75,8 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
     return;
   }
 
-  CABasicAnimation *animation = animationFromTiming(timing);
+  CGFloat timeScaleFactor = simulatorAnimationDragCoefficient() * _timeScaleFactor;
+  CABasicAnimation *animation = animationFromTiming(timing, timeScaleFactor);
 
   if (animation) {
     animation.keyPath = keyPath;
@@ -100,7 +102,7 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
 
       if (timing.delay != 0) {
         animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
-                               + timing.delay * simulatorAnimationDragCoefficient());
+                               + timing.delay * timeScaleFactor);
         animation.fillMode = kCAFillModeBackwards;
       }
 
@@ -160,7 +162,7 @@ static NSArray* coerceUIKitValuesToCoreAnimationValues(NSArray *values) {
   return values;
 }
 
-static CABasicAnimation *animationFromTiming(MDMMotionTiming timing) {
+static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor) {
   CABasicAnimation *animation;
   switch (timing.curve.type) {
     case MDMMotionCurveTypeInstant:
@@ -171,7 +173,7 @@ static CABasicAnimation *animationFromTiming(MDMMotionTiming timing) {
     case MDMMotionCurveTypeBezier:
       animation = [CABasicAnimation animation];
       animation.timingFunction = timingFunctionWithControlPoints(timing.curve.data);
-      animation.duration = timing.duration * simulatorAnimationDragCoefficient();
+      animation.duration = timing.duration * timeScaleFactor;
       break;
 
     case MDMMotionCurveTypeSpring: {
@@ -182,7 +184,7 @@ static CABasicAnimation *animationFromTiming(MDMMotionTiming timing) {
       if ([spring respondsToSelector:@selector(settlingDuration)]) {
         spring.duration = spring.settlingDuration;
       } else {
-        spring.duration = 1;
+        spring.duration = timing.duration;
       }
       animation = spring;
       break;

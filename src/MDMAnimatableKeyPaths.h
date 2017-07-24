@@ -25,6 +25,7 @@ typedef NSString * const MDMAnimatableKeyPath __attribute__((swift_wrapper(enum)
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathCornerRadius NS_SWIFT_NAME(cornerRadius);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathHeight NS_SWIFT_NAME(height);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathOpacity NS_SWIFT_NAME(opacity);
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathScale NS_SWIFT_NAME(scale);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathWidth NS_SWIFT_NAME(width);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathX NS_SWIFT_NAME(x);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathY NS_SWIFT_NAME(y);
