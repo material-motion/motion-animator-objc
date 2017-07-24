@@ -1,3 +1,19 @@
+# 1.1.0
+
+This minor change resolves some Xcode 9 warnings and introduces the ability to speed up or slow down animations.
+
+## New features
+
+- Added a new keypath constant, `MDMKeyPathScale`.
+- MDMAnimator animation timing can now be scaled using the new `timeScaleFactor` property.
+
+## Source changes
+
+* [If settlingDuration is unavailable, use the provided spring duration. (#5)](https://github.com/material-motion/motion-animator-objc/commit/4baa99681c0a73180bc0a25019dc575a5fee5ab1) (featherless)
+* [Resolve Xcode 9 warnings. (#7)](https://github.com/material-motion/motion-animator-objc/commit/6f84058ca729299261cae0865b8bbb1ccd163179) (featherless)
+* [Add a timeScaleFactor API to the animator. (#6)](https://github.com/material-motion/motion-animator-objc/commit/b2a0f96b617edea13517d33b20d8d95b10426bb7) (featherless)
+* [Add transform.scale keypath. (#3)](https://github.com/material-motion/motion-animator-objc/commit/9bdf4f6e833283da452797a254a090da61607a2b) (featherless)
+
 # 1.0.1
 
 This is a patch fix release to address build issues within Google's build environment.
