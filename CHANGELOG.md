@@ -1,7 +1,16 @@
-# #develop#
+# 1.1.1
 
- TODO: Enumerate changes.
+Bug fix release due to compiler warnings.
 
+## Breaking changes
+
+## New deprecations
+
+## New features
+
+## Source changes
+
+* [Fix compiler warnings due to misconfigured Podfile. (#8)](https://github.com/material-motion/motion-animator-objc/commit/90a8913b1dc76165295cf0bc667575ee211c6411) (featherless)
 
 # 1.1.0
 
