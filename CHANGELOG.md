@@ -1,3 +1,8 @@
+# #develop#
+
+ TODO: Enumerate changes.
+
+
 # 1.1.0
 
 This minor change resolves some Xcode 9 warnings and introduces the ability to speed up or slow down animations.
