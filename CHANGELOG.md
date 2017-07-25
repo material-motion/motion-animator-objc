@@ -1,3 +1,17 @@
+# 1.1.1
+
+Bug fix release due to compiler warnings.
+
+## Breaking changes
+
+## New deprecations
+
+## New features
+
+## Source changes
+
+* [Fix compiler warnings due to misconfigured Podfile. (#8)](https://github.com/material-motion/motion-animator-objc/commit/90a8913b1dc76165295cf0bc667575ee211c6411) (featherless)
+
 # 1.1.0
 
 This minor change resolves some Xcode 9 warnings and introduces the ability to speed up or slow down animations.
