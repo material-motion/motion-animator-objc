@@ -205,8 +205,8 @@ static void makeAnimationAdditive(CABasicAnimation *animation) {
   });
 
   if ([animation.toValue isKindOfClass:[NSNumber class]]) {
-    CGFloat currentValue = [animation.fromValue doubleValue];
-    CGFloat delta = currentValue - [animation.toValue doubleValue];
+    CGFloat currentValue = (CGFloat)[animation.fromValue doubleValue];
+    CGFloat delta = currentValue - (CGFloat)[animation.toValue doubleValue];
     animation.fromValue = @(delta);
     animation.toValue = @0;
     animation.additive = true;
