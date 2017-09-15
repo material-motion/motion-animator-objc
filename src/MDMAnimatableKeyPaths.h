@@ -16,11 +16,15 @@
 
 #import <Foundation/Foundation.h>
 
+#ifndef CF_TYPED_ENUM
+#define CF_TYPED_ENUM
+#endif
+
 /**
  A representation of an animatable key path. Likely not exhaustive.
  */
 NS_SWIFT_NAME(AnimatableKeyPath)
-typedef NSString * const MDMAnimatableKeyPath __attribute__((swift_wrapper(enum)));
+typedef NSString * const MDMAnimatableKeyPath CF_TYPED_ENUM;
 
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathCornerRadius NS_SWIFT_NAME(cornerRadius);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathHeight NS_SWIFT_NAME(height);
