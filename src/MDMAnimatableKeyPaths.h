@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+#import <Availability.h>
 #import <Foundation/Foundation.h>
 
 #ifndef CF_TYPED_ENUM
