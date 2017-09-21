@@ -1,7 +1,10 @@
-# #develop#
+# 1.1.2
 
- TODO: Enumerate changes.
+Added support for Xcode 7 builds.
 
+## Source changes
+
+* [Resolve Xcode 7 build error. (#11)](https://github.com/material-motion/motion-animator-objc/commit/3e45cbebb8fadca6a75919550b360af944d6af41) (featherless)
 
 # 1.1.1
 
