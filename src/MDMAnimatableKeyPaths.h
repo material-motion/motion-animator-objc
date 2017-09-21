@@ -17,8 +17,13 @@
 #import <Availability.h>
 #import <Foundation/Foundation.h>
 
-#ifndef CF_TYPED_ENUM
+// This macro is introduced in Xcode 9.
+#ifndef CF_TYPED_ENUM // What follows is backwards compat for Xcode 8 and below.
+#if __has_attribute(swift_wrapper)
+#define CF_TYPED_ENUM __attribute__((swift_wrapper(enum)))
+#else
 #define CF_TYPED_ENUM
+#endif
 #endif
 
 /**
