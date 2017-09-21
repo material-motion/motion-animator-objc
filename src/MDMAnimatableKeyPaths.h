@@ -14,13 +14,23 @@
  limitations under the License.
  */
 
+#import <Availability.h>
 #import <Foundation/Foundation.h>
+
+// This macro is introduced in Xcode 9.
+#ifndef CF_TYPED_ENUM // What follows is backwards compat for Xcode 8 and below.
+#if __has_attribute(swift_wrapper)
+#define CF_TYPED_ENUM __attribute__((swift_wrapper(enum)))
+#else
+#define CF_TYPED_ENUM
+#endif
+#endif
 
 /**
  A representation of an animatable key path. Likely not exhaustive.
  */
 NS_SWIFT_NAME(AnimatableKeyPath)
-typedef NSString * const MDMAnimatableKeyPath __attribute__((swift_wrapper(enum)));
+typedef NSString * const MDMAnimatableKeyPath CF_TYPED_ENUM;
 
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathCornerRadius NS_SWIFT_NAME(cornerRadius);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathHeight NS_SWIFT_NAME(height);
