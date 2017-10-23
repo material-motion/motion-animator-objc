@@ -1,7 +1,15 @@
-# #develop#
+# 1.1.3
 
- TODO: Enumerate changes.
+This patch release resolves an Xcode 9 build warning.
 
+## Source changes
+
+* [Disable partial availability warning for CASpringAnimation. (#12)](https://github.com/material-motion/motion-animator-objc/commit/e720f9f02b5d0d9d96e3acbba641bac6fba87045) (featherless)
+
+## Non-source changes
+
+* [Update CocoaPods and ensure that warnings are enabled for the project.](https://github.com/material-motion/motion-animator-objc/commit/4a70beb710a492e3162da040ee1ce22caa99c01a) (Jeff Verkoeyen)
+* [Add explicit swift version file for CocoaPods.](https://github.com/material-motion/motion-animator-objc/commit/b1b53c3bf648d0fc8c0788d24eb91a92b87f2aba) (Jeff Verkoeyen)
 
 # 1.1.2
 
