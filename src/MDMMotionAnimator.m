@@ -178,13 +178,16 @@ static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat tim
 
     case MDMMotionCurveTypeSpring: {
 #pragma clang diagnostic push
-      // CASpringAnimation is weakly available on iOS 8.
+      // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+      // linking against the public API on iOS 9+.
 #pragma clang diagnostic ignored "-Wpartial-availability"
       CASpringAnimation *spring = [CASpringAnimation animation];
 #pragma clang diagnostic pop
       spring.mass = timing.curve.data[MDMSpringMotionCurveDataIndexMass];
       spring.stiffness = timing.curve.data[MDMSpringMotionCurveDataIndexTension];
       spring.damping = timing.curve.data[MDMSpringMotionCurveDataIndexFriction];
+
+      // This API is only available on iOS 9+
       if ([spring respondsToSelector:@selector(settlingDuration)]) {
         spring.duration = spring.settlingDuration;
       } else {
