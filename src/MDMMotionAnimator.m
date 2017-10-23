@@ -177,7 +177,11 @@ static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat tim
       break;
 
     case MDMMotionCurveTypeSpring: {
+#pragma clang diagnostic push
+      // CASpringAnimation is weakly available on iOS 8.
+#pragma clang diagnostic ignored "-Wpartial-availability"
       CASpringAnimation *spring = [CASpringAnimation animation];
+#pragma clang diagnostic pop
       spring.mass = timing.curve.data[MDMSpringMotionCurveDataIndexMass];
       spring.stiffness = timing.curve.data[MDMSpringMotionCurveDataIndexTension];
       spring.damping = timing.curve.data[MDMSpringMotionCurveDataIndexFriction];
