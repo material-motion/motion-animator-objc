@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Fail on any error.
+set -e
+
+# Display commands to stderr.
+set -x
+
+if [ ! -d .kokoro-ios-runner ]; then
+  git clone https://github.com/material-foundation/kokoro-ios-runner.git .kokoro-ios-runner
+fi
+
+pushd .kokoro-ios-runner
+git fetch > /dev/null
+TAG=$(git tag -l "v3*" | sort | tail -n1)
+git checkout $TAG > /dev/null
+popd
+
+if [ -z "$KOKORO_BUILD_NUMBER" ]; then
+  tests_dir_prefix=""
+else
+  tests_dir_prefix="github/repo/"
+fi
+
+# Fixes a bug in bazel where objc_library targets have a _ prefix.
+find ${tests_dir_prefix}tests/unit -type f -name '*.swift' -exec sed -i '' -E "s/import Motion(.+)/import _Motion\1/" {} + || true
+stashed_dir=$(pwd)
+reset_imports() {
+  # Undoes our source changes from above.
+  find ${stashed_dir}/${tests_dir_prefix}tests/unit -type f -name '*.swift' -exec sed -i '' -E "s/import _Motion(.+)/import Motion\1/" {} + || true
+}
+trap reset_imports EXIT
+
+./.kokoro-ios-runner/bazel.sh test //:UnitTests 8.1.0
+
+echo "Success!"
