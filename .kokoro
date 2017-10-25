@@ -6,34 +6,41 @@ set -e
 # Display commands to stderr.
 set -x
 
+KOKORO_RUNNER_VERSION="v3*"
+
+fix_bazel_imports() {
+  if [ -z "$KOKORO_BUILD_NUMBER" ]; then
+    tests_dir_prefix=""
+  else
+    tests_dir_prefix="github/repo/"
+  fi
+
+  # Fixes a bug in bazel where objc_library targets have a _ prefix.
+  find "${tests_dir_prefix}tests/unit" -type f -name '*.swift' -exec sed -i '' -E "s/import Motion(.+)/import _Motion\1/" {} + || true
+  # CocoaPods requires that public headers of dependent pods be implemented using framework import
+  # notation, while bazel requires that dependency headers be imported with quoted notation.
+  find "${tests_dir_prefix}src" -type f -name '*.h' -exec sed -i '' -E "s/import <MotionInterchange\/MotionInterchange\.h>/import \"MotionInterchange.h\"/" {} + || true
+  stashed_dir=$(pwd)
+  reset_imports() {
+    # Undoes our source changes from above.
+    find "${stashed_dir}/${tests_dir_prefix}tests/unit" -type f -name '*.swift' -exec sed -i '' -E "s/import _Motion(.+)/import Motion\1/" {} + || true
+    find "${stashed_dir}/${tests_dir_prefix}src" -type f -name '*.h' -exec sed -i '' -E "s/import \"MotionInterchange.h\"/import <MotionInterchange\/MotionInterchange.h>/" {} + || true
+  }
+  trap reset_imports EXIT
+}
+
 if [ ! -d .kokoro-ios-runner ]; then
   git clone https://github.com/material-foundation/kokoro-ios-runner.git .kokoro-ios-runner
 fi
 
 pushd .kokoro-ios-runner
 git fetch > /dev/null
-TAG=$(git tag -l "v3*" | sort | tail -n1)
-git checkout $TAG > /dev/null
+# https://stackoverflow.com/questions/21394536/how-to-simulate-sort-v-on-mac-osx
+TAG=$(git tag -l "$KOKORO_RUNNER_VERSION" | sort -t. -s -k 1,1n -k 2,2n -k 3,3n -k 4,4n | tail -n1)
+git checkout "$TAG" > /dev/null
 popd
 
-if [ -z "$KOKORO_BUILD_NUMBER" ]; then
-  tests_dir_prefix=""
-else
-  tests_dir_prefix="github/repo/"
-fi
-
-# Fixes a bug in bazel where objc_library targets have a _ prefix.
-find ${tests_dir_prefix}tests/unit -type f -name '*.swift' -exec sed -i '' -E "s/import Motion(.+)/import _Motion\1/" {} + || true
-# CocoaPods requires that public headers of dependent pods be implemented using framework import
-# notation, while bazel requires that dependency headers be imported with quoted notation.
-find ${tests_dir_prefix}src -type f -name '*.h' -exec sed -i '' -E "s/import <MotionInterchange\/MotionInterchange\.h>/import \"MotionInterchange.h\"/" {} + || true
-stashed_dir=$(pwd)
-reset_imports() {
-  # Undoes our source changes from above.
-  find ${stashed_dir}/${tests_dir_prefix}tests/unit -type f -name '*.swift' -exec sed -i '' -E "s/import _Motion(.+)/import Motion\1/" {} + || true
-  find ${stashed_dir}/${tests_dir_prefix}src -type f -name '*.h' -exec sed -i '' -E "s/import \"MotionInterchange.h\"/import <MotionInterchange\/MotionInterchange.h>/" {} + || true
-}
-trap reset_imports EXIT
+fix_bazel_imports
 
 ./.kokoro-ios-runner/bazel.sh test //:UnitTests 8.1.0
 

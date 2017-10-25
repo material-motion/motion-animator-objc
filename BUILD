@@ -1,11 +1,13 @@
 # Description:
 # A Motion Animator creates performant, interruptible animations from motion specs.
 
+load("@bazel_ios_warnings//:strict_warnings_objc_library.bzl", "strict_warnings_objc_library")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
+load("@build_bazel_rules_apple//apple:swift.bzl", "swift_library")
+
 licenses(["notice"])  # Apache 2.0
 
 exports_files(["LICENSE"])
-
-load("@bazel_ios_warnings//:strict_warnings_objc_library.bzl", "strict_warnings_objc_library")
 
 strict_warnings_objc_library(
     name = "MotionAnimator",
@@ -24,8 +26,6 @@ strict_warnings_objc_library(
     includes = ["src"],
     visibility = ["//visibility:public"],
 )
-
-load("@build_bazel_rules_apple//apple:swift.bzl", "swift_library")
 
 swift_library(
     name = "UnitTestsSwiftLib",
@@ -46,15 +46,12 @@ objc_library(
     visibility = ["//visibility:private"],
 )
 
-load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
-
 ios_unit_test(
     name = "UnitTests",
     deps = [
       ":UnitTestsLib",
       ":UnitTestsSwiftLib"
     ],
-    minimum_os_version = "8.0",
     timeout = "short",
     visibility = ["//visibility:private"],
 )
