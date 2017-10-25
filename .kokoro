@@ -6,7 +6,7 @@ set -e
 # Display commands to stderr.
 set -x
 
-KOKORO_RUNNER_VERSION="v3*"
+KOKORO_RUNNER_VERSION="v3.*"
 
 fix_bazel_imports() {
   if [ -z "$KOKORO_BUILD_NUMBER" ]; then
@@ -36,7 +36,7 @@ fi
 pushd .kokoro-ios-runner
 git fetch > /dev/null
 # https://stackoverflow.com/questions/21394536/how-to-simulate-sort-v-on-mac-osx
-TAG=$(git tag -l "$KOKORO_RUNNER_VERSION" | sort -t. -s -k 1,1n -k 2,2n -k 3,3n -k 4,4n | tail -n1)
+TAG=$(git tag --sort=v:refname -l "$KOKORO_RUNNER_VERSION" | tail -n1)
 git checkout "$TAG" > /dev/null
 popd
 
