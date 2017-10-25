@@ -18,7 +18,7 @@
 
 #import "CalendarChipMotionSpec.h"
 
-#import <MotionAnimator/MotionAnimator.h>
+#import "MotionAnimator.h"
 
 // This example demonstrates how to use a motion timing specification to build a complex
 // bi-directional animation using the MDMMotionAnimator object. MDMMotionAnimator is designed for

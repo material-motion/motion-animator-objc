@@ -1,3 +1,6 @@
+bazel-*
+.kokoro-ios-runner
+
 # Jazzy
 docs/
 
