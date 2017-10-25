@@ -15,7 +15,7 @@
  */
 
 #import <XCTest/XCTest.h>
-#import <MotionAnimator/MotionAnimator.h>
+#import "MotionAnimator.h"
 
 @interface MotionAnimatorTests : XCTestCase
 @end
