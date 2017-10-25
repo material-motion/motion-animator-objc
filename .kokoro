@@ -24,10 +24,14 @@ fi
 
 # Fixes a bug in bazel where objc_library targets have a _ prefix.
 find ${tests_dir_prefix}tests/unit -type f -name '*.swift' -exec sed -i '' -E "s/import Motion(.+)/import _Motion\1/" {} + || true
+# CocoaPods requires that public headers of dependent pods be implemented using framework import
+# notation, while bazel requires that dependency headers be imported with quoted notation.
+find ${tests_dir_prefix}src -type f -name '*.h' -exec sed -i '' -E "s/import <MotionInterchange\/MotionInterchange\.h>/import \"MotionInterchange.h\"/" {} + || true
 stashed_dir=$(pwd)
 reset_imports() {
   # Undoes our source changes from above.
   find ${stashed_dir}/${tests_dir_prefix}tests/unit -type f -name '*.swift' -exec sed -i '' -E "s/import _Motion(.+)/import Motion\1/" {} + || true
+  find ${stashed_dir}/${tests_dir_prefix}src -type f -name '*.h' -exec sed -i '' -E "s/import \"MotionInterchange.h\"/import <MotionInterchange\/MotionInterchange.h>/" {} + || true
 }
 trap reset_imports EXIT
 

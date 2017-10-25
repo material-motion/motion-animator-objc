@@ -17,6 +17,9 @@ strict_warnings_objc_library(
         "src/*.h",
         "src/private/*.h",
     ]),
+    deps = [
+      "@motion_interchange_objc//:MotionInterchange"
+    ],
     enable_modules = 1,
     includes = ["src"],
     visibility = ["//visibility:public"],
@@ -38,6 +41,7 @@ objc_library(
     srcs = glob([
         "tests/unit/*.m",
     ]),
+    enable_modules = 1,
     deps = [":MotionAnimator"],
     visibility = ["//visibility:private"],
 )

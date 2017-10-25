@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		089C6CC0DDFE1C655F5FCEAB /* Pods_MotionAnimatorCatalog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E33AF9EF67044934E598B76E /* Pods_MotionAnimatorCatalog.framework */; };
-		09A838102229A4F4CF793059 /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B5F948FF46E373FABB47F9 /* Pods_UnitTests.framework */; };
+		2AA864EDA683CEF5FAA721BE /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DBE814C7B88BAD6337052DB /* Pods_UnitTests.framework */; };
 		666FAA841D384A6B000363DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666FAA831D384A6B000363DA /* AppDelegate.swift */; };
 		666FAA8B1D384A6B000363DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8A1D384A6B000363DA /* Assets.xcassets */; };
 		666FAA8E1D384A6B000363DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8C1D384A6B000363DA /* LaunchScreen.storyboard */; };
@@ -20,6 +19,7 @@
 		66DD4BF51EEF0ECB00207119 /* CalendarCardExpansionExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */; };
 		66DD4BF81EEF1C4B00207119 /* CalendarChipMotionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF71EEF1C4B00207119 /* CalendarChipMotionSpec.m */; };
 		66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */; };
+		FCA09739CCE089F0D051AA87 /* Pods_MotionAnimatorCatalog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D808A6F9E944D54276D32F /* Pods_MotionAnimatorCatalog.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		04B5F948FF46E373FABB47F9 /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DBE814C7B88BAD6337052DB /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		50D808A6F9E944D54276D32F /* Pods_MotionAnimatorCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MotionAnimatorCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52820916F8FAA40E942A7333 /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		666FAA801D384A6B000363DA /* MotionAnimatorCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionAnimatorCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		666FAA831D384A6B000363DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Catalog/AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,7 +65,6 @@
 		6EB4A3E0A8428C89A9BE95EE /* Pods-MotionAnimatorCatalog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MotionAnimatorCatalog.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog.release.xcconfig"; sourceTree = "<group>"; };
 		9DE90426033EDF40C65232A9 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C7621CF512F6BD38831740F6 /* Pods-MotionAnimatorCatalog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MotionAnimatorCatalog.debug.xcconfig"; path = "../../../Pods/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog.debug.xcconfig"; sourceTree = "<group>"; };
-		E33AF9EF67044934E598B76E /* Pods_MotionAnimatorCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MotionAnimatorCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				089C6CC0DDFE1C655F5FCEAB /* Pods_MotionAnimatorCatalog.framework in Frameworks */,
+				FCA09739CCE089F0D051AA87 /* Pods_MotionAnimatorCatalog.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09A838102229A4F4CF793059 /* Pods_UnitTests.framework in Frameworks */,
+				2AA864EDA683CEF5FAA721BE /* Pods_UnitTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,8 +211,8 @@
 		B69F7165B74D343DA39E2757 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E33AF9EF67044934E598B76E /* Pods_MotionAnimatorCatalog.framework */,
-				04B5F948FF46E373FABB47F9 /* Pods_UnitTests.framework */,
+				50D808A6F9E944D54276D32F /* Pods_MotionAnimatorCatalog.framework */,
+				2DBE814C7B88BAD6337052DB /* Pods_UnitTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
