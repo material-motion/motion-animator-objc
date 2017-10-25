@@ -41,6 +41,9 @@ objc_library(
     srcs = glob([
         "tests/unit/*.m",
     ]),
+    hdrs = glob([
+        "tests/unit/*.h",
+    ]),
     enable_modules = 1,
     deps = [":MotionAnimator"],
     visibility = ["//visibility:private"],
