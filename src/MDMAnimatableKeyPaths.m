@@ -16,6 +16,7 @@
 
 #import "MDMAnimatableKeyPaths.h"
 
+MDMAnimatableKeyPath MDMKeyPathBackgroundColor = @"backgroundColor";
 MDMAnimatableKeyPath MDMKeyPathCornerRadius = @"cornerRadius";
 MDMAnimatableKeyPath MDMKeyPathHeight = @"bounds.size.height";
 MDMAnimatableKeyPath MDMKeyPathOpacity = @"opacity";

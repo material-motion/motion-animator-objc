@@ -32,6 +32,7 @@
 NS_SWIFT_NAME(AnimatableKeyPath)
 typedef NSString * const MDMAnimatableKeyPath CF_TYPED_ENUM;
 
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBackgroundColor NS_SWIFT_NAME(backgroundColor);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathCornerRadius NS_SWIFT_NAME(cornerRadius);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathHeight NS_SWIFT_NAME(height);
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathOpacity NS_SWIFT_NAME(opacity);
