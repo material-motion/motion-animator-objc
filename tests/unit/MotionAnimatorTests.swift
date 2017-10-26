@@ -30,6 +30,8 @@ class MotionAnimatorTests: XCTestCase {
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .cornerRadius)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .height)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .opacity)
+    animator.animate(with: timing, to: layer,
+                     withValues: [CGPoint.zero, CGPoint(x: 1, y: 1)], keyPath: .position)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .scale)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .width)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .x)
