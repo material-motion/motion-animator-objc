@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-#import "CAMediaTimingFunction+Interchange.h"
+#import <Foundation/Foundation.h>
 
-CAMediaTimingFunction* MDMTimingFunctionWithControlPoints(CGFloat controlPoints[4]) {
-  return [CAMediaTimingFunction functionWithControlPoints:(float)controlPoints[0]
-                                                         :(float)controlPoints[1]
-                                                         :(float)controlPoints[2]
-                                                         :(float)controlPoints[3]];
-}
+// Coerces the following UIKit values to Core Animation values:
+//
+// - UIBezierPath -> CGPath
+// - UIColor -> CGColor
+FOUNDATION_EXPORT NSArray* MDMCoerceUIKitValuesToCoreAnimationValues(NSArray *values);

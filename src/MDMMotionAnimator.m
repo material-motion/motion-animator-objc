@@ -16,14 +16,11 @@
 
 #import "MDMMotionAnimator.h"
 
-#import "private/CAMediaTimingFunction+Interchange.h"
+#import "private/CABasicAnimation+MotionAnimator.h"
+#import "private/MDMUIKitValueCoercion.h"
 #import "private/MDMDragCoefficient.h"
 
 #import <UIKit/UIKit.h>
-
-static NSArray* coerceUIKitValuesToCoreAnimationValues(NSArray *values);
-static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor);
-static void makeAnimationAdditive(CABasicAnimation *animation);
 
 @implementation MDMMotionAnimator {
   NSMutableArray *_tracers;
@@ -55,7 +52,7 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
   if (_shouldReverseValues) {
     values = [[values reverseObjectEnumerator] allObjects];
   }
-  values = coerceUIKitValuesToCoreAnimationValues(values);
+  values = MDMCoerceUIKitValuesToCoreAnimationValues(values);
 
   if (timing.duration == 0 || timing.curve.type == MDMMotionCurveTypeInstant) {
     [layer setValue:[values lastObject] forKeyPath:keyPath];
@@ -66,7 +63,7 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
   }
 
   CGFloat timeScaleFactor = MDMSimulatorAnimationDragCoefficient() * _timeScaleFactor;
-  CABasicAnimation *animation = animationFromTiming(timing, timeScaleFactor);
+  CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
 
   if (animation) {
     animation.keyPath = keyPath;
@@ -87,7 +84,7 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
 
     if (![animation.fromValue isEqual:animation.toValue]) {
       if (self.additive) {
-        makeAnimationAdditive(animation);
+        MDMMakeAnimationAdditive(animation);
       }
 
       if (timing.delay != 0) {
@@ -127,96 +124,3 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
 
 @end
 
-static NSArray* coerceUIKitValuesToCoreAnimationValues(NSArray *values) {
-  if ([[values firstObject] isKindOfClass:[UIColor class]]) {
-    NSMutableArray *convertedArray = [NSMutableArray arrayWithCapacity:values.count];
-    for (UIColor *color in values) {
-      [convertedArray addObject:(id)color.CGColor];
-    }
-    values = convertedArray;
-
-  } else if ([[values firstObject] isKindOfClass:[UIBezierPath class]]) {
-    NSMutableArray *convertedArray = [NSMutableArray arrayWithCapacity:values.count];
-    for (UIBezierPath *bezierPath in values) {
-      [convertedArray addObject:(id)bezierPath.CGPath];
-    }
-    values = convertedArray;
-  }
-  return values;
-}
-
-static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor) {
-  CABasicAnimation *animation;
-  switch (timing.curve.type) {
-    case MDMMotionCurveTypeInstant:
-      animation = nil;
-      break;
-
-    case MDMMotionCurveTypeDefault:
-    case MDMMotionCurveTypeBezier:
-      animation = [CABasicAnimation animation];
-      animation.timingFunction = MDMTimingFunctionWithControlPoints(timing.curve.data);
-      animation.duration = timing.duration * timeScaleFactor;
-      break;
-
-    case MDMMotionCurveTypeSpring: {
-#pragma clang diagnostic push
-      // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
-      // linking against the public API on iOS 9+.
-#pragma clang diagnostic ignored "-Wpartial-availability"
-      CASpringAnimation *spring = [CASpringAnimation animation];
-#pragma clang diagnostic pop
-      spring.mass = timing.curve.data[MDMSpringMotionCurveDataIndexMass];
-      spring.stiffness = timing.curve.data[MDMSpringMotionCurveDataIndexTension];
-      spring.damping = timing.curve.data[MDMSpringMotionCurveDataIndexFriction];
-
-      // This API is only available on iOS 9+
-      if ([spring respondsToSelector:@selector(settlingDuration)]) {
-        spring.duration = spring.settlingDuration;
-      } else {
-        spring.duration = timing.duration;
-      }
-      animation = spring;
-      break;
-    }
-  }
-  return animation;
-}
-
-static void makeAnimationAdditive(CABasicAnimation *animation) {
-  static NSSet *sizeKeyPaths = nil;
-  static NSSet *positionKeyPaths = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    sizeKeyPaths = [NSSet setWithArray:@[@"bounds.size"]];
-
-    positionKeyPaths = [NSSet setWithArray:@[@"position",
-                                             @"anchorPoint"]];
-  });
-
-  if ([animation.toValue isKindOfClass:[NSNumber class]]) {
-    CGFloat currentValue = (CGFloat)[animation.fromValue doubleValue];
-    CGFloat delta = currentValue - (CGFloat)[animation.toValue doubleValue];
-    animation.fromValue = @(delta);
-    animation.toValue = @0;
-    animation.additive = true;
-
-  } else if ([sizeKeyPaths containsObject:animation.keyPath]) {
-    CGSize currentValue = [animation.fromValue CGSizeValue];
-    CGSize destinationValue = [animation.toValue CGSizeValue];
-    CGSize delta = CGSizeMake(currentValue.width - destinationValue.width,
-                              currentValue.height - destinationValue.height);
-    animation.fromValue = [NSValue valueWithCGSize:delta];
-    animation.toValue = [NSValue valueWithCGSize:CGSizeZero];
-    animation.additive = true;
-
-  } else if ([positionKeyPaths containsObject:animation.keyPath]) {
-    CGPoint currentValue = [animation.fromValue CGPointValue];
-    CGPoint destinationValue = [animation.toValue CGPointValue];
-    CGPoint delta = CGPointMake(currentValue.x - destinationValue.x,
-                                currentValue.y - destinationValue.y);
-    animation.fromValue = [NSValue valueWithCGPoint:delta];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointZero];
-    animation.additive = true;
-  }
-}
