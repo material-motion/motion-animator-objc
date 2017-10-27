@@ -82,6 +82,48 @@
   [CATransaction commit];
 }
 
+- (void)pauseAllAnimations {
+  [self forEachAnimation:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
+    animation.speed = 0;
+    [layer addAnimation:animation forKey:key];
+  }];
+}
+
+- (void)setFractionComplete:(CGFloat)fractionComplete {
+  [self forEachAnimation:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
+    CAAnimation *currentAnimation = [layer animationForKey:key];
+    CABasicAnimation *linearAnimation = [CABasicAnimation animationWithKeyPath:key];
+    linearAnimation.toValue = animation.toValue;
+    linearAnimation.fromValue = animation.fromValue;
+    // TODO: Why are we calculating duration like this?
+    linearAnimation.duration = animation.duration - animation.timeOffset;
+    linearAnimation.timingFunction =
+        [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    linearAnimation.beginTime = currentAnimation.beginTime;
+    linearAnimation.speed = currentAnimation.speed;
+    linearAnimation.timeOffset = (NSTimeInterval)fractionComplete * linearAnimation.duration;
+    [layer addAnimation:linearAnimation forKey:key];
+  }];
+}
+
+- (void)startAllAnimationsReversed:(BOOL)reversed {
+  [self forEachAnimation:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
+    CAAnimation *currentAnimation = [layer animationForKey:key];
+    if (reversed) {
+      animation.toValue = animation.fromValue;
+    }
+    animation.fromValue = [[layer presentationLayer] valueForKeyPath:animation.keyPath];
+    animation.duration = currentAnimation.duration - currentAnimation.timeOffset;
+
+    // Reconnect our layer with the render server's clock.
+    animation.speed = 1;
+    animation.timeOffset = 0;
+    animation.beginTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
+
+    [layer addAnimation:animation forKey:key];
+  }];
+}
+
 - (void)commitCurrentAnimationValuesToAllLayers {
   [self forEachAnimation:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
     id presentationLayer = [layer presentationLayer];

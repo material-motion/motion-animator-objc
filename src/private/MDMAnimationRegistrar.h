@@ -32,6 +32,10 @@
 // it to the layer.
 - (void)commitCurrentAnimationValuesToAllLayers;
 
+- (void)pauseAllAnimations;
+- (void)setFractionComplete:(CGFloat)fractionComplete;
+- (void)startAllAnimationsReversed:(BOOL)reversed;
+
 // Removes all active animations from their associated layer.
 - (void)removeAllAnimations;
 

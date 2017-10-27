@@ -17,4 +17,5 @@
 #import "CATransaction+MotionAnimator.h"
 #import "MDMAnimatableKeyPaths.h"
 #import "MDMMotionAnimator.h"
+#import "MDMTimelineAnimator.h"
 
