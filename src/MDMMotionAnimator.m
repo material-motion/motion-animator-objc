@@ -16,11 +16,11 @@
 
 #import "MDMMotionAnimator.h"
 
+#import "private/CAMediaTimingFunction+Interchange.h"
 #import "private/MDMDragCoefficient.h"
 
 #import <UIKit/UIKit.h>
 
-static CAMediaTimingFunction* timingFunctionWithControlPoints(CGFloat controlPoints[4]);
 static NSArray* coerceUIKitValuesToCoreAnimationValues(NSArray *values);
 static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor);
 static void makeAnimationAdditive(CABasicAnimation *animation);
@@ -127,13 +127,6 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
 
 @end
 
-static CAMediaTimingFunction* timingFunctionWithControlPoints(CGFloat controlPoints[4]) {
-  return [CAMediaTimingFunction functionWithControlPoints:(float)controlPoints[0]
-                                                         :(float)controlPoints[1]
-                                                         :(float)controlPoints[2]
-                                                         :(float)controlPoints[3]];
-}
-
 static NSArray* coerceUIKitValuesToCoreAnimationValues(NSArray *values) {
   if ([[values firstObject] isKindOfClass:[UIColor class]]) {
     NSMutableArray *convertedArray = [NSMutableArray arrayWithCapacity:values.count];
@@ -162,7 +155,7 @@ static CABasicAnimation *animationFromTiming(MDMMotionTiming timing, CGFloat tim
     case MDMMotionCurveTypeDefault:
     case MDMMotionCurveTypeBezier:
       animation = [CABasicAnimation animation];
-      animation.timingFunction = timingFunctionWithControlPoints(timing.curve.data);
+      animation.timingFunction = MDMTimingFunctionWithControlPoints(timing.curve.data);
       animation.duration = timing.duration * timeScaleFactor;
       break;
 
