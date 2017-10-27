@@ -16,19 +16,9 @@
 
 #import "MDMMotionAnimator.h"
 
+#import "private/MDMDragCoefficient.h"
+
 #import <UIKit/UIKit.h>
-
-#if TARGET_IPHONE_SIMULATOR
-UIKIT_EXTERN float UIAnimationDragCoefficient(void); // UIKit private drag coefficient.
-#endif
-
-static CGFloat simulatorAnimationDragCoefficient(void) {
-#if TARGET_IPHONE_SIMULATOR
-  return UIAnimationDragCoefficient();
-#else
-  return 1.0;
-#endif
-}
 
 static CAMediaTimingFunction* timingFunctionWithControlPoints(CGFloat controlPoints[4]);
 static NSArray* coerceUIKitValuesToCoreAnimationValues(NSArray *values);
@@ -75,7 +65,7 @@ static void makeAnimationAdditive(CABasicAnimation *animation);
     return;
   }
 
-  CGFloat timeScaleFactor = simulatorAnimationDragCoefficient() * _timeScaleFactor;
+  CGFloat timeScaleFactor = MDMSimulatorAnimationDragCoefficient() * _timeScaleFactor;
   CABasicAnimation *animation = animationFromTiming(timing, timeScaleFactor);
 
   if (animation) {
