@@ -24,5 +24,7 @@
 FOUNDATION_EXPORT
 CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor);
 
-// Configures the provided animation to be additive.
+// Attemps to configure the provided animation to be additive.
+// Not all animation value types are supported. If an animation's value type was not supported,
+// the animation will not be modified.
 FOUNDATION_EXPORT void MDMMakeAnimationAdditive(CABasicAnimation *animation);
