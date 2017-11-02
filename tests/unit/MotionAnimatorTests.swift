@@ -47,5 +47,27 @@ class MotionAnimatorTests: XCTestCase {
     XCTAssertTrue(true)
   }
 
+  func testAnimatorOnlyAddsAnimationsForKeyPath() {
+    let animator = MotionAnimator()
+    let timing = MotionTiming(delay: 0,
+                              duration: 1,
+                              curve: .init(type: .bezier, data: (0, 0, 0, 0)),
+                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+
+    let window = UIWindow()
+    window.makeKeyAndVisible()
+    let view = UIView() // Need to animate a view's layer to get implicit animations.
+    window.addSubview(view)
+
+    XCTAssertEqual(view.layer.delegate as? UIView, view)
+
+    UIView.animate(withDuration: 0.5) {
+      animator.animate(with: timing, to: view.layer, withValues: [0, 1], keyPath: .rotation)
+
+      // Setting transform.rotation.z will create an implicit transform if implicit animations
+      // aren't disabled by the animator properly, so verify that such an animation doesn't exist:
+      XCTAssertNil(view.layer.animation(forKey: "transform"))
+    }
+  }
 }
 

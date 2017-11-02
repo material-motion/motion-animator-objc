@@ -112,7 +112,14 @@
     }
   }
 
+  [CATransaction begin];
+  BOOL actionsWereDisabled = [CATransaction disableActions];
+  [CATransaction setDisableActions:YES];
+
   [layer setValue:[values lastObject] forKeyPath:keyPath];
+
+  [CATransaction setDisableActions:actionsWereDisabled];
+  [CATransaction commit];
 }
 
 - (void)addCoreAnimationTracer:(void (^)(CALayer *, CAAnimation *))tracer {
