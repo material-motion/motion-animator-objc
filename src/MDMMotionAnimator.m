@@ -16,11 +16,11 @@
 
 #import "MDMMotionAnimator.h"
 
+#import <UIKit/UIKit.h>
+
 #import "private/CABasicAnimation+MotionAnimator.h"
 #import "private/MDMUIKitValueCoercion.h"
 #import "private/MDMDragCoefficient.h"
-
-#import <UIKit/UIKit.h>
 
 @implementation MDMMotionAnimator {
   NSMutableArray *_tracers;

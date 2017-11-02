@@ -20,4 +20,6 @@
 //
 // - UIBezierPath -> CGPath
 // - UIColor -> CGColor
+//
+// @param values All values of this array must be the same type.
 FOUNDATION_EXPORT NSArray* MDMCoerceUIKitValuesToCoreAnimationValues(NSArray *values);
