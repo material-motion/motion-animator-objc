@@ -18,6 +18,8 @@
 
 #import "CAMediaTimingFunction+MotionAnimator.h"
 
+#import <UIKit/UIKit.h>
+
 CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor) {
   CABasicAnimation *animation;
   switch (timing.curve.type) {
