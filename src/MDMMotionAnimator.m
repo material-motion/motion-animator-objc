@@ -112,7 +112,10 @@
     }
   }
 
+  [CATransaction begin];
+  [CATransaction setDisableActions:YES];
   [layer setValue:[values lastObject] forKeyPath:keyPath];
+  [CATransaction commit];
 }
 
 - (void)addCoreAnimationTracer:(void (^)(CALayer *, CAAnimation *))tracer {
