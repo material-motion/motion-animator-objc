@@ -66,6 +66,8 @@ NS_SWIFT_NAME(MotionAnimator)
 /**
  Adds a single animation to the layer with the given timing structure.
 
+ If `additive` is disabled, the animation will be added to the layer with the keyPath as its key.
+
  @param timing The timing to be used for the animation.
  @param layer The layer to be animated.
  @param values The values to be used in the animation. Must contain exactly two values. Supported
@@ -80,6 +82,8 @@ NS_SWIFT_NAME(MotionAnimator)
 
 /**
  Adds a single animation to the layer with the given timing structure.
+
+ If `additive` is disabled, the animation will be added to the layer with the keyPath as its key.
 
  @param timing The timing to be used for the animation.
  @param layer The layer to be animated.
