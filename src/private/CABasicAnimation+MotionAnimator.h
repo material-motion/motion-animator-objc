@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MotionInterchange/MotionInterchange.h>
+#import "MotionInterchange.h"
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
