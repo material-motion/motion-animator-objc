@@ -31,7 +31,7 @@
 
  Sets a transaction-specific time scale factor to be applied to animator animations.
 
- @param timeScaleFactor If nil, the animator's `timeScaleFactor` will be used instead. Should be
+ @param timeScaleFactor If nil, the animator's `timeScaleFactor` will be used instead. Should be a
                         CGFloat value type.
  */
 + (void)mdm_setTimeScaleFactor:(nullable NSNumber *)timeScaleFactor;
