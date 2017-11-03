@@ -18,6 +18,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "CATransaction+MotionAnimator.h"
 #import "private/CABasicAnimation+MotionAnimator.h"
 #import "private/MDMUIKitValueCoercion.h"
 #import "private/MDMDragCoefficient.h"
@@ -62,7 +63,7 @@
     return;
   }
 
-  CGFloat timeScaleFactor = MDMSimulatorAnimationDragCoefficient() * _timeScaleFactor;
+  CGFloat timeScaleFactor = [self computedTimeScaleFactor];
   CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
 
   if (animation) {
@@ -124,6 +125,22 @@
     _tracers = [NSMutableArray array];
   }
   [_tracers addObject:[tracer copy]];
+}
+
+- (CGFloat)computedTimeScaleFactor {
+  CGFloat timeScaleFactor;
+  id transactionTimeScaleFactor = [CATransaction mdm_timeScaleFactor];
+  if (transactionTimeScaleFactor != nil) {
+#if CGFLOAT_IS_DOUBLE
+    timeScaleFactor = [transactionTimeScaleFactor doubleValue];
+#else
+    timeScaleFactor = [transactionTimeScaleFactor floatValue];
+#endif
+  } else {
+    timeScaleFactor = _timeScaleFactor;
+  }
+
+  return MDMSimulatorAnimationDragCoefficient() * timeScaleFactor;
 }
 
 @end
