@@ -1,7 +1,69 @@
-# #develop#
+# 2.0.0
 
- TODO: Enumerate changes.
+This major release includes several new APIs, bug fixes, and internal cleanup.
 
+## Breaking changes
+
+The animator now adds non-additive animations with the keyPath as the animation key. This is a
+behavioral change in that animations will now remove the current animation with the same key.
+
+## Bug fixes
+
+Implicit animations are no longer created when adding animations within a UIView animation block.
+
+## New features
+
+New keypath constants:
+
+- backgroundColor
+- position
+- rotation
+- strokeStart
+- strokeEnd
+
+New APIs on CATransaction for setting a transaction-specific timeScaleFactor:
+
+```swift
+CATransaction.begin()
+CATransaction.mdm_setTimeScaleFactor(0.5)
+animator.animate...
+CATransaction.commit()
+```
+
+## Source changes
+
+* [Add support for customizing the timeScaleFactor as part of a CATransaction (#25)](https://github.com/material-motion/motion-animator-objc/commit/17601b94b19320eb4542fca12ba1fa5a2b487271) (featherless)
+* [[breaking] Use the keyPath as the key when the animator is not additive. (#22)](https://github.com/material-motion/motion-animator-objc/commit/bb42e617fc80604e056aee618f953d076f5c8928) (featherless)
+* [Disable implicit animations when adding explicit animations in the animator (#20)](https://github.com/material-motion/motion-animator-objc/commit/8be151c06d3769540a5efce9d9f00bbc7e6f1555) (featherless)
+* [Move private APIs to the private folder. (#17)](https://github.com/material-motion/motion-animator-objc/commit/ee19fdaad12d8a02f5b8ec655363662dfecc30cc) (featherless)
+* [Add rotation, strokeStart, and strokeEnd key paths. (#19)](https://github.com/material-motion/motion-animator-objc/commit/ccdffd5597d5888f63c0a3ef0204cfc9efba2a1f) (featherless)
+* [Extract a MDMCoreAnimationTraceable protocol from MotionAnimator. (#18)](https://github.com/material-motion/motion-animator-objc/commit/dbe5c3b5d597e6bad50bfc89b53cf0af95c435bc) (featherless)
+* [Add position and backgroundColor as key paths. (#15)](https://github.com/material-motion/motion-animator-objc/commit/38907aef8ec0e29aa01ce9b3c13851226802b464) (featherless)
+* [Replace arc with kokoro and bazel support for continuous integration. (#13)](https://github.com/material-motion/motion-animator-objc/commit/2ac68fb1ac4cdf61ba6fc7563a59417d39938074) (featherless)
+
+## API changes
+
+### CATransaction
+
+**new** method: `mdm_timeScaleFactor`.
+
+**new** method: `mdm_setTimeScaleFactor:`.
+
+### Animatable key paths
+
+**new** constant: `MDMKeyPathBackgroundColor`
+
+**new** constant: `MDMKeyPathPosition`
+
+**new** constant: `MDMKeyPathRotation`
+
+**new** constant: `MDMKeyPathStrokeStart`
+
+**new** constant: `MDMKeyPathStrokeEnd`
+
+### MDMCoreAnimationTraceable
+
+**new** protocol: MDMCoreAnimationTraceable
 
 # 1.1.3
 
