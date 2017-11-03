@@ -15,6 +15,17 @@
  */
 
 #import "CATransaction+MotionAnimator.h"
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
 
+static NSString *const kTimeScaleFactorKey = @"mdm_timeScaleFactor";
+
+@implementation CATransaction (MotionAnimator)
+
++ (NSNumber *)mdm_timeScaleFactor {
+  return [CATransaction valueForKey:kTimeScaleFactorKey];
+}
+
++ (void)mdm_setTimeScaleFactor:(nullable NSNumber *)timeScaleFactor {
+  return [CATransaction setValue:timeScaleFactor forKey:kTimeScaleFactorKey];
+}
+
+@end
