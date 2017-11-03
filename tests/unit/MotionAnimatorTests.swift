@@ -47,7 +47,7 @@ class MotionAnimatorTests: XCTestCase {
     XCTAssertTrue(true)
   }
 
-  func testAnimatorOnlyAddsAnimationsForKeyPath() {
+  func testAnimatorOnlyUsesSingleNonAdditiveAnimationForKeyPath() {
     let animator = MotionAnimator()
     animator.additive = false
 
