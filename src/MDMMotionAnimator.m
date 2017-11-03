@@ -100,7 +100,8 @@
 
       // When we use a nil key, Core Animation will ensure that the animation is added with a
       // unique key - this enables our additive animations to stack upon one another.
-      [layer addAnimation:animation forKey:nil];
+      NSString *key = _additive ? nil : keyPath;
+      [layer addAnimation:animation forKey:key];
 
       for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
         tracer(layer, animation);

@@ -47,8 +47,10 @@ class MotionAnimatorTests: XCTestCase {
     XCTAssertTrue(true)
   }
 
-  func testAnimatorOnlyAddsAnimationsForKeyPath() {
+  func testAnimatorOnlyUsesSingleNonAdditiveAnimationForKeyPath() {
     let animator = MotionAnimator()
+    animator.additive = false
+
     let timing = MotionTiming(delay: 0,
                               duration: 1,
                               curve: .init(type: .bezier, data: (0, 0, 0, 0)),
@@ -64,9 +66,7 @@ class MotionAnimatorTests: XCTestCase {
     UIView.animate(withDuration: 0.5) {
       animator.animate(with: timing, to: view.layer, withValues: [0, 1], keyPath: .rotation)
 
-      // Setting transform.rotation.z will create an implicit transform if implicit animations
-      // aren't disabled by the animator properly, so verify that such an animation doesn't exist:
-      XCTAssertNil(view.layer.animation(forKey: "transform"))
+      XCTAssertEqual(view.layer.animationKeys()?.count, 1)
     }
   }
 }
