@@ -14,7 +14,18 @@
  limitations under the License.
  */
 
-#import "CATransaction+MotionAnimator.h"
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
+#import "MDMDragCoefficient.h"
 
+#import <UIKit/UIKit.h>
+
+#if TARGET_IPHONE_SIMULATOR
+UIKIT_EXTERN float UIAnimationDragCoefficient(void); // UIKit private drag coefficient.
+#endif
+
+CGFloat MDMSimulatorAnimationDragCoefficient(void) {
+#if TARGET_IPHONE_SIMULATOR
+  return UIAnimationDragCoefficient();
+#else
+  return 1.0;
+#endif
+}

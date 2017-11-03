@@ -14,7 +14,8 @@
  limitations under the License.
  */
 
-#import "CATransaction+MotionAnimator.h"
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
+#import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
 
+// Returns the simulator drag coefficient when being run in the simulator, or 1.0 otherwise.
+FOUNDATION_EXTERN CGFloat MDMSimulatorAnimationDragCoefficient(void);

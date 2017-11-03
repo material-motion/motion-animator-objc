@@ -14,7 +14,12 @@
  limitations under the License.
  */
 
-#import "CATransaction+MotionAnimator.h"
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
+#import <Foundation/Foundation.h>
 
+// Coerces the following UIKit values to Core Animation values:
+//
+// - UIBezierPath -> CGPath
+// - UIColor -> CGColor
+//
+// @param values All values of this array must be the same type.
+FOUNDATION_EXPORT NSArray* MDMCoerceUIKitValuesToCoreAnimationValues(NSArray *values);

@@ -14,7 +14,10 @@
  limitations under the License.
  */
 
-#import "CATransaction+MotionAnimator.h"
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
+#import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
+#import <QuartzCore/QuartzCore.h>
 
+// Returns a timing function with the given control points.
+FOUNDATION_EXPORT
+CAMediaTimingFunction* MDMTimingFunctionWithControlPoints(CGFloat controlPoints[4]);

@@ -20,12 +20,13 @@
 #import <MotionInterchange/MotionInterchange.h>
 
 #import "MDMAnimatableKeyPaths.h"
+#import "MDMCoreAnimationTraceable.h"
 
 /**
  An animator adds Core Animation animations to a layer based on a provided motion timing.
  */
 NS_SWIFT_NAME(MotionAnimator)
-@interface MDMMotionAnimator : NSObject
+@interface MDMMotionAnimator : NSObject <MDMCoreAnimationTraceable>
 
 /**
  The scaling factor to apply to all time-related values.
@@ -65,6 +66,10 @@ NS_SWIFT_NAME(MotionAnimator)
 /**
  Adds a single animation to the layer with the given timing structure.
 
+ If `additive` is disabled, the animation will be added to the layer with the keyPath as its key.
+ In this case, multiple invocations of this function on the same key path will remove the
+ animations added from prior invocations.
+
  @param timing The timing to be used for the animation.
  @param layer The layer to be animated.
  @param values The values to be used in the animation. Must contain exactly two values. Supported
@@ -80,6 +85,10 @@ NS_SWIFT_NAME(MotionAnimator)
 /**
  Adds a single animation to the layer with the given timing structure.
 
+ If `additive` is disabled, the animation will be added to the layer with the keyPath as its key.
+ In this case, multiple invocations of this function on the same key path will remove the
+ animations added from prior invocations.
+
  @param timing The timing to be used for the animation.
  @param layer The layer to be animated.
  @param values The values to be used in the animation. Must contain exactly two values. Supported
@@ -93,10 +102,5 @@ NS_SWIFT_NAME(MotionAnimator)
                withValues:(nonnull NSArray *)values
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath
                completion:(nullable void(^)(void))completion;
-
-/**
- Adds a block that will be invoked each time an animation is added to a layer.
- */
-- (void)addCoreAnimationTracer:(nonnull void (^)(CALayer * _Nonnull, CAAnimation * _Nonnull))tracer;
 
 @end

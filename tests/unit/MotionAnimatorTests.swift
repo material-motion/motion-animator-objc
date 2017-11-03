@@ -27,10 +27,17 @@ class MotionAnimatorTests: XCTestCase {
                               repetition: .init(type: .none, amount: 0, autoreverses: false))
     let layer = CALayer()
 
+    animator.animate(with: timing, to: layer,
+                     withValues: [UIColor.blue, UIColor.red], keyPath: .backgroundColor)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .cornerRadius)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .height)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .opacity)
+    animator.animate(with: timing, to: layer,
+                     withValues: [CGPoint.zero, CGPoint(x: 1, y: 1)], keyPath: .position)
+    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .rotation)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .scale)
+    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .strokeStart)
+    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .strokeEnd)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .width)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .x)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .y)
@@ -40,5 +47,26 @@ class MotionAnimatorTests: XCTestCase {
     XCTAssertTrue(true)
   }
 
-}
+  func testAnimatorOnlyUsesSingleNonAdditiveAnimationForKeyPath() {
+    let animator = MotionAnimator()
+    animator.additive = false
 
+    let timing = MotionTiming(delay: 0,
+                              duration: 1,
+                              curve: .init(type: .bezier, data: (0, 0, 0, 0)),
+                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+
+    let window = UIWindow()
+    window.makeKeyAndVisible()
+    let view = UIView() // Need to animate a view's layer to get implicit animations.
+    window.addSubview(view)
+
+    XCTAssertEqual(view.layer.delegate as? UIView, view)
+
+    UIView.animate(withDuration: 0.5) {
+      animator.animate(with: timing, to: view.layer, withValues: [0, 1], keyPath: .rotation)
+
+      XCTAssertEqual(view.layer.animationKeys()?.count, 1)
+    }
+  }
+}
