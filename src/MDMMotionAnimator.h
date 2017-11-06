@@ -17,7 +17,7 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "MotionInterchange.h"
+#import <MotionInterchange/MotionInterchange.h>
 
 #import "MDMAnimatableKeyPaths.h"
 #import "MDMCoreAnimationTraceable.h"
