@@ -72,7 +72,6 @@ class MotionAnimatorTests: XCTestCase {
 
   func testCompletionCallbackIsExecutedWithZeroDuration() {
     let animator = MotionAnimator()
-    animator.additive = false
 
     let timing = MotionTiming(delay: 0,
                               duration: 0,
