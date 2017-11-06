@@ -182,5 +182,6 @@ class ImplicitAnimationTests: XCTestCase {
     CATransaction.commit()
 
     XCTAssertEqual(addedAnimations.count, 0)
+    XCTAssertEqual(view.alpha, 0)
   }
 }
