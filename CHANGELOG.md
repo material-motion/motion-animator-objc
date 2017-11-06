@@ -1,7 +1,10 @@
-# #develop#
+# 2.0.1
 
- TODO: Enumerate changes.
+This patch release includes minor fixes for bazel + kokoro continuous integration.
 
+## Source changes
+
+* [Replace framework import with relative import. (#27)](https://github.com/material-motion/motion-animator-objc/commit/f9fd0af201ef7ae01ebc11fb7d2950fcc9116b4e) (featherless)
 
 # 2.0.0
 
