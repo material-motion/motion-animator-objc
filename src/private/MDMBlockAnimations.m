@@ -81,11 +81,12 @@ static id<CAAction> ActionForLayer(id self, SEL _cmd, CALayer *layer, NSString *
             sOriginalActionForLayerImp)(self, _cmd, layer, event);
   }
 
+  // We don't have access to the "to" value of our animation here, so we unfortunately can't
+  // calculate additive values if the animator is configured as such. So, to support additive
+  // animations, we queue up the modified actions and then add them all at the end of our
+  // MDMAnimateBlock invocation.
   id initialValue = [layer valueForKeyPath:event];
   [context addActionForLayer:layer keyPath:event withInitialValue:initialValue];
-
-  // Must return NSNull in order to indicate to Core Animation that we don't want it to
-  // create an animation for us.
   return [NSNull null];
 }
 
