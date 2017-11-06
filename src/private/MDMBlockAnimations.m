@@ -22,7 +22,7 @@
 static IMP sOriginalActionForLayerImp = NULL;
 
 @interface MDMActionContext: NSObject
-@property(nonatomic, readonly) NSArray<MDMImplicitAction *> *actions;
+@property(nonatomic, readonly) NSArray<MDMImplicitAction *> *interceptedActions;
 @end
 
 @implementation MDMImplicitAction
@@ -42,13 +42,13 @@ static IMP sOriginalActionForLayerImp = NULL;
 @end
 
 @implementation MDMActionContext {
-  NSMutableArray<MDMImplicitAction *> *_actions;
+  NSMutableArray<MDMImplicitAction *> *_interceptedActions;
 }
 
 - (instancetype)init {
   self = [super init];
   if (self) {
-    _actions = [NSMutableArray array];
+    _interceptedActions = [NSMutableArray array];
   }
   return self;
 }
@@ -56,13 +56,13 @@ static IMP sOriginalActionForLayerImp = NULL;
 - (void)addActionForLayer:(CALayer *)layer
                   keyPath:(NSString *)keyPath
          withInitialValue:(id)initialValue {
-  [_actions addObject:[[MDMImplicitAction alloc] initWithLayer:layer
-                                                       keyPath:keyPath
-                                                  initialValue:initialValue]];
+  [_interceptedActions addObject:[[MDMImplicitAction alloc] initWithLayer:layer
+                                                                  keyPath:keyPath
+                                                             initialValue:initialValue]];
 }
 
-- (NSArray<MDMImplicitAction *> *)actions {
-  return [_actions copy];
+- (NSArray<MDMImplicitAction *> *)interceptedActions {
+  return [_interceptedActions copy];
 }
 
 @end
@@ -75,10 +75,13 @@ static id<CAAction> ActionForLayer(id self, SEL _cmd, CALayer *layer, NSString *
             @"Invalid method signature.");
 
   MDMActionContext *context = [sActionContext lastObject];
+  NSCAssert(context != nil, @"MotionAnimator action method invoked out of implicit scope.");
 
   if (context == nil) {
-    return ((id<CAAction>(*)(id,SEL,CALayer *, NSString *))
-            sOriginalActionForLayerImp)(self, _cmd, layer, event);
+    // Graceful handling of invalid state on non-debug builds for if our context is nil invokes our
+    // original implementation:
+    return ((id<CAAction>(*)(id, SEL, CALayer *, NSString *))sOriginalActionForLayerImp)
+              (self, _cmd, layer, event);
   }
 
   // We don't have access to the "to" value of our animation here, so we unfortunately can't
@@ -95,27 +98,34 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
     return nil;
   }
 
-  SEL selector = @selector(actionForLayer:forKey:);
-  Method method = class_getInstanceMethod([UIView class], selector);
-
-  if (sOriginalActionForLayerImp == nil) {
-    sOriginalActionForLayerImp = method_setImplementation(method, (IMP)ActionForLayer);
-  }
-
+  // This method can be called recursively, so we maintain a recursive context stack in the scope of
+  // this method. Note that this is absolutely not thread safe, but neither is Core Animation.
   if (!sActionContext) {
     sActionContext = [NSMutableArray array];
   }
   [sActionContext addObject:[[MDMActionContext alloc] init]];
 
-  work();
+  SEL selector = @selector(actionForLayer:forKey:);
+  Method method = class_getInstanceMethod([UIView class], selector);
 
-  MDMActionContext *context = [sActionContext lastObject];
-  [sActionContext removeLastObject];
-
-  if ([sActionContext count] == 0) {
-    method_setImplementation(method, sOriginalActionForLayerImp);
-    sOriginalActionForLayerImp = nil;
+  if (sOriginalActionForLayerImp == nil) {
+    // Swap the original UIView implementation with our own so that we can intercept all
+    // actionForLayer:forKey: events. All events will be
+    sOriginalActionForLayerImp = method_setImplementation(method, (IMP)ActionForLayer);
   }
 
-  return context.actions;
+  work();
+
+  if ([sActionContext count] == 0) {
+    // Restore our original method if we've emptied the stack:
+    method_setImplementation(method, sOriginalActionForLayerImp);
+
+    sOriginalActionForLayerImp = nil;
+    sActionContext = nil;
+  }
+
+  // Return any intercepted actions we received during the invocation of work.
+  MDMActionContext *context = [sActionContext lastObject];
+  [sActionContext removeLastObject];
+  return context.interceptedActions;
 }
