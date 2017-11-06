@@ -22,7 +22,7 @@
 static IMP sOriginalActionForLayerImp = NULL;
 
 @interface MDMActionContext: NSObject
-@property(nonatomic, strong, readonly) NSArray<MDMImplicitAction *> *actions;
+@property(nonatomic, readonly) NSArray<MDMImplicitAction *> *actions;
 @end
 
 @implementation MDMImplicitAction
