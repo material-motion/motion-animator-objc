@@ -1,3 +1,13 @@
+# 2.0.2
+
+This patch release includes minor fixes for CocoaPods unit tests.
+
+CocoaPods Swift modules require that header dependencies be imported using `<>` notation.
+
+## Source changes
+
+* [Use <> framework import for MDMMotionAnimator.h in order to support module builds. (#28)](https://github.com/material-motion/motion-animator-objc/commit/f8fd0506320c31e1c471477639332b2ccb6b09fc) (featherless)
+
 # 2.0.1
 
 This patch release includes minor fixes for bazel + kokoro continuous integration.
