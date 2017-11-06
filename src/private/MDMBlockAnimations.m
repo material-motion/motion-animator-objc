@@ -62,7 +62,7 @@ static IMP sOriginalActionForLayerImp = NULL;
 }
 
 - (NSArray<MDMImplicitAction *> *)actions {
-  return _actions;
+  return [_actions copy];
 }
 
 @end
