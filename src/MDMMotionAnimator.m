@@ -122,21 +122,13 @@
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
-  NSArray<MDMImplicitAction *> *actions = MDMAnimateBlock(animations);
-
-  for (MDMImplicitAction *action in actions) {
-    id currentValue = [action.layer valueForKeyPath:action.keyPath];
-    [self animateWithTiming:timing
-                    toLayer:action.layer
-                 withValues:@[action.initialValue, currentValue]
-                    keyPath:action.keyPath];
-  }
+  [self animateWithTiming:timing animations:animations completion:nil];
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing
                animations:(void (^)(void))animations
                completion:(void(^)(void))completion {
-  NSArray<MDMImplicitAction *> *actions = MDMAnimateBlock(animations);
+  NSArray<MDMImplicitAction *> *actions = MDMAnimateImplicitly(animations);
 
   [CATransaction begin];
   [CATransaction setCompletionBlock:completion];

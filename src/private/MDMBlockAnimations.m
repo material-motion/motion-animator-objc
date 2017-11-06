@@ -90,7 +90,7 @@ static id<CAAction> ActionForLayer(id self, SEL _cmd, CALayer *layer, NSString *
   return [NSNull null];
 }
 
-NSArray<MDMImplicitAction *> *MDMAnimateBlock(void (^work)(void)) {
+NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
   if (!work) {
     return nil;
   }

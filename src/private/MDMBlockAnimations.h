@@ -22,4 +22,4 @@
 @property(nonatomic, strong, readonly) CALayer *layer;
 @end
 
-NSArray<MDMImplicitAction *> *MDMAnimateBlock(void (^work)(void));
+NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^animations)(void));

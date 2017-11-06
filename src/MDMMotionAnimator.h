@@ -126,6 +126,6 @@ NS_SWIFT_NAME(MotionAnimator)
  */
 - (void)animateWithTiming:(MDMMotionTiming)timing
                animations:(nonnull void (^)(void))animations
-               completion:(nonnull void(^)(void))completion;
+               completion:(nullable void(^)(void))completion;
 
 @end
