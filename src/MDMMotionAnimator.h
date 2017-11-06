@@ -108,7 +108,7 @@ NS_SWIFT_NAME(MotionAnimator)
 
  @param timing The timing to be used for the animation.
  @param animations The block to be executed. Any animatable properties changed within this block
- will result in animations being added to the view's layer following the provided timing.
+ will result in animations being added to the view's layer with the provided timing.
  */
 - (void)animateWithTiming:(MDMMotionTiming)timing animations:(nonnull void(^)(void))animations;
 
@@ -118,7 +118,7 @@ NS_SWIFT_NAME(MotionAnimator)
 
  @param timing The timing to be used for the animation.
  @param animations The block to be executed. Any animatable properties changed within this block
- will result in animations being added to the view's layer following the provided timing.
+ will result in animations being added to the view's layer with the provided timing.
  @param completion The completion handler will be executed once all added animations have come to
  rest.
  */
