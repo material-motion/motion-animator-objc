@@ -21,6 +21,7 @@
 #import "CATransaction+MotionAnimator.h"
 #import "private/CABasicAnimation+MotionAnimator.h"
 #import "private/MDMUIKitValueCoercion.h"
+#import "private/MDMBlockAnimations.h"
 #import "private/MDMDragCoefficient.h"
 
 @implementation MDMMotionAnimator {
@@ -117,6 +118,37 @@
   [CATransaction begin];
   [CATransaction setDisableActions:YES];
   [layer setValue:[values lastObject] forKeyPath:keyPath];
+  [CATransaction commit];
+}
+
+- (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
+  NSArray<MDMImplicitAction *> *actions = MDMAnimateBlock(animations);
+
+  for (MDMImplicitAction *action in actions) {
+    id currentValue = [action.layer valueForKeyPath:action.keyPath];
+    [self animateWithTiming:timing
+                    toLayer:action.layer
+                 withValues:@[action.initialValue, currentValue]
+                    keyPath:action.keyPath];
+  }
+}
+
+- (void)animateWithTiming:(MDMMotionTiming)timing
+               animations:(void (^)(void))animations
+               completion:(void(^)(void))completion {
+  NSArray<MDMImplicitAction *> *actions = MDMAnimateBlock(animations);
+
+  [CATransaction begin];
+  [CATransaction setCompletionBlock:completion];
+
+  for (MDMImplicitAction *action in actions) {
+    id currentValue = [action.layer valueForKeyPath:action.keyPath];
+    [self animateWithTiming:timing
+                    toLayer:action.layer
+                 withValues:@[action.initialValue, currentValue]
+                    keyPath:action.keyPath];
+  }
+
   [CATransaction commit];
 }
 

@@ -103,4 +103,27 @@ NS_SWIFT_NAME(MotionAnimator)
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath
                completion:(nullable void(^)(void))completion;
 
+/**
+ Performs `animations` using the timing provided.
+
+ @param timing The timing to be used for the animation.
+ @param animations The block to be executed. Any animatable properties changed within this block
+ will result in animations being added to the view's layer following the provided timing.
+ */
+- (void)animateWithTiming:(MDMMotionTiming)timing animations:(nonnull void(^)(void))animations;
+
+/**
+ Performs `animations` using the timing provided and executes the completion handler once all added
+ animations have completed.
+
+ @param timing The timing to be used for the animation.
+ @param animations The block to be executed. Any animatable properties changed within this block
+ will result in animations being added to the view's layer following the provided timing.
+ @param completion The completion handler will be executed once all added animations have come to
+ rest.
+ */
+- (void)animateWithTiming:(MDMMotionTiming)timing
+               animations:(nonnull void (^)(void))animations
+               completion:(nonnull void(^)(void))completion;
+
 @end
