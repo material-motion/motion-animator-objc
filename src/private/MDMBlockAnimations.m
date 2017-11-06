@@ -116,6 +116,10 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
 
   work();
 
+  // Return any intercepted actions we received during the invocation of work.
+  MDMActionContext *context = [sActionContext lastObject];
+  [sActionContext removeLastObject];
+
   if ([sActionContext count] == 0) {
     // Restore our original method if we've emptied the stack:
     method_setImplementation(method, sOriginalActionForLayerImp);
@@ -124,8 +128,5 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
     sActionContext = nil;
   }
 
-  // Return any intercepted actions we received during the invocation of work.
-  MDMActionContext *context = [sActionContext lastObject];
-  [sActionContext removeLastObject];
   return context.interceptedActions;
 }

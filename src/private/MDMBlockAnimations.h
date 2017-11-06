@@ -15,6 +15,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface MDMImplicitAction: NSObject
 @property(nonatomic, strong, readonly) id initialValue;
