@@ -1,7 +1,34 @@
-# #develop#
+# 2.1.0
 
- TODO: Enumerate changes.
+This minor releae introduces new implicit animation APIs. These APIs provide a migration path from
+existing UIView `animateWithDuration:...` code.
 
+## New features
+
+New APIs for writing implicit animations in UIView style:
+
+```swift
+animator.animate(with: timing) {
+  view.alpha = 0
+}
+```
+
+## Source changes
+
+* [Add a unit test verifying that the completion handler is called when duration == 0. (#34)](https://github.com/material-motion/motion-animator-objc/commit/81b140a9b8bd412443fa6822c0838db1a49585a8) (featherless)
+* [Add new APIs for implicit animations. (#30)](https://github.com/material-motion/motion-animator-objc/commit/17939797b8ed38a5a51d22fb90b235f1852e4366) (featherless)
+
+## API changes
+
+### MDMMotionAnimator
+
+**new** method: `animateWithTiming:animations:`
+
+**new** method: `animateWithTiming:animations:completion:`
+
+## Non-source changes
+
+* [Update dependencies and lock MotionInterchange to ~> 1.2. (#31)](https://github.com/material-motion/motion-animator-objc/commit/87c7a5c04b11e85d15b78939fcf79a4e67004c18) (featherless)
 
 # 2.0.2
 
