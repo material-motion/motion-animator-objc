@@ -20,7 +20,7 @@
 
 #import <UIKit/UIKit.h>
 
-CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor) {
+CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing) {
   CABasicAnimation *animation;
   switch (timing.curve.type) {
     case MDMMotionCurveTypeInstant:
@@ -31,7 +31,7 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
     case MDMMotionCurveTypeBezier:
       animation = [CABasicAnimation animation];
       animation.timingFunction = MDMTimingFunctionWithControlPoints(timing.curve.data);
-      animation.duration = timing.duration * timeScaleFactor;
+      animation.duration = timing.duration;
       break;
 
     case MDMMotionCurveTypeSpring: {

@@ -20,9 +20,9 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 
-// Returns a basic animation configured with the provided timing and scale factor.
+// Returns a basic animation configured with the provided timing.
 FOUNDATION_EXPORT
-CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor);
+CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing);
 
 // Attemps to configure the provided animation to be additive.
 // Not all animation value types are supported. If an animation's value type was not supported,

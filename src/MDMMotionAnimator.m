@@ -64,8 +64,8 @@
     return;
   }
 
-  CGFloat timeScaleFactor = [self computedTimeScaleFactor];
-  CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
+  CABasicAnimation *animation = MDMAnimationFromTiming(timing);
+  animation.speed = [self computedTimeScaleFactor];
 
   if (animation) {
     animation.keyPath = keyPath;
@@ -91,7 +91,7 @@
 
       if (timing.delay != 0) {
         animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
-                               + timing.delay * timeScaleFactor);
+                               + timing.delay);
         animation.fillMode = kCAFillModeBackwards;
       }
 
@@ -151,20 +151,20 @@
   [_tracers addObject:[tracer copy]];
 }
 
-- (CGFloat)computedTimeScaleFactor {
-  CGFloat timeScaleFactor;
+- (float)computedTimeScaleFactor {
+  float timeScaleFactor;
   id transactionTimeScaleFactor = [CATransaction mdm_timeScaleFactor];
   if (transactionTimeScaleFactor != nil) {
 #if CGFLOAT_IS_DOUBLE
-    timeScaleFactor = [transactionTimeScaleFactor doubleValue];
+    timeScaleFactor = (float)[transactionTimeScaleFactor doubleValue];
 #else
     timeScaleFactor = [transactionTimeScaleFactor floatValue];
 #endif
   } else {
-    timeScaleFactor = _timeScaleFactor;
+    timeScaleFactor = (float)_timeScaleFactor;
   }
 
-  return MDMSimulatorAnimationDragCoefficient() * timeScaleFactor;
+  return (float)MDMSimulatorAnimationDragCoefficient() * timeScaleFactor;
 }
 
 @end
