@@ -15,7 +15,12 @@
  */
 
 import XCTest
+
+#if IS_BAZEL_BUILD
+import _MotionAnimator
+#else
 import MotionAnimator
+#endif
 
 class MotionAnimatorTests: XCTestCase {
 
