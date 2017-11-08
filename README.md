@@ -90,6 +90,18 @@ animator.shouldReverseValues = !_expanded;
 ...
 ```
 
+A working implementation of this example can be seen in the included example app.
+
+## Example apps/unit tests
+
+Check out a local copy of the repo to access the Catalog application by running the following
+commands:
+
+    git clone https://github.com/material-motion/motion-animator-objc.git
+    cd motion-animator-objc
+    pod install
+    open MotionAnimator.xcworkspace
+
 ## Installation
 
 ### Installation with CocoaPods
@@ -116,16 +128,6 @@ Import the framework:
     @import MotionAnimator;
 
 You will now have access to all of the APIs.
-
-## Example apps/unit tests
-
-Check out a local copy of the repo to access the Catalog application by running the following
-commands:
-
-    git clone https://github.com/material-motion/motion-animator-objc.git
-    cd motion-animator-objc
-    pod install
-    open MotionAnimator.xcworkspace
 
 ## Guides
 
