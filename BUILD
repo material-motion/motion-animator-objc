@@ -33,6 +33,7 @@ strict_warnings_objc_library(
         "src/*.h",
         "src/private/*.h",
     ]),
+    defines = ["IS_BAZEL_BUILD"],
     deps = [
       "@motion_interchange_objc//:MotionInterchange"
     ],
@@ -46,6 +47,7 @@ swift_library(
     srcs = glob([
         "tests/unit/*.swift",
     ]),
+    defines = ["IS_BAZEL_BUILD"],
     deps = [":MotionAnimator"],
     visibility = ["//visibility:private"],
 )

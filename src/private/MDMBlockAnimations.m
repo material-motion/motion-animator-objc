@@ -19,11 +19,13 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
-static IMP sOriginalActionForLayerImp = NULL;
-
 @interface MDMActionContext: NSObject
 @property(nonatomic, readonly) NSArray<MDMImplicitAction *> *interceptedActions;
 @end
+
+// The original UIView method implementation of actionForLayer:forKey:.
+static IMP sOriginalActionForLayerImp = NULL;
+static NSMutableArray<MDMActionContext *> *sActionContext = nil;
 
 @implementation MDMImplicitAction
 
@@ -67,8 +69,6 @@ static IMP sOriginalActionForLayerImp = NULL;
 
 @end
 
-static NSMutableArray *sActionContext = nil;
-
 static id<CAAction> ActionForLayer(id self, SEL _cmd, CALayer *layer, NSString *event) {
   NSCAssert([NSStringFromSelector(_cmd) isEqualToString:
              NSStringFromSelector(@selector(actionForLayer:forKey:))],
@@ -87,7 +87,7 @@ static id<CAAction> ActionForLayer(id self, SEL _cmd, CALayer *layer, NSString *
   // We don't have access to the "to" value of our animation here, so we unfortunately can't
   // calculate additive values if the animator is configured as such. So, to support additive
   // animations, we queue up the modified actions and then add them all at the end of our
-  // MDMAnimateBlock invocation.
+  // MDMAnimateImplicitly invocation.
   id initialValue = [layer valueForKeyPath:event];
   [context addActionForLayer:layer keyPath:event withInitialValue:initialValue];
   return [NSNull null];
@@ -98,8 +98,8 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
     return nil;
   }
 
-  // This method can be called recursively, so we maintain a recursive context stack in the scope of
-  // this method. Note that this is absolutely not thread safe, but neither is Core Animation.
+  // This method can be called recursively, so we maintain a context stack in the scope of this
+  // method. Note that this is absolutely not thread safe, but neither is Core Animation.
   if (!sActionContext) {
     sActionContext = [NSMutableArray array];
   }
@@ -110,7 +110,7 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
 
   if (sOriginalActionForLayerImp == nil) {
     // Swap the original UIView implementation with our own so that we can intercept all
-    // actionForLayer:forKey: events. All events will be
+    // actionForLayer:forKey: events.
     sOriginalActionForLayerImp = method_setImplementation(method, (IMP)ActionForLayer);
   }
 
