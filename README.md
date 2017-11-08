@@ -8,13 +8,17 @@
 [![Platform](https://img.shields.io/cocoapods/p/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 [![Docs](https://img.shields.io/cocoapods/metrics/doc-percent/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 
+---
+
 This library provides APIs that turn [Motion Interchange](https://github.com/material-motion/motion-interchange-objc)
 **motion specifications** into animations.
 
-## What's a motion specification?
+---
 
-A motion specification defines the delay, duration, and acceleration of animations in a simple data
-format that can live separate from your animation logic.
+#### What is a motion specification?
+
+A **motion specification** defines the delay, duration, and acceleration of animations in a simple
+data format that can live separate from your animation logic.
 
 For example, let's say we wanted to describe the motion for this animation:
 
