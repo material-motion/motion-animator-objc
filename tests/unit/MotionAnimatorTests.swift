@@ -74,4 +74,27 @@ class MotionAnimatorTests: XCTestCase {
       XCTAssertEqual(view.layer.animationKeys()?.count, 1)
     }
   }
+
+  func testCompletionCallbackIsExecutedWithZeroDuration() {
+    let animator = MotionAnimator()
+
+    let timing = MotionTiming(delay: 0,
+                              duration: 0,
+                              curve: .init(type: .bezier, data: (0, 0, 0, 0)),
+                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+
+    let window = UIWindow()
+    window.makeKeyAndVisible()
+    let view = UIView() // Need to animate a view's layer to get implicit animations.
+    window.addSubview(view)
+
+    XCTAssertEqual(view.layer.delegate as? UIView, view)
+
+    let didComplete = expectation(description: "Did complete")
+    animator.animate(with: timing, to: view.layer, withValues: [0, 1], keyPath: .rotation) {
+      didComplete.fulfill()
+    }
+
+    waitForExpectations(timeout: 1)
+  }
 }

@@ -27,5 +27,5 @@ git_repository(
 git_repository(
     name = "motion_interchange_objc",
     remote = "https://github.com/material-motion/motion-interchange-objc.git",
-    tag = "v1.1.1",
+    tag = "v1.2.0",
 )
