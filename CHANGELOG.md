@@ -1,3 +1,16 @@
+# 2.1.1
+
+This patch release fixes issues with downstream bazel builds.
+
+## Source changes
+
+* [Touch up the block animations docs. (#35)](https://github.com/material-motion/motion-animator-objc/commit/64d6c3107872fc5d430d960c7d87f93799592457) (featherless)
+* [Resolve bazel build dependency issues. (#29)](https://github.com/material-motion/motion-animator-objc/commit/94b86e6c4af2702d1153166eb2855fcde8d5c92c) (featherless)
+
+## Non-source changes
+
+* [Fix typo in the changelog.](https://github.com/material-motion/motion-animator-objc/commit/602c656b7fbad73831b6e495003000cfbd59e0e0) (Jeff Verkoeyen)
+
 # 2.1.0
 
 This minor release introduces new implicit animation APIs. These APIs provide a migration path from
