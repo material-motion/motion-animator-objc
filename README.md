@@ -95,6 +95,7 @@ commands:
 ## Guides
 
 1. [Architecture](#architecture)
+2. [How to make a spec from existing animations](#how-to-make-a-spec-from-existing-animations)
 2. [How to animate a transition](#how-to-animate-a-transition)
 3. [How to animate an interruptible transition](#how-to-animate-an-interruptible-transition)
 
@@ -106,11 +107,87 @@ animation to a CALayer instance, call one of the `animate` method variants and a
 be added to the layer.
 
 This library depends on [MotionInterchange](https://github.com/material-motion/motion-interchange-objc)
-in order to represent motion timing in a consistent fashion.
+in order to represent motion timing as *specifications*, or *specs* for short.
+
+### How to make a spec from existing animations
+
+A *motion spec* is a complete representation of the motion curves that meant to be applied during an
+animation. Your motion spec might consist of a single `MDMMotionTiming` instance, or it might be a
+nested structure of `MDMMotionTiming` instances, each representing motion for a different part of a
+larger animation. In either case, your magic motion constants now have a place to live.
+
+Consider a simple example of animating a view on and off-screen. Without a spec, our code might look
+like so:
+
+```objc
+CGPoint before = dismissing ? onscreen : offscreen;
+CGPoint after = dismissing ? offscreen : onscreen;
+view.center = before;
+[UIView animateWithDuration:0.5 animations:^{
+  view.center = after;
+}];
+```
+
+What if we want to change this animation to use a spring curve instead of a cubic bezier? To do so
+we'll need to change our code to use a new API:
+
+```objc
+CGPoint before = dismissing ? onscreen : offscreen;
+CGPoint after = dismissing ? offscreen : onscreen;
+view.center = before;
+[UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:0 animations:^{
+  view.center = after;
+} completion:nil];
+```
+
+Now let's say we wrote the same code with a motion spec and animator:
+
+```objc
+static const MDMMotionTiming kMotionSpec = {
+  .duration = 0.5, .curve = _MDMSpring(1, 100, 1),
+};
+
+MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
+animator.shouldReverseValues = dismissing;
+view.center = offscreen;
+[_animator animateWithTiming:kMotionSpec animations:^{
+  view.center = onscreen;
+}]
+```
+
+Now if we want to change our motion back to an easing curve, we only have to change the spec:
+
+```objc
+static const MDMMotionTiming kMotionSpec = {
+  .duration = 0.5, .curve = _MDMBezier(0.4f, 0.0f, 0.2f, 1.0f),
+};
+```
+
+The animator code stays the same. It's now possible to modify the motion parameters at runtime
+without affecting any of the animation logic.
+
+This pattern is useful for building transitions and animations. To learn more through examples,
+see the following implementations:
+
+**Material Components Activity Indicator**
+
+- [Motion spec declaration](https://github.com/material-components/material-components-ios/blob/develop/components/ActivityIndicator/src/private/MDCActivityIndicatorMotionSpec.h)
+- [Motion spec definition](https://github.com/material-components/material-components-ios/blob/develop/components/ActivityIndicator/src/private/MDCActivityIndicatorMotionSpec.m)
+- [Motion spec usage](https://github.com/material-components/material-components-ios/blob/develop/components/ActivityIndicator/src/MDCActivityIndicator.m#L461)
+
+**Material Components Progress View**
+
+- [Motion spec declaration](https://github.com/material-components/material-components-ios/blob/develop/components/ProgressView/src/private/MDCProgressView%2BMotionSpec.h#L21)
+- [Motion spec definition](https://github.com/material-components/material-components-ios/blob/develop/components/ProgressView/src/private/MDCProgressView%2BMotionSpec.m#L19)
+- [Motion spec usage](https://github.com/material-components/material-components-ios/blob/develop/components/ProgressView/src/MDCProgressView.m#L155)
+
+**Material Components Masked Transition**
+
+- [Motion spec declaration](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/private/MDCMaskedTransitionMotionSpec.h#L20)
+- [Motion spec definition](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/private/MDCMaskedTransitionMotionSpec.m#L23)
+- [Motion spec usage](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/MDCMaskedTransition.m#L183)
 
 ### How to animate a transition
-
-> This guide assumes that you are animating a two state bi-directional transition.
 
 Start by creating an `MDMMotionAnimator` instance.
 
