@@ -8,13 +8,19 @@
 [![Platform](https://img.shields.io/cocoapods/p/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 [![Docs](https://img.shields.io/cocoapods/metrics/doc-percent/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 
-This library turns [Motion Interchange](https://github.com/material-motion/motion-interchange-objc)
-data structures into performant Core Animation animations using a lightweight animator object.
+This library provides APIs that turn [Motion Interchange](https://github.com/material-motion/motion-interchange-objc)
+**motion specifications** into animations.
+
+## What's a motion specification?
+
+A motion specification defines the delay, duration, and acceleration of animations in a simple data
+format that can live separate from your animation logic.
+
+For example, let's say we wanted to describe the motion for this animation:
 
 <img src="assets/chip.gif" />
 
-In the above example we're animating the expansion and collapse of a calendar event using the
-following motion specification:
+We might create a specification like so:
 
 ```objc
 struct CalendarChipTiming {
@@ -38,9 +44,34 @@ typedef struct CalendarChipMotionSpec CalendarChipMotionSpec;
 FOUNDATION_EXTERN struct CalendarChipMotionSpec CalendarChipSpec;
 ```
 
-In our application logic, we first determine which motion timing to use and then we create an
-instance of `MDMMotionAnimator`. The animator allows us to create animations with the given
-motion timing.
+With our implementation of the spec looking like so:
+
+```objc
+struct CalendarChipMotionSpec CalendarChipSpec = {
+  .expansion = {
+    .chipWidth = {
+      .delay = 0.000, .duration = 0.285, .curve = MDMEightyForty,
+    },
+    .chipHeight = {
+      .delay = 0.015, .duration = 0.360, .curve = MDMEightyForty,
+    },
+    ...
+  },
+  .collapse = {
+    .chipWidth = {
+      .delay = 0.045, .duration = 0.330, .curve = MDMEightyForty,
+    },
+    .chipHeight = {
+      .delay = 0.000, .duration = 0.330, .curve = MDMEightyForty,
+    },
+    ...
+  },
+};
+```
+
+Our spec defines two different transition states: expansion and collapse. At runtime, we determine
+which of these two specs we intend to use and then use the timings to animate our views with an
+instance of `MDMMotionAnimator`:
 
 ```objc
 CalendarChipTiming timing = _expanded ? CalendarChipSpec.expansion : CalendarChipSpec.collapse;
@@ -94,20 +125,11 @@ commands:
 
 ## Guides
 
-1. [Architecture](#architecture)
-2. [How to make a spec from existing animations](#how-to-make-a-spec-from-existing-animations)
-2. [How to animate a transition](#how-to-animate-a-transition)
-3. [How to animate an interruptible transition](#how-to-animate-an-interruptible-transition)
-
-### Architecture
-
-`MDMMotionAnimator` is the primary API provided by this library. You can configure the animations
-that an animator creates by modifying its configuration properties. When you're ready to add an
-animation to a CALayer instance, call one of the `animate` method variants and an animation will
-be added to the layer.
-
-This library depends on [MotionInterchange](https://github.com/material-motion/motion-interchange-objc)
-in order to represent motion timing as *specifications*, or *specs* for short.
+- [How to make a spec from existing animations](#how-to-make-a-spec-from-existing-animations)
+- [How to animate explicit layer properties](#how-to-animate-explicit-layer-properties)
+- [How to animate like UIView](#how-to-animate-like-UIView)
+- [How to animate a transition](#how-to-animate-a-transition)
+- [How to animate an interruptible transition](#how-to-animate-an-interruptible-transition)
 
 ### How to make a spec from existing animations
 
@@ -186,6 +208,31 @@ see the following implementations:
 - [Motion spec declaration](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/private/MDCMaskedTransitionMotionSpec.h#L20)
 - [Motion spec definition](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/private/MDCMaskedTransitionMotionSpec.m#L23)
 - [Motion spec usage](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/MDCMaskedTransition.m#L183)
+
+### How to animate explicit layer properties
+
+`MDMMotionAnimator` provides an explicit API for adding animations to animatable CALayer key paths.
+This API is similar to creating a `CABasicAnimation` and adding it to the layer.
+
+```objc
+[animator animateWithTiming:timing.chipHeight
+                    toLayer:chipView.layer
+                 withValues:@[ @(chipFrame.size.height), @(headerFrame.size.height) ]
+                    keyPath:MDMKeyPathHeight];
+```
+
+### How to animate like UIView
+
+`MDMMotionAnimator` provides an API that is similar to UIView's `animateWithDuration:`. Use this API
+when you want to apply the same timing to a block of animations:
+
+```objc
+chipView.frame = chipFrame;
+[animator animateWithTiming:timing.chipHeight animations:^{
+  chipView.frame = headerFrame;
+}];
+// chipView.layer's position and bounds will now be animated with timing.chipHeight's timing.
+```
 
 ### How to animate a transition
 
