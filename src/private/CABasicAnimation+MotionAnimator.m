@@ -132,7 +132,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
       //
       // From the UIView animateWithDuration header docs:
       //
-      // "[initialVelocity is] a unit coordinate system, where 1 is defined as traveling the total
+      // "initialVelocity is a unit coordinate system, where 1 is defined as traveling the total
       //  animation distance in a second. So if you're changing an object's position by 200pt in
       //  this animation, and you want the animation to behave as if the object was moving at
       //  100pt/s before the animation started, you'd pass 0.5. You'll typically want to pass 0 for
