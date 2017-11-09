@@ -15,7 +15,11 @@
  */
 
 import XCTest
+#if IS_BAZEL_BUILD
+import _MotionAnimator
+#else
 import MotionAnimator
+#endif
 
 @available(iOS 9.0, *)
 class InitialVelocityTests: XCTestCase {
