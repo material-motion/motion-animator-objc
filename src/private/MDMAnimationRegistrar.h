@@ -14,6 +14,18 @@
  limitations under the License.
  */
 
-#import "CATransaction+MotionAnimator.h"
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
+#import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
+
+// Tracks animations that have been added to a layer.
+@interface MDMAnimationRegistrar : NSObject
+
+- (void)addAnimation:(CABasicAnimation *)animation
+             toLayer:(CALayer *)layer
+              forKey:(NSString *)key
+          completion:(void(^)(void))completion;
+
+- (void)commitCurrentAnimationValuesToAllLayers;
+- (void)removeAllAnimations;
+
+@end

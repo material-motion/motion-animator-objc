@@ -14,6 +14,15 @@
  limitations under the License.
  */
 
-#import "CATransaction+MotionAnimator.h"
-#import "MDMAnimatableKeyPaths.h"
-#import "MDMMotionAnimator.h"
+#import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
+
+@interface MDMRegisteredAnimation : NSObject
+
+- (instancetype)initWithKey:(NSString *)key animation:(CABasicAnimation *)animation;
+
+@property(nonatomic, copy, readonly) NSString *key;
+
+@property(nonatomic, strong, readonly) CABasicAnimation *animation;
+
+@end

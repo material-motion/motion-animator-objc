@@ -132,4 +132,21 @@ NS_SWIFT_NAME(MotionAnimator)
                animations:(nonnull void (^)(void))animations
                completion:(nullable void(^)(void))completion;
 
+/**
+ Removes every animation added by this animator.
+
+ Removing animations in this manner will give the appearance of each animated layer property
+ instantaneously jumping to its animated destination.
+ */
+- (void)removeAllAnimations;
+
+/**
+ Commits each added animation's current value to its associated layer and then removes every
+ animation added by this animator.
+
+ This method is most commonly called in reaction to the initiation of a gesture so that any
+ in-flight animations are stopped at their current on-screen position.
+ */
+- (void)commitAndRemoveAllAnimations;
+
 @end

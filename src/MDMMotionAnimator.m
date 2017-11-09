@@ -20,17 +20,20 @@
 
 #import "CATransaction+MotionAnimator.h"
 #import "private/CABasicAnimation+MotionAnimator.h"
+#import "private/MDMAnimationRegistrar.h"
 #import "private/MDMUIKitValueCoercion.h"
 #import "private/MDMBlockAnimations.h"
 #import "private/MDMDragCoefficient.h"
 
 @implementation MDMMotionAnimator {
   NSMutableArray *_tracers;
+  MDMAnimationRegistrar *_registrar;
 }
 
 - (instancetype)init {
   self = [super init];
   if (self) {
+    _registrar = [[MDMAnimationRegistrar alloc] init];
     _timeScaleFactor = 1;
     _additive = true;
   }
@@ -41,7 +44,11 @@
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
                   keyPath:(MDMAnimatableKeyPath)keyPath {
-  [self animateWithTiming:timing toLayer:layer withValues:values keyPath:keyPath completion:nil];
+  [self animateWithTiming:timing
+                  toLayer:layer
+               withValues:values
+                  keyPath:keyPath
+               completion:nil];
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing
@@ -93,22 +100,11 @@
         animation.fillMode = kCAFillModeBackwards;
       }
 
-      if (completion) {
-        [CATransaction begin];
-        [CATransaction setCompletionBlock:completion];
-      }
-
-      // When we use a nil key, Core Animation will ensure that the animation is added with a
-      // unique key - this enables our additive animations to stack upon one another.
       NSString *key = _additive ? nil : keyPath;
-      [layer addAnimation:animation forKey:key];
+      [_registrar addAnimation:animation toLayer:layer forKey:key completion:completion];
 
       for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
         tracer(layer, animation);
-      }
-
-      if (completion) {
-        [CATransaction commit];
       }
     }
   }
@@ -165,5 +161,13 @@
   return MDMSimulatorAnimationDragCoefficient() * timeScaleFactor;
 }
 
-@end
+- (void)removeAllAnimations {
+  [_registrar removeAllAnimations];
+}
 
+- (void)commitAndRemoveAllAnimations {
+  [_registrar commitCurrentAnimationValuesToAllLayers];
+  [_registrar removeAllAnimations];
+}
+
+@end
