@@ -105,8 +105,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
     //  |         100 |         -10 |                 90 |
     //  |         100 |          -5 |                 95 |
     //  |         100 |           0 |                100 |
-    //
-    //
+
     CGFloat from = (CGFloat)[animation.fromValue doubleValue];
     CGFloat to = (CGFloat)[animation.toValue doubleValue];
     CGFloat displacement = to - from;
@@ -148,15 +147,18 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
       // - Its sign. Positive is towards the destination. Negative is away.
       // - Its amplitude, where amplitude * displacement = absolute initial velocity
       //
-      // For example: If our initialVelocity is +200/s, and our displacement is -100, then our
-      // initialVelocity is -2, with the (-) indicating that we're moving away from the destination
-      // and the 2 indicating we're moving twice the displacement over a second. Similarly, if our
-      // initialVelocity is -200/s, and our displacement is still -100 points, then our
-      // initialVelocity is 2; only the sign has changed.
+      // For example: If our absolute initial velocity is +200/s, and our displacement is -100, then
+      // Core Animation's initialVelocity is -2, with the (-) indicating that we're moving away from
+      // the destination and the 2 indicating we're moving twice the displacement over a second.
+      // Similarly, if our absolute initial velocity is -200/s, and our displacement is still -100
+      // points, then Core Animation's initialVelocity is 2; only the sign has changed.
       //
       // We want to know amplitude, so we do some basic arithmetic to turn:
+      //
       //     amplitude * displacement = absolute initial velocity
+      //
       // into:
+      //
       //     amplitude = absolute initial velocity / displacement
       //
       // As for our sign, if absoluteInitialVelocity matches the direction of displacement, then our
@@ -172,6 +174,25 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
     animation.fromValue = [NSValue valueWithCGSize:additiveDisplacement];
     animation.toValue = [NSValue valueWithCGSize:CGSizeZero];
     animation.additive = true;
+
+#pragma clang diagnostic push
+    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+    // linking against the public API on iOS 9+.
+#pragma clang diagnostic ignored "-Wpartial-availability"
+    if ([animation isKindOfClass:[CASpringAnimation class]]) {
+      CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
+#pragma clang diagnostic pop
+      // Core Animation's velocity system is single dimensional, so we pick the dominant direction
+      // of movement and normalize accordingly.
+      CGFloat biggestDelta;
+      if (fabs(additiveDisplacement.width) > fabs(additiveDisplacement.height)) {
+        biggestDelta = additiveDisplacement.width;
+      } else {
+        biggestDelta = additiveDisplacement.height;
+      }
+      CGFloat displacement = -biggestDelta;
+      springAnimation.initialVelocity = springAnimation.initialVelocity / displacement;
+    }
 
   } else if ([positionKeyPaths containsObject:animation.keyPath]) {
     CGPoint from = [animation.fromValue CGPointValue];
