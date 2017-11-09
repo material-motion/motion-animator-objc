@@ -27,7 +27,10 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
       animation = nil;
       break;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     case MDMMotionCurveTypeDefault:
+#pragma clang diagnostic pop
     case MDMMotionCurveTypeBezier:
       animation = [CABasicAnimation animation];
       animation.timingFunction = MDMTimingFunctionWithControlPoints(timing.curve.data);
