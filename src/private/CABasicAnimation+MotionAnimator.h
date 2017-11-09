@@ -30,7 +30,7 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
 // Not all animation value types support being additive. If an animation's value type was not
 // supported, the animation's values will not be modified.
 //
-// This method assumes that the animation's from and to value do not match.
-FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation,
+// If the from and to values of the animation match then the behavior is undefined.
+FOUNDATION_EXPORT BOOL MDMConfigureAnimation(CABasicAnimation *animation,
                                              BOOL wantsAdditive,
                                              MDMMotionTiming timing);
