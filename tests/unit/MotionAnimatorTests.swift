@@ -28,7 +28,7 @@ class MotionAnimatorTests: XCTestCase {
     let animator = MotionAnimator()
     let timing = MotionTiming(delay: 0,
                               duration: 1,
-                              curve: .init(type: .bezier, data: (0, 0, 0, 0)),
+                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
                               repetition: .init(type: .none, amount: 0, autoreverses: false))
     let layer = CALayer()
 
@@ -58,7 +58,7 @@ class MotionAnimatorTests: XCTestCase {
 
     let timing = MotionTiming(delay: 0,
                               duration: 1,
-                              curve: .init(type: .bezier, data: (0, 0, 0, 0)),
+                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
                               repetition: .init(type: .none, amount: 0, autoreverses: false))
 
     let window = UIWindow()
@@ -80,7 +80,7 @@ class MotionAnimatorTests: XCTestCase {
 
     let timing = MotionTiming(delay: 0,
                               duration: 0,
-                              curve: .init(type: .bezier, data: (0, 0, 0, 0)),
+                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
                               repetition: .init(type: .none, amount: 0, autoreverses: false))
 
     let window = UIWindow()

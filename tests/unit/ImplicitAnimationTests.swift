@@ -36,7 +36,7 @@ class ImplicitAnimationTests: XCTestCase {
 
     timing = MotionTiming(delay: 0,
                           duration: 0.7,
-                          curve: .init(type: .bezier, data: (0, 0, 1, 1)),
+                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 1, p2y: 1),
                           repetition: .init(type: .none, amount: 0, autoreverses: false))
 
     let window = UIWindow()

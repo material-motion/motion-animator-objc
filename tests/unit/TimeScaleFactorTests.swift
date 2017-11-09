@@ -25,7 +25,7 @@ class TimeScaleFactorTests: XCTestCase {
 
   let timing = MotionTiming(delay: 0,
                             duration: 1,
-                            curve: .init(type: .bezier, data: (0, 0, 0, 0)),
+                            curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
                             repetition: .init(type: .none, amount: 0, autoreverses: false))
   var layer: CALayer!
   var addedAnimations: [CAAnimation]!
