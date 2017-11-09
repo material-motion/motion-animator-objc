@@ -31,6 +31,6 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
 // supported, the animation's values will not be modified.
 //
 // If the from and to values of the animation match then the behavior is undefined.
-FOUNDATION_EXPORT BOOL MDMConfigureAnimation(CABasicAnimation *animation,
+FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation,
                                              BOOL wantsAdditive,
                                              MDMMotionTiming timing);
