@@ -47,6 +47,7 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
       spring.mass = timing.curve.data[MDMSpringMotionCurveDataIndexMass];
       spring.stiffness = timing.curve.data[MDMSpringMotionCurveDataIndexTension];
       spring.damping = timing.curve.data[MDMSpringMotionCurveDataIndexFriction];
+      spring.initialVelocity = timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
 
       // This API is only available on iOS 9+
       if ([spring respondsToSelector:@selector(settlingDuration)]) {
@@ -79,6 +80,18 @@ void MDMMakeAnimationAdditive(CABasicAnimation *animation) {
     animation.toValue = @0;
     animation.additive = true;
 
+#pragma clang diagnostic push
+    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+    // linking against the public API on iOS 9+.
+#pragma clang diagnostic ignored "-Wpartial-availability"
+    if ([animation isKindOfClass:[CASpringAnimation class]]) {
+      CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
+#pragma clang diagnostic pop
+      // We expect initialVelocity to originally be in absolute coordinate space, so here we convert
+      // it to Core Animation's normalized coordinate space.
+      springAnimation.initialVelocity = springAnimation.initialVelocity / -delta;
+    }
+
   } else if ([sizeKeyPaths containsObject:animation.keyPath]) {
     CGSize currentValue = [animation.fromValue CGSizeValue];
     CGSize destinationValue = [animation.toValue CGSizeValue];
@@ -96,5 +109,23 @@ void MDMMakeAnimationAdditive(CABasicAnimation *animation) {
     animation.fromValue = [NSValue valueWithCGPoint:delta];
     animation.toValue = [NSValue valueWithCGPoint:CGPointZero];
     animation.additive = true;
+
+#pragma clang diagnostic push
+    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+    // linking against the public API on iOS 9+.
+#pragma clang diagnostic ignored "-Wpartial-availability"
+    if ([animation isKindOfClass:[CASpringAnimation class]]) {
+      CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
+#pragma clang diagnostic pop
+      // Core Animation's velocity system is single dimensional, so we pick the dominant direction
+      // of movement and normalize accordingly.
+      CGFloat biggestDelta;
+      if (fabs(delta.x) > fabs(delta.y)) {
+        biggestDelta = delta.x;
+      } else {
+        biggestDelta = delta.y;
+      }
+      springAnimation.initialVelocity = springAnimation.initialVelocity / -biggestDelta;
+    }
   }
 }
