@@ -44,75 +44,96 @@ class InitialVelocityTests: XCTestCase {
   }
 
   func testVelocityAmplitudeMatchesDisplacementWithPositiveDisplacement() {
-    let timing = MotionTiming(delay: 0,
-                              duration: 0.7,
-                              curve: .init(type: .spring, data: (1, 1, 1, 50)),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
-    animator.animate(with: timing, to: CALayer(), withValues: [0, 100], keyPath: .opacity)
+    let velocity: CGFloat = 50
+    animate(from: 0, to: 100, withVelocity: velocity)
 
-    XCTAssertEqual(addedAnimations.count, 1)
-    let animation = addedAnimations.first as! CASpringAnimation
-    XCTAssertEqual(animation.initialVelocity, 0.5)
+    XCTAssertEqual(addedAnimations.count, 3)
+    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+      XCTAssertEqual(animation.initialVelocity, 0.5,
+                     "from: \(animation.fromValue!), "
+                      + "to: \(animation.toValue!), "
+                      + "withVelocity: \(velocity)")
+    }
   }
 
   func testVelocityAmplitudeMatchesDisplacementWithNegativeDisplacement() {
-    let timing = MotionTiming(delay: 0,
-                              duration: 0.7,
-                              curve: .init(type: .spring, data: (1, 1, 1, -50)),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
-    animator.animate(with: timing, to: CALayer(), withValues: [100, 0], keyPath: .opacity)
+    let velocity: CGFloat = -50
+    animate(from: 100, to: 0, withVelocity: velocity)
 
-    XCTAssertEqual(addedAnimations.count, 1)
-    let animation = addedAnimations.first as! CASpringAnimation
-    XCTAssertEqual(animation.initialVelocity, 0.5)
+    XCTAssertEqual(addedAnimations.count, 3)
+    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+      XCTAssertEqual(animation.initialVelocity, 0.5,
+                     "from: \(animation.fromValue!), "
+                      + "to: \(animation.toValue!), "
+                      + "withVelocity: \(velocity)")
+    }
   }
 
   func testVelocityTowardsDestinationIsPositiveWithPositiveDisplacement() {
-    let timing = MotionTiming(delay: 0,
-                          duration: 0.7,
-                          curve: .init(type: .spring, data: (1, 1, 1, 100)),
-                          repetition: .init(type: .none, amount: 0, autoreverses: false))
-    animator.animate(with: timing, to: CALayer(), withValues: [0, 100], keyPath: .opacity)
+    let velocity: CGFloat = 100
+    animate(from: 0, to: 100, withVelocity: velocity)
 
-    XCTAssertEqual(addedAnimations.count, 1)
-    let animation = addedAnimations.first as! CASpringAnimation
-    XCTAssertGreaterThan(animation.initialVelocity, 0)
+    XCTAssertEqual(addedAnimations.count, 3)
+    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+      XCTAssertGreaterThan(animation.initialVelocity, 0,
+                           "from: \(animation.fromValue!), "
+                            + "to: \(animation.toValue!), "
+                            + "withVelocity: \(velocity)")
+    }
   }
 
   func testVelocityAwayFromDestinationIsNegativeWithPositiveDisplacement() {
-    let timing = MotionTiming(delay: 0,
-                              duration: 0.7,
-                              curve: .init(type: .spring, data: (1, 1, 1, -100)),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
-    animator.animate(with: timing, to: CALayer(), withValues: [0, 100], keyPath: .opacity)
+    let velocity: CGFloat = -100
+    animate(from: 0, to: 100, withVelocity: velocity)
 
-    XCTAssertEqual(addedAnimations.count, 1)
-    let animation = addedAnimations.first as! CASpringAnimation
-    XCTAssertLessThan(animation.initialVelocity, 0)
+    XCTAssertEqual(addedAnimations.count, 3)
+    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+      XCTAssertLessThan(animation.initialVelocity, 0,
+                        "from: \(animation.fromValue!), "
+                          + "to: \(animation.toValue!), "
+                          + "withVelocity: \(velocity)")
+    }
   }
 
   func testVelocityTowardsDestinationIsPositiveWithNegativeDisplacement() {
-    let timing = MotionTiming(delay: 0,
-                              duration: 0.7,
-                              curve: .init(type: .spring, data: (1, 1, 1, -100)),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
-    animator.animate(with: timing, to: CALayer(), withValues: [100, 0], keyPath: .opacity)
+    let velocity: CGFloat = -100
+    animate(from: 100, to: 0, withVelocity: velocity)
 
-    XCTAssertEqual(addedAnimations.count, 1)
-    let animation = addedAnimations.first as! CASpringAnimation
-    XCTAssertGreaterThan(animation.initialVelocity, 0)
+    XCTAssertEqual(addedAnimations.count, 3)
+    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+      XCTAssertGreaterThan(animation.initialVelocity, 0,
+                           "from: \(animation.fromValue!), "
+                            + "to: \(animation.toValue!), "
+                            + "withVelocity: \(velocity)")
+    }
   }
 
   func testVelocityAwayFromDestinationIsNegativeWithNegativeDisplacement() {
+    let velocity: CGFloat = 100
+    animate(from: 100, to: 0, withVelocity: velocity)
+
+    XCTAssertEqual(addedAnimations.count, 3)
+    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+      XCTAssertLessThan(animation.initialVelocity, 0,
+                        "from: \(animation.fromValue!), "
+                          + "to: \(animation.toValue!), "
+                          + "withVelocity: \(velocity)")
+    }
+  }
+
+  private func animate(from: CGFloat, to: CGFloat, withVelocity velocity: CGFloat) {
     let timing = MotionTiming(delay: 0,
                               duration: 0.7,
-                              curve: .init(type: .spring, data: (1, 1, 1, 100)),
+                              curve: .init(type: .spring, data: (1, 1, 1, velocity)),
                               repetition: .init(type: .none, amount: 0, autoreverses: false))
-    animator.animate(with: timing, to: CALayer(), withValues: [100, 0], keyPath: .opacity)
-
-    XCTAssertEqual(addedAnimations.count, 1)
-    let animation = addedAnimations.first as! CASpringAnimation
-    XCTAssertLessThan(animation.initialVelocity, 0)
+    animator.animate(with: timing, to: CALayer(), withValues: [from, to],
+                     keyPath: .opacity)
+    animator.animate(with: timing, to: CALayer(), withValues: [CGPoint(x: from, y: from),
+                                                               CGPoint(x: to, y: to)],
+                     keyPath: .position)
+    animator.animate(with: timing, to: CALayer(), withValues: [CGSize(width: from, height: from),
+                                                               CGSize(width: to, height: to)],
+                     keyPath: .init(rawValue: "bounds.size"))
   }
 }
 

@@ -191,7 +191,9 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
         biggestDelta = additiveDisplacement.height;
       }
       CGFloat displacement = -biggestDelta;
-      springAnimation.initialVelocity = springAnimation.initialVelocity / displacement;
+      CGFloat absoluteInitialVelocity =
+          timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
+      springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
     }
 
   } else if ([positionKeyPaths containsObject:animation.keyPath]) {
@@ -218,7 +220,9 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
         biggestDelta = additiveDisplacement.y;
       }
       CGFloat displacement = -biggestDelta;
-      springAnimation.initialVelocity = springAnimation.initialVelocity / displacement;
+      CGFloat absoluteInitialVelocity =
+          timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
+      springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
     }
   }
 }
