@@ -1,7 +1,31 @@
-# #develop#
+# 2.2.0
 
- TODO: Enumerate changes.
+This minor release introduces support for the new initial velocity spring curve value in
+MotionInterchange v1.3.0. This release also includes additional public and internal documentation.
 
+## Dependency changes
+
+The minimum MotionInterchange version has been increased to v1.3.0.
+
+## New features
+
+`MDMMotionAnimator` now supports initial velocity for spring curves.
+
+## Source changes
+
+* [Use MotionCurve make methods to create motion timings in the tests. (#38)](https://github.com/material-motion/motion-animator-objc/commit/f80203d711126130a5d58c880bae0cea4c72b6e7) (featherless)
+* [Extract initial velocity from the motion timing. (#37)](https://github.com/material-motion/motion-animator-objc/commit/ab431bd2416b43ce601b16fbb4abdb3b9eba851e) (featherless)
+* [Silence a deprecation warning in motion interchange 1.3.0.](https://github.com/material-motion/motion-animator-objc/commit/29b551ae730f1a48f37793c65bf14d761a544b6b) (Jeff Verkoeyen)
+
+## Non-source changes
+
+* [Bump MotionInterchange dependency to 1.3.](https://github.com/material-motion/motion-animator-objc/commit/3b543b856df8543d8af4127b8d5536fb31100d3b) (Jeff Verkoeyen)
+* [Ensure that deprecations are treated as warnings, not errors, when building with CocoaPods.](https://github.com/material-motion/motion-animator-objc/commit/b1289ea58130aba8e8dc2455989130db9f8be5ed) (Jeff Verkoeyen)
+* [Move example project up.](https://github.com/material-motion/motion-animator-objc/commit/800b2996ba39746adbdfe4bf19c18ccc37f2bc91) (Jeff Verkoeyen)
+* [Formatting.](https://github.com/material-motion/motion-animator-objc/commit/0a7dac13f196c5d9774fe5f712a0f8b1b0a4026e) (Jeff Verkoeyen)
+* [Add more tutorials and rework the introduction.](https://github.com/material-motion/motion-animator-objc/commit/f25998e6d7161ed46f89bdab799c1be678dc98a9) (Jeff Verkoeyen)
+* [Add a guide on building motion specs.](https://github.com/material-motion/motion-animator-objc/commit/f34172534d153ff461fc57943abc81605b3349da) (Jeff Verkoeyen)
+* [Add jazzy yaml.](https://github.com/material-motion/motion-animator-objc/commit/22e3bfc4a5bbe504f8f7dad3d41804257b50d28f) (Jeff Verkoeyen)
 
 # 2.1.1
 
