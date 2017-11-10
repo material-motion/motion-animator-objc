@@ -24,7 +24,13 @@
 FOUNDATION_EXPORT
 CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor);
 
-// Attemps to configure the provided animation to be additive.
-// Not all animation value types are supported. If an animation's value type was not supported,
-// the animation will not be modified.
-FOUNDATION_EXPORT void MDMMakeAnimationAdditive(CABasicAnimation *animation);
+// Attempts to configure the provided animation to be additive and, if the animation is a spring
+// animation, will extract the initial velocity from the timing and apply it to the animation.
+//
+// Not all animation value types support being additive. If an animation's value type was not
+// supported, the animation's values will not be modified.
+//
+// If the from and to values of the animation match then the behavior is undefined.
+FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation,
+                                             BOOL wantsAdditive,
+                                             MDMMotionTiming timing);
