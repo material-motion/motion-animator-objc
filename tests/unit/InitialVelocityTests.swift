@@ -44,56 +44,80 @@ class InitialVelocityTests: XCTestCase {
   }
 
   func testVelocityAmplitudeMatchesDisplacementWithPositiveDisplacement() {
-    animate(from: 0, to: 100, withVelocity: 50)
+    let velocity: CGFloat = 50
+    animate(from: 0, to: 100, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
-      XCTAssertEqual(animation.initialVelocity, 0.5)
+      XCTAssertEqual(animation.initialVelocity, 0.5,
+                     "from: \(animation.fromValue!), "
+                      + "to: \(animation.toValue!), "
+                      + "withVelocity: \(velocity)")
     }
   }
 
   func testVelocityAmplitudeMatchesDisplacementWithNegativeDisplacement() {
-    animate(from: 100, to: 0, withVelocity: -50)
+    let velocity: CGFloat = -50
+    animate(from: 100, to: 0, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
-      XCTAssertEqual(animation.initialVelocity, 0.5)
+      XCTAssertEqual(animation.initialVelocity, 0.5,
+                     "from: \(animation.fromValue!), "
+                      + "to: \(animation.toValue!), "
+                      + "withVelocity: \(velocity)")
     }
   }
 
   func testVelocityTowardsDestinationIsPositiveWithPositiveDisplacement() {
-    animate(from: 0, to: 100, withVelocity: 100)
+    let velocity: CGFloat = 100
+    animate(from: 0, to: 100, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
-      XCTAssertGreaterThan(animation.initialVelocity, 0)
+      XCTAssertGreaterThan(animation.initialVelocity, 0,
+                           "from: \(animation.fromValue!), "
+                            + "to: \(animation.toValue!), "
+                            + "withVelocity: \(velocity)")
     }
   }
 
   func testVelocityAwayFromDestinationIsNegativeWithPositiveDisplacement() {
-    animate(from: 0, to: 100, withVelocity: -100)
+    let velocity: CGFloat = -100
+    animate(from: 0, to: 100, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
-      XCTAssertLessThan(animation.initialVelocity, 0)
+      XCTAssertLessThan(animation.initialVelocity, 0,
+                        "from: \(animation.fromValue!), "
+                          + "to: \(animation.toValue!), "
+                          + "withVelocity: \(velocity)")
     }
   }
 
   func testVelocityTowardsDestinationIsPositiveWithNegativeDisplacement() {
-    animate(from: 100, to: 0, withVelocity: -100)
+    let velocity: CGFloat = -100
+    animate(from: 100, to: 0, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
-      XCTAssertGreaterThan(animation.initialVelocity, 0)
+      XCTAssertGreaterThan(animation.initialVelocity, 0,
+                           "from: \(animation.fromValue!), "
+                            + "to: \(animation.toValue!), "
+                            + "withVelocity: \(velocity)")
     }
   }
 
   func testVelocityAwayFromDestinationIsNegativeWithNegativeDisplacement() {
-    animate(from: 100, to: 0, withVelocity: 100)
+    let velocity: CGFloat = 100
+    animate(from: 100, to: 0, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
-      XCTAssertLessThan(animation.initialVelocity, 0)
+      XCTAssertLessThan(animation.initialVelocity, 0,
+                        "from: \(animation.fromValue!), "
+                          + "to: \(animation.toValue!), "
+                          + "withVelocity: \(velocity)")
     }
   }
 
