@@ -85,9 +85,7 @@
     animation.toValue = [values lastObject];
 
     if (![animation.fromValue isEqual:animation.toValue]) {
-      if (self.additive) {
-        MDMMakeAnimationAdditive(animation);
-      }
+      MDMConfigureAnimation(animation, self.additive, timing);
 
       if (timing.delay != 0) {
         animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
