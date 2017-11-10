@@ -33,6 +33,11 @@ strict_warnings_objc_library(
         "src/*.h",
         "src/private/*.h",
     ]),
+    sdk_frameworks = [
+        "CoreGraphics",
+        "Foundation",
+        "QuartzCore",
+    ],
     defines = ["IS_BAZEL_BUILD"],
     deps = [
       "@motion_interchange_objc//:MotionInterchange"
