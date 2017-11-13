@@ -1,7 +1,15 @@
-# #develop#
+# 2.2.1
 
- TODO: Enumerate changes.
+This patch release fixes a bug where CGPoint and CGSize spring animations would not properly extract
+initial velocity from their motion timings.
 
+## Source changes
+
+* [Fix bug where CGPoint and CGSize animations were not extracting initialVelocity (#39)](https://github.com/material-motion/motion-animator-objc/commit/edabddc16bbd4aff0b7b692486615060d7371fb7) (featherless)
+
+## Non-source changes
+
+* [Add missing sdk_frameworks to the BUILD file. (#40)](https://github.com/material-motion/motion-animator-objc/commit/cef4416cc9ae9477a4463bd8197bc64c64e1c7f0) (featherless)
 
 # 2.2.0
 
