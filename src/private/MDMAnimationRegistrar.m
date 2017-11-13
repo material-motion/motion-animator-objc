@@ -82,11 +82,6 @@
   [CATransaction commit];
 }
 
-- (void)animationDidCompleteOnLayer:(CALayer *)layer withKey:(NSString *)key {
-  NSMutableSet *animatedKeyPaths = [_layersToRegisteredAnimation objectForKey:layer];
-  [animatedKeyPaths removeObject:key];
-}
-
 - (void)commitCurrentAnimationValuesToAllLayers {
   [self forEachAnimation:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
     id presentationLayer = [layer presentationLayer];
