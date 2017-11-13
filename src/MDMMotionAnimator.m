@@ -44,11 +44,7 @@
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
                   keyPath:(MDMAnimatableKeyPath)keyPath {
-  [self animateWithTiming:timing
-                  toLayer:layer
-               withValues:values
-                  keyPath:keyPath
-               completion:nil];
+  [self animateWithTiming:timing toLayer:layer withValues:values keyPath:keyPath completion:nil];
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing

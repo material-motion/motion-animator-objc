@@ -31,6 +31,26 @@
   return self;
 }
 
+#pragma mark - Private
+
+- (void)forEachAnimation:(void (^)(CALayer *, CABasicAnimation *, NSString *))work {
+  // Copy the registered animations before iteration in case further modifications happen to the
+  // registered animations.
+  NSMapTable *layersToRegisteredAnimation = [_layersToRegisteredAnimation copy];
+  for (CALayer *layer in layersToRegisteredAnimation) {
+    NSSet *keyPathAnimations = [_layersToRegisteredAnimation objectForKey:layer];
+    for (MDMRegisteredAnimation *keyPathAnimation in keyPathAnimations) {
+      if (![keyPathAnimation.animation isKindOfClass:[CABasicAnimation class]]) {
+        continue;
+      }
+
+      work(layer, [keyPathAnimation.animation copy], keyPathAnimation.key);
+    }
+  }
+}
+
+#pragma mark - Public
+
 - (void)addAnimation:(CABasicAnimation *)animation
                 toLayer:(CALayer *)layer
                  forKey:(NSString *)key
@@ -62,47 +82,13 @@
   [CATransaction commit];
 }
 
-- (void)forEveryAnimatedKey:(void (^)(CALayer *, CABasicAnimation *, NSString *))work {
-  for (CALayer *layer in _layersToRegisteredAnimation) {
-    NSSet *keyPathAnimations = [_layersToRegisteredAnimation objectForKey:layer];
-    for (MDMRegisteredAnimation *keyPathAnimation in keyPathAnimations) {
-      if (![keyPathAnimation.animation isKindOfClass:[CABasicAnimation class]]) {
-        continue;
-      }
-
-      work(layer, [keyPathAnimation.animation copy], keyPathAnimation.key);
-    }
-  }
-}
-
-- (void)forEveryAnimatedKeyOnLayer:(CALayer *)layer
-                                do:(void (^)(CALayer *, CABasicAnimation *, NSString *))work {
-  NSSet *keyPathAnimations = [_layersToRegisteredAnimation objectForKey:layer];
-  for (MDMRegisteredAnimation *keyPathAnimation in keyPathAnimations) {
-    if (![keyPathAnimation.animation isKindOfClass:[CABasicAnimation class]]) {
-      continue;
-    }
-
-    work(layer, [keyPathAnimation.animation copy], keyPathAnimation.key);
-  }
-}
-
-- (void)removeAllAnimationsFromLayer:(CALayer *)layer withKeys:(NSSet *)keys {
-  NSMutableSet *animatedKeyPaths = [_layersToRegisteredAnimation objectForKey:layer];
-  for (NSString *key in keys) {
-    [layer removeAnimationForKey:key];
-
-    [animatedKeyPaths removeObject:key];
-  }
-}
-
 - (void)animationDidCompleteOnLayer:(CALayer *)layer withKey:(NSString *)key {
   NSMutableSet *animatedKeyPaths = [_layersToRegisteredAnimation objectForKey:layer];
   [animatedKeyPaths removeObject:key];
 }
 
 - (void)commitCurrentAnimationValuesToAllLayers {
-  [self forEveryAnimatedKey:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
+  [self forEachAnimation:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
     id presentationLayer = [layer presentationLayer];
     if (presentationLayer != nil) {
       id presentationValue = [presentationLayer valueForKeyPath:animation.keyPath];
@@ -112,7 +98,7 @@
 }
 
 - (void)removeAllAnimations {
-  [self forEveryAnimatedKey:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
+  [self forEachAnimation:^(CALayer *layer, CABasicAnimation *animation, NSString *key) {
     [layer removeAnimationForKey:key];
   }];
   [_layersToRegisteredAnimation removeAllObjects];

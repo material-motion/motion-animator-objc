@@ -141,8 +141,8 @@ NS_SWIFT_NAME(MotionAnimator)
 - (void)removeAllAnimations;
 
 /**
- Commits the presentation layer to the model layer for every active animation and then removes
- every animation.
+ Commits the presentation layer value to the model layer value for every active animation's key path
+ and then removes every animation.
 
  This method is most commonly called in reaction to the initiation of a gesture so that any
  in-flight animations are stopped at their current on-screen position.
