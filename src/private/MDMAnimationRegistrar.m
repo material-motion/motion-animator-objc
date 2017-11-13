@@ -19,7 +19,7 @@
 #import "MDMRegisteredAnimation.h"
 
 @implementation MDMAnimationRegistrar {
-  NSMapTable *_layersToRegisteredAnimation;
+  NSMapTable *_layersToRegisteredAnimation;  // Map of [CALayer:MDMRegisteredAnimation]
 }
 
 - (instancetype)init {
