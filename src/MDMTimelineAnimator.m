@@ -16,94 +16,36 @@
 
 #import "MDMTimelineAnimator.h"
 
-#import "private/CABasicAnimation+MotionAnimator.h"
-#import "private/MDMAnimationRegistrar.h"
-#import "private/MDMDragCoefficient.h"
-#import "private/MDMUIKitValueCoercion.h"
+#import "MDMMotionAnimator.h"
 
 #import <UIKit/UIKit.h>
 
 @implementation MDMTimelineAnimator {
   NSMutableArray *_tracers;
-  MDMAnimationRegistrar *_registrar;
-  BOOL _isPaused;
+  MDMMotionAnimator *_motionAnimator;
 }
 
-- (instancetype)init {
+@synthesize running = _running;
+
+- (nonnull instancetype)initWithDuration:(NSTimeInterval)duration {
   self = [super init];
   if (self) {
-    _timeScaleFactor = 1;
-    _registrar = [[MDMAnimationRegistrar alloc] init];
+    _duration = duration;
+    _motionAnimator = [[MDMMotionAnimator alloc] init];
+    _motionAnimator.additive = NO;
   }
   return self;
 }
 
-- (void)animateWithTiming:(MDMMotionTiming)timing
-                  toLayer:(CALayer *)layer
-               withValues:(NSArray *)values
-                  keyPath:(MDMAnimatableKeyPath)keyPath {
-  [self animateWithTiming:timing toLayer:layer withValues:values keyPath:keyPath completion:nil];
-}
-
-- (void)animateWithTiming:(MDMMotionTiming)timing
-                  toLayer:(CALayer *)layer
-               withValues:(NSArray *)values
-                  keyPath:(MDMAnimatableKeyPath)keyPath
-               completion:(void(^)(void))completion {
-  NSAssert([values count] == 2, @"The values array must contain exactly two values.");
-
-  if (_shouldReverseValues) {
-    values = [[values reverseObjectEnumerator] allObjects];
-  }
-  values = MDMCoerceUIKitValuesToCoreAnimationValues(values);
-
-  if (timing.duration == 0 || timing.curve.type == MDMMotionCurveTypeInstant) {
-    [layer setValue:[values lastObject] forKeyPath:keyPath];
-    if (completion) {
-      completion();
-    }
-    return;
-  }
-
-  CGFloat timeScaleFactor = MDMSimulatorAnimationDragCoefficient() * _timeScaleFactor;
-  CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
-
-  if (animation) {
-    animation.keyPath = keyPath;
-
-    id initialValue = [values firstObject];
-
-    animation.fromValue = initialValue;
-    animation.toValue = [values lastObject];
-
-    if (![animation.fromValue isEqual:animation.toValue]) {
-      animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
-                             + timing.delay * timeScaleFactor);
-      if (timing.delay != 0) {
-        animation.fillMode = kCAFillModeBackwards;
-      }
-      animation.speed = _isPaused ? 0 : 1;
-
-      NSString *key = animation.keyPath;
-      [_registrar addAnimation:animation toLayer:layer forKey:key completion:completion];
-
-      [layer addAnimation:animation forKey:animation.keyPath];
-
-      for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
-        tracer(layer, animation);
-      }
-    }
-  }
-
-  [layer setValue:[values lastObject] forKeyPath:keyPath];
-}
-
 - (void)addCoreAnimationTracer:(void (^)(CALayer *, CAAnimation *))tracer {
-  if (!_tracers) {
-    _tracers = [NSMutableArray array];
-  }
-  [_tracers addObject:[tracer copy]];
+  [_motionAnimator addCoreAnimationTracer:tracer];
 }
+
+- (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
+  
+}
+
+#pragma mark - UIViewAnimating
 
 - (void)pauseAnimation {
   if (_isPaused) {
@@ -111,7 +53,9 @@
   }
   _isPaused = YES;
 
-  [_registrar pauseAllAnimations];
+  self.state = 
+
+//  [_registrar pauseAllAnimations];
 }
 
 - (void)setFractionComplete:(CGFloat)fractionComplete {
@@ -121,14 +65,28 @@
     return;
   }
 
-  [_registrar setFractionComplete:fractionComplete];
+//  [_registrar setFractionComplete:fractionComplete];
 }
 
 - (void)startAnimation {
   if (!_isPaused) {
     return;
   }
-  [_registrar startAllAnimationsReversed:self.isReversed];
+  _isPaused = NO;
+
+//  [_registrar startAllAnimationsReversed:self.isReversed];
+}
+
+- (void)finishAnimationAtPosition:(UIViewAnimatingPosition)finalPosition NS_AVAILABLE_IOS(10_0) {
+
+}
+
+- (void)startAnimationAfterDelay:(NSTimeInterval)delay {
+
+}
+
+- (void)stopAnimation:(BOOL)withoutFinishing {
+
 }
 
 @end

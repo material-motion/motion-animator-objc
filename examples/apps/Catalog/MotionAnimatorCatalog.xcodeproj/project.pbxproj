@@ -19,6 +19,7 @@
 		667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A3F531DEE273000CB3A99 /* TableOfContents.swift */; };
 		6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668726491EF04B4C00113675 /* MotionAnimatorTests.swift */; };
 		66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */; };
+		66A6A66A1FBB364100DE54CB /* TimelineAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6A6691FBB364100DE54CB /* TimelineAnimatorTests.swift */; };
 		66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */; };
 		66DD4BF51EEF0ECB00207119 /* CalendarCardExpansionExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */; };
 		66DD4BF81EEF1C4B00207119 /* CalendarChipMotionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF71EEF1C4B00207119 /* CalendarChipMotionSpec.m */; };
@@ -65,6 +66,7 @@
 		667A3F531DEE273000CB3A99 /* TableOfContents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContents.swift; sourceTree = "<group>"; };
 		668726491EF04B4C00113675 /* MotionAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorTests.swift; sourceTree = "<group>"; };
 		66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationRemovalTests.swift; sourceTree = "<group>"; };
+		66A6A6691FBB364100DE54CB /* TimelineAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineAnimatorTests.swift; sourceTree = "<group>"; };
 		66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitAnimationTests.swift; sourceTree = "<group>"; };
 		66DD4BF31EEF0ECB00207119 /* CalendarCardExpansionExample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarCardExpansionExample.h; sourceTree = "<group>"; };
 		66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarCardExpansionExample.m; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
 				66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */,
 				6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */,
+				66A6A6691FBB364100DE54CB /* TimelineAnimatorTests.swift */,
 				660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */,
 			);
 			path = unit;
@@ -500,6 +503,7 @@
 				66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */,
 				66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */,
 				6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */,
+				66A6A66A1FBB364100DE54CB /* TimelineAnimatorTests.swift in Sources */,
 				66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
