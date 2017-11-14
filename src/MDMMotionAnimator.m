@@ -161,7 +161,7 @@
   [_registrar removeAllAnimations];
 }
 
-- (void)commitAndRemoveAllAnimations {
+- (void)stopAllAnimations {
   [_registrar commitCurrentAnimationValuesToAllLayers];
   [_registrar removeAllAnimations];
 }

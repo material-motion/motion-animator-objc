@@ -82,7 +82,7 @@ class AnimationRemovalTests: XCTestCase {
     let result = XCTWaiter().wait(for: [didComplete], timeout: 0.01)
     XCTAssertEqual(result, .timedOut)
 
-    animator.commitAndRemoveAllAnimations()
+    animator.stopAllAnimations()
 
     XCTAssertNil(view.layer.animationKeys())
     XCTAssertEqual(view.layer.opacity, view.layer.presentation()?.opacity)

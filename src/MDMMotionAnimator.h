@@ -147,6 +147,6 @@ NS_SWIFT_NAME(MotionAnimator)
  This method is most commonly called in reaction to the initiation of a gesture so that any
  in-flight animations are stopped at their current on-screen position.
  */
-- (void)commitAndRemoveAllAnimations;
+- (void)stopAllAnimations;
 
 @end
