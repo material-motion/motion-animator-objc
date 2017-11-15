@@ -63,13 +63,11 @@ class AnimationRemovalTests: XCTestCase {
     XCTAssertEqual(view.layer.opacity, 0.5)
   }
 
-#if swift(>=3.2)
   func testCommitAndRemoveAllAnimationsCommitsThePresentationValue() {
-    let didComplete = expectation(description: "Did complete")
-
+    var didComplete = false
     CATransaction.begin()
     CATransaction.setCompletionBlock {
-      didComplete.fulfill()
+      didComplete = true
     }
 
     animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .opacity)
@@ -79,13 +77,13 @@ class AnimationRemovalTests: XCTestCase {
 
     XCTAssertEqual(view.layer.animationKeys()!.count, 2)
 
-    let result = XCTWaiter().wait(for: [didComplete], timeout: 0.01)
-    XCTAssertEqual(result, .timedOut)
+    RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
+
+    XCTAssertFalse(didComplete)
 
     animator.stopAllAnimations()
 
     XCTAssertNil(view.layer.animationKeys())
     XCTAssertEqual(view.layer.opacity, view.layer.presentation()?.opacity)
   }
-#endif
 }
