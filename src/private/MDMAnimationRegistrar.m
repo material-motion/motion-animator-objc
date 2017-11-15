@@ -35,11 +35,11 @@
 
 - (void)forEachAnimation:(void (^)(CALayer *, CABasicAnimation *, NSString *))work {
   // Copy the registered animations before iteration in case further modifications happen to the
-  // registered animations.
-  NSMapTable *layersToRegisteredAnimation = [_layersToRegisteredAnimation copy];
-  for (CALayer *layer in layersToRegisteredAnimation) {
+  // registered animations. Consider if we remove an animation, its associated completion block
+  // might invoke logic that adds a new animation, potentially modifying our collections.
+  for (CALayer *layer in [_layersToRegisteredAnimation copy]) {
     NSSet *keyPathAnimations = [_layersToRegisteredAnimation objectForKey:layer];
-    for (MDMRegisteredAnimation *keyPathAnimation in keyPathAnimations) {
+    for (MDMRegisteredAnimation *keyPathAnimation in [keyPathAnimations copy]) {
       if (![keyPathAnimation.animation isKindOfClass:[CABasicAnimation class]]) {
         continue;
       }
