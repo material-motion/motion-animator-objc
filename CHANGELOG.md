@@ -1,7 +1,22 @@
-# #develop#
+# 2.3.0
 
- TODO: Enumerate changes.
+This minor release introduces new features for working with gestural interactions.
 
+## New features
+
+Added two new methods for removing and stopping running animations.
+
+## Source changes
+
+* [Add support for removing added animations (#42)](https://github.com/material-motion/motion-animator-objc/commit/51ac34ada49013590d1c79480256faef8017624e) (featherless)
+
+## API changes
+
+### MDMMotionAnimator
+
+**new** method: `removeAllAnimations`
+
+**new** method: `stopAllAnimations`
 
 # 2.2.1
 
