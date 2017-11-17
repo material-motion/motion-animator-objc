@@ -17,7 +17,7 @@
 #import <Foundation/Foundation.h>
 #import <MotionInterchange/MotionInterchange.h>
 
-struct CalendarChipTiming {
+typedef struct CalendarChipTiming {
   MDMMotionTiming chipWidth;
   MDMMotionTiming chipHeight;
   MDMMotionTiming chipY;
@@ -26,13 +26,15 @@ struct CalendarChipTiming {
   MDMMotionTiming headerContentOpacity;
 
   MDMMotionTiming navigationBarY;
-};
-typedef struct CalendarChipTiming CalendarChipTiming;
+} CalendarChipTiming;
 
-struct CalendarChipMotionSpec {
-  CalendarChipTiming expansion;
-  CalendarChipTiming collapse;
-};
-typedef struct CalendarChipMotionSpec CalendarChipMotionSpec;
+@interface CalendarChipMotionSpec: NSObject
 
-FOUNDATION_EXTERN struct CalendarChipMotionSpec CalendarChipSpec;
++ (CalendarChipTiming)expansion;
++ (CalendarChipTiming)collapse;
+
+// This object is not meant to be instantiated.
+- (instancetype)init NS_UNAVAILABLE;
+
+@end
+

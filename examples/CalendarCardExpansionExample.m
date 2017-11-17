@@ -40,7 +40,9 @@
 - (void)didTap {
   _expanded = !_expanded;
 
-  CalendarChipTiming timing = _expanded ? CalendarChipSpec.expansion : CalendarChipSpec.collapse;
+  CalendarChipTiming timing = (_expanded
+                               ? CalendarChipMotionSpec.expansion
+                               : CalendarChipMotionSpec.collapse);
 
   MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
   animator.shouldReverseValues = !_expanded;
