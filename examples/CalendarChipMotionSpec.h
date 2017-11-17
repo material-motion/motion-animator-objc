@@ -30,8 +30,8 @@ typedef struct CalendarChipTiming {
 
 @interface CalendarChipMotionSpec: NSObject
 
-+ (CalendarChipTiming)expansion;
-+ (CalendarChipTiming)collapse;
+@property(nonatomic, class, readonly) CalendarChipTiming expansion;
+@property(nonatomic, class, readonly) CalendarChipTiming collapse;
 
 // This object is not meant to be instantiated.
 - (instancetype)init NS_UNAVAILABLE;
