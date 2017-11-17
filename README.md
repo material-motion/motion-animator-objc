@@ -171,8 +171,8 @@ view.center = before;
 Now let's say we wrote the same code with a motion spec and animator:
 
 ```objc
-static const MDMMotionTiming kMotionSpec = {
-  .duration = 0.5, .curve = _MDMSpring(1, 100, 1),
+MDMMotionTiming motionSpec = {
+  .duration = 0.5, .curve = MDMMotionCurveMakeSpring(1, 100, 1),
 };
 
 MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
@@ -180,14 +180,14 @@ animator.shouldReverseValues = dismissing;
 view.center = offscreen;
 [_animator animateWithTiming:kMotionSpec animations:^{
   view.center = onscreen;
-}]
+}];
 ```
 
 Now if we want to change our motion back to an easing curve, we only have to change the spec:
 
 ```objc
-static const MDMMotionTiming kMotionSpec = {
-  .duration = 0.5, .curve = _MDMBezier(0.4f, 0.0f, 0.2f, 1.0f),
+MDMMotionTiming motionSpec = {
+  .duration = 0.5, .curve = MDMMotionCurveMakeBezier(0.4f, 0.0f, 0.2f, 1.0f),
 };
 ```
 
