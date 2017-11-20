@@ -25,8 +25,9 @@
 @property(nonatomic, readonly) NSArray<MDMImplicitAction *> *interceptedActions;
 @end
 
-// The original UIView method implementation of actionForLayer:forKey:.
-static IMP sOriginalActionForLayerImp = NULL;
+// The original CALayer method implementation of -actionForKey:
+static IMP sOriginalActionForKeyLayerImp = NULL;
+
 static NSMutableArray<MDMActionContext *> *sActionContext = nil;
 
 @implementation MDMImplicitAction
@@ -74,9 +75,9 @@ static NSMutableArray<MDMActionContext *> *sActionContext = nil;
 @interface MDMLayerDelegate: NSObject <CALayerDelegate>
 @end
 
-static id<CAAction> ActionForLayer(id self, SEL _cmd, CALayer *layer, NSString *event) {
+static id<CAAction> ActionForKey(CALayer *self, SEL _cmd, NSString *event) {
   NSCAssert([NSStringFromSelector(_cmd) isEqualToString:
-             NSStringFromSelector(@selector(actionForLayer:forKey:))],
+                NSStringFromSelector(@selector(actionForKey:))],
             @"Invalid method signature.");
 
   MDMActionContext *context = [sActionContext lastObject];
@@ -85,16 +86,16 @@ static id<CAAction> ActionForLayer(id self, SEL _cmd, CALayer *layer, NSString *
   if (context == nil) {
     // Graceful handling of invalid state on non-debug builds for if our context is nil invokes our
     // original implementation:
-    return ((id<CAAction>(*)(id, SEL, CALayer *, NSString *))sOriginalActionForLayerImp)
-              (self, _cmd, layer, event);
+    return ((id<CAAction>(*)(id, SEL, NSString *))sOriginalActionForKeyLayerImp)
+              (self, _cmd, event);
   }
 
   // We don't have access to the "to" value of our animation here, so we unfortunately can't
   // calculate additive values if the animator is configured as such. So, to support additive
   // animations, we queue up the modified actions and then add them all at the end of our
   // MDMAnimateImplicitly invocation.
-  id initialValue = [layer valueForKeyPath:event];
-  [context addActionForLayer:layer keyPath:event withInitialValue:initialValue];
+  id initialValue = [self valueForKeyPath:event];
+  [context addActionForLayer:self keyPath:event withInitialValue:initialValue];
   return [NSNull null];
 }
 
@@ -103,21 +104,21 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
     return nil;
   }
 
+  SEL actionForKeySelector = @selector(actionForKey:);
+  Method actionForKeyMethod = class_getInstanceMethod([CALayer class], actionForKeySelector);
+
   // This method can be called recursively, so we maintain a context stack in the scope of this
   // method. Note that this is absolutely not thread safe, but neither is Core Animation.
   if (!sActionContext) {
     sActionContext = [NSMutableArray array];
+
+    // Swap the original CALayer implementation with our own so that we can intercept all
+    // actionForKey: events.
+    sOriginalActionForKeyLayerImp = method_setImplementation(actionForKeyMethod,
+                                                             (IMP)ActionForKey);
   }
+
   [sActionContext addObject:[[MDMActionContext alloc] init]];
-
-  SEL selector = @selector(actionForLayer:forKey:);
-  Method method = class_getInstanceMethod([UIView class], selector);
-
-  if (sOriginalActionForLayerImp == nil) {
-    // Swap the original UIView implementation with our own so that we can intercept all
-    // actionForLayer:forKey: events.
-    sOriginalActionForLayerImp = method_setImplementation(method, (IMP)ActionForLayer);
-  }
 
   work();
 
@@ -126,10 +127,10 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
   [sActionContext removeLastObject];
 
   if ([sActionContext count] == 0) {
-    // Restore our original method if we've emptied the stack:
-    method_setImplementation(method, sOriginalActionForLayerImp);
+    // Restore our original method if we've emptied the stack.
+    method_setImplementation(actionForKeyMethod, sOriginalActionForKeyLayerImp);
+    sOriginalActionForKeyLayerImp = nil;
 
-    sOriginalActionForLayerImp = nil;
     sActionContext = nil;
   }
 
@@ -140,10 +141,10 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
 
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)event {
   // Check whether we're inside of an MDMAnimateImplicitly block or not.
-  if (sOriginalActionForLayerImp == nil) {
+  if (sOriginalActionForKeyLayerImp == nil) {
     return nil; // Tell Core Animation to Keep searching for an action provider.
   }
-  return ActionForLayer(layer, _cmd, layer, event);
+  return ActionForKey(layer, _cmd, event);
 }
 
 @end
