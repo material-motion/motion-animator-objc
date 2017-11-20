@@ -150,3 +150,16 @@ NS_SWIFT_NAME(MotionAnimator)
 - (void)stopAllAnimations;
 
 @end
+
+@interface MDMMotionAnimator (ImplicitLayerAnimations)
+
+/**
+ Returns a layer delegate that solely implements actionForLayer:forKey:.
+
+ Assign this delegate to a standalone CALayer (one created using [[CALayer alloc] init]) in order to
+ be able to implicitly animate its properties with MDMMotionAnimator. This is not necessary for
+ layers that are backing a UIView.
+ */
++ (nonnull id<CALayerDelegate>)sharedLayerDelegate;
+
+@end

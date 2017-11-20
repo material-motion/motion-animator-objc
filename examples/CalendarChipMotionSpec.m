@@ -16,51 +16,59 @@
 
 #import "CalendarChipMotionSpec.h"
 
-#define MDMEightyForty _MDMBezier(0.4f, 0.0f, 0.2f, 1.0f)
-#define MDMFortyOut _MDMBezier(0.4f, 0.0f, 1.0f, 1.0f)
-#define MDMEightyIn _MDMBezier(0.0f, 0.0f, 0.2f, 1.0f)
-#define MDMLinear _MDMBezier(0.0f, 0.0f, 1.0f, 1.0f)
+@implementation CalendarChipMotionSpec
 
-struct CalendarChipMotionSpec CalendarChipSpec = {
-  .expansion = {
++ (MDMMotionCurve)eightyForty {
+  return MDMMotionCurveMakeBezier(0.4f, 0.0f, 0.2f, 1.0f);
+}
+
++ (CalendarChipTiming)expansion {
+  MDMMotionCurve eightyForty = [self eightyForty];
+  return (CalendarChipTiming){
     .chipWidth = {
-      .delay = 0.000, .duration = 0.285, .curve = MDMEightyForty,
+      .delay = 0.000, .duration = 0.285, .curve = eightyForty,
     },
     .chipHeight = {
-      .delay = 0.015, .duration = 0.360, .curve = MDMEightyForty,
+      .delay = 0.015, .duration = 0.360, .curve = eightyForty,
     },
     .chipY = {
-      .delay = 0.015, .duration = 0.360, .curve = MDMEightyForty,
+      .delay = 0.015, .duration = 0.360, .curve = eightyForty,
     },
     .chipContentOpacity = {
-      .delay = 0.000, .duration = 0.075, .curve = MDMLinear,
+      .delay = 0.000, .duration = 0.075, .curve = MDMLinearMotionCurve,
     },
     .headerContentOpacity = {
-      .delay = 0.075, .duration = 0.150, .curve = MDMLinear,
+      .delay = 0.075, .duration = 0.150, .curve = MDMLinearMotionCurve,
     },
     .navigationBarY = {
-      .delay = 0.015, .duration = 0.360, .curve = MDMEightyForty,
+      .delay = 0.015, .duration = 0.360, .curve = eightyForty,
     },
-  },
-  .collapse = {
+  };
+}
+
++ (CalendarChipTiming)collapse {
+  MDMMotionCurve eightyForty = [self eightyForty];
+  return (CalendarChipTiming){
     .chipWidth = {
-      .delay = 0.045, .duration = 0.330, .curve = MDMEightyForty,
+      .delay = 0.045, .duration = 0.330, .curve = eightyForty,
     },
     .chipHeight = {
-      .delay = 0.000, .duration = 0.330, .curve = MDMEightyForty,
+      .delay = 0.000, .duration = 0.330, .curve = eightyForty,
     },
     .chipY = {
-      .delay = 0.015, .duration = 0.330, .curve = MDMEightyForty,
+      .delay = 0.015, .duration = 0.330, .curve = eightyForty,
     },
     .chipContentOpacity = {
-      .delay = 0.150, .duration = 0.150, .curve = MDMLinear,
+      .delay = 0.150, .duration = 0.150, .curve = MDMLinearMotionCurve,
     },
     .headerContentOpacity = {
-      .delay = 0.000, .duration = 0.075, .curve = MDMLinear,
+      .delay = 0.000, .duration = 0.075, .curve = MDMLinearMotionCurve,
     },
     .navigationBarY = {
-      .delay = 0.045, .duration = 0.150, .curve = MDMEightyForty,
+      .delay = 0.045, .duration = 0.150, .curve = eightyForty,
     }
-  },
-};
+  };
+}
+
+@end
 

@@ -1,3 +1,35 @@
+# 2.4.0
+
+This minor release introduces support for implicitly animating CALayers that have been created
+independently of a UIView. To use this new functionality, consider the following example:
+
+```swift
+let layer = CALayer()
+layer.delegate = MotionAnimator.sharedLayerDelegate()
+animator.animate(with: timing) {
+  layer.opacity = 0.5
+}
+```
+
+## New features
+
+Added support for adding implicit animations to headless CALayer instances.
+
+## Source changes
+
+* [Add support for headless implicit layer animations. (#45)](https://github.com/material-motion/motion-animator-objc/commit/b92bb0a26c3458b508e0ba85628aea3e1590df28) (featherless)
+
+## API changes
+
+### MDMAnimator
+
+**new** method: `+sharedLayerDelegate`
+
+## Non-source changes
+
+* [Remove references to interchange macros. (#44)](https://github.com/material-motion/motion-animator-objc/commit/a1c771b781713d6fc63e68ede73690e1f16c9624) (featherless)
+* [Add missing Info.plist. (#43)](https://github.com/material-motion/motion-animator-objc/commit/41fa66f904b28058f5a968da879749d3732d6c35) (Sylvain Defresne)
+
 # 2.3.0
 
 This minor release introduces new features for working with gestural interactions.
