@@ -156,8 +156,9 @@ NS_SWIFT_NAME(MotionAnimator)
 /**
  Returns a layer delegate that solely implements actionForLayer:forKey:.
 
- Assign this delegate to CALayers that have no backing UIView in order to be able to implicitly
- animate their properties with MDMMotionAnimator.
+ Assign this delegate to a standalone CALayer (one created using [[CALayer alloc] init]) in order to
+ be able to implicitly animate its properties with MDMMotionAnimator. This is not necessary for
+ layers that are backing a UIView.
  */
 + (nonnull id<CALayerDelegate>)sharedLayerDelegate;
 
