@@ -16,6 +16,8 @@
 
 #import "MDMBlockAnimations.h"
 
+#import "MDMMotionAnimator.h"
+
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
@@ -67,6 +69,9 @@ static NSMutableArray<MDMActionContext *> *sActionContext = nil;
   return [_interceptedActions copy];
 }
 
+@end
+
+@interface MDMLayerDelegate: NSObject <CALayerDelegate>
 @end
 
 static id<CAAction> ActionForLayer(id self, SEL _cmd, CALayer *layer, NSString *event) {
@@ -130,3 +135,29 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
 
   return context.interceptedActions;
 }
+
+@implementation MDMLayerDelegate
+
+- (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)event {
+  // Check whether we're inside of an MDMAnimateImplicitly block or not.
+  if (sOriginalActionForLayerImp == nil) {
+    return [NSNull null];
+  }
+  return ActionForLayer(layer, _cmd, layer, event);
+}
+
+@end
+
+@implementation MDMMotionAnimator (ImplicitLayerAnimations)
+
++ (id<CALayerDelegate>)sharedLayerDelegate {
+  static MDMLayerDelegate *sharedInstance;
+  @synchronized(self) {
+    if (sharedInstance == nil) {
+      sharedInstance = [[MDMLayerDelegate alloc] init];
+    }
+  }
+  return sharedInstance;
+}
+
+@end
