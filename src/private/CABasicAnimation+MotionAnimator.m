@@ -74,7 +74,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
   static NSSet *positionKeyPaths = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    sizeKeyPaths = [NSSet setWithArray:@[@"bounds.size"]];
+    sizeKeyPaths = [NSSet setWithArray:@[@"bounds.size", @"shadowOffset"]];
     positionKeyPaths = [NSSet setWithArray:@[@"position", @"anchorPoint"]];
   });
 
