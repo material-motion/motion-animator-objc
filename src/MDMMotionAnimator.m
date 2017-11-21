@@ -59,8 +59,12 @@
   }
   values = MDMCoerceUIKitValuesToCoreAnimationValues(values);
 
+  [CATransaction begin];
+  [CATransaction setDisableActions:YES];
+  [layer setValue:[values lastObject] forKeyPath:keyPath];
+  [CATransaction commit];
+
   if (timing.duration == 0 || timing.curve.type == MDMMotionCurveTypeInstant) {
-    [layer setValue:[values lastObject] forKeyPath:keyPath];
     if (completion) {
       completion();
     }
@@ -104,11 +108,6 @@
       }
     }
   }
-
-  [CATransaction begin];
-  [CATransaction setDisableActions:YES];
-  [layer setValue:[values lastObject] forKeyPath:keyPath];
-  [CATransaction commit];
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
