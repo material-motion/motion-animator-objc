@@ -23,6 +23,7 @@
 		66DD4BF51EEF0ECB00207119 /* CalendarCardExpansionExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */; };
 		66DD4BF81EEF1C4B00207119 /* CalendarChipMotionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF71EEF1C4B00207119 /* CalendarChipMotionSpec.m */; };
 		66EF6F281FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66EF6F271FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift */; };
+		66EF6F2A1FC48D6A00C83A63 /* InstantAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66EF6F291FC48D6A00C83A63 /* InstantAnimationTests.swift */; };
 		66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */; };
 		FCA09739CCE089F0D051AA87 /* Pods_MotionAnimatorCatalog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D808A6F9E944D54276D32F /* Pods_MotionAnimatorCatalog.framework */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		66DD4BF61EEF1C4B00207119 /* CalendarChipMotionSpec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarChipMotionSpec.h; sourceTree = "<group>"; };
 		66DD4BF71EEF1C4B00207119 /* CalendarChipMotionSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarChipMotionSpec.m; sourceTree = "<group>"; };
 		66EF6F271FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlessLayerImplicitAnimationTests.swift; sourceTree = "<group>"; };
+		66EF6F291FC48D6A00C83A63 /* InstantAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantAnimationTests.swift; sourceTree = "<group>"; };
 		66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MotionAnimatorTests.m; sourceTree = "<group>"; };
 		6EB4A3E0A8428C89A9BE95EE /* Pods-MotionAnimatorCatalog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MotionAnimatorCatalog.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog.release.xcconfig"; sourceTree = "<group>"; };
 		9DE90426033EDF40C65232A9 /* Pods-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.debug.xcconfig"; path = "../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -214,10 +216,11 @@
 			children = (
 				66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */,
 				66EF6F271FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift */,
-				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
-				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
 				66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */,
 				6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */,
+				66EF6F291FC48D6A00C83A63 /* InstantAnimationTests.swift */,
+				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
+				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
 				660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */,
 			);
 			path = unit;
@@ -496,6 +499,7 @@
 			files = (
 				6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */,
 				66EF6F281FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift in Sources */,
+				66EF6F2A1FC48D6A00C83A63 /* InstantAnimationTests.swift in Sources */,
 				660636021FACC24300C3DFB8 /* TimeScaleFactorTests.swift in Sources */,
 				66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */,
 				66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */,
