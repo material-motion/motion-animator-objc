@@ -35,6 +35,10 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
       animation = [CABasicAnimation animation];
       animation.timingFunction = MDMTimingFunctionWithControlPoints(timing.curve.data);
       animation.duration = timing.duration * timeScaleFactor;
+
+      if (animation.duration == 0) {
+        return nil;
+      }
       break;
 
     case MDMMotionCurveTypeSpring: {
@@ -47,13 +51,8 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
       spring.mass = timing.curve.data[MDMSpringMotionCurveDataIndexMass];
       spring.stiffness = timing.curve.data[MDMSpringMotionCurveDataIndexTension];
       spring.damping = timing.curve.data[MDMSpringMotionCurveDataIndexFriction];
+      spring.duration = timing.duration;
 
-      // This API is only available on iOS 9+
-      if ([spring respondsToSelector:@selector(settlingDuration)]) {
-        spring.duration = spring.settlingDuration;
-      } else {
-        spring.duration = timing.duration;
-      }
       animation = spring;
       break;
     }
@@ -74,7 +73,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
   static NSSet *positionKeyPaths = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    sizeKeyPaths = [NSSet setWithArray:@[@"bounds.size"]];
+    sizeKeyPaths = [NSSet setWithArray:@[@"bounds.size", @"shadowOffset"]];
     positionKeyPaths = [NSSet setWithArray:@[@"position", @"anchorPoint"]];
   });
 
@@ -223,6 +222,19 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
       CGFloat absoluteInitialVelocity =
           timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
       springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+    }
+  }
+
+  // Update the animation's duration to match the proposed settling duration.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
+  if ([animation isKindOfClass:[CASpringAnimation class]]) {
+    CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
+#pragma clang diagnostic pop
+
+    // This API is only available on iOS 9+
+    if ([springAnimation respondsToSelector:@selector(settlingDuration)]) {
+      animation.duration = springAnimation.settlingDuration;
     }
   }
 }

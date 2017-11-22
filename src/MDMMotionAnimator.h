@@ -160,6 +160,7 @@ NS_SWIFT_NAME(MotionAnimator)
  be able to implicitly animate its properties with MDMMotionAnimator. This is not necessary for
  layers that are backing a UIView.
  */
-+ (nonnull id<CALayerDelegate>)sharedLayerDelegate;
++ (nonnull id<CALayerDelegate>)sharedLayerDelegate
+    __deprecated_msg("No longer needed for implicit animations of headless layers.");
 
 @end

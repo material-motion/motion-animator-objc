@@ -59,56 +59,65 @@
   }
   values = MDMCoerceUIKitValuesToCoreAnimationValues(values);
 
-  if (timing.duration == 0 || timing.curve.type == MDMMotionCurveTypeInstant) {
-    [layer setValue:[values lastObject] forKeyPath:keyPath];
-    if (completion) {
-      completion();
-    }
-    return;
-  }
-
-  CGFloat timeScaleFactor = [self computedTimeScaleFactor];
-  CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
-
-  if (animation) {
-    animation.keyPath = keyPath;
-
-    id initialValue;
-    if (_beginFromCurrentState) {
-      if ([layer presentationLayer]) {
-        initialValue = [[layer presentationLayer] valueForKeyPath:keyPath];
-      } else {
-        initialValue = [layer valueForKeyPath:keyPath];
-      }
-    } else {
-      initialValue = [values firstObject];
-    }
-
-    animation.fromValue = initialValue;
-    animation.toValue = [values lastObject];
-
-    if (![animation.fromValue isEqual:animation.toValue]) {
-      MDMConfigureAnimation(animation, self.additive, timing);
-
-      if (timing.delay != 0) {
-        animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
-                               + timing.delay * timeScaleFactor);
-        animation.fillMode = kCAFillModeBackwards;
-      }
-
-      NSString *key = _additive ? nil : keyPath;
-      [_registrar addAnimation:animation toLayer:layer forKey:key completion:completion];
-
-      for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
-        tracer(layer, animation);
-      }
-    }
-  }
-
   [CATransaction begin];
   [CATransaction setDisableActions:YES];
   [layer setValue:[values lastObject] forKeyPath:keyPath];
   [CATransaction commit];
+
+  void (^exitEarly)(void) = ^{
+    if (completion) {
+      completion();
+    }
+  };
+
+  CGFloat timeScaleFactor = [self computedTimeScaleFactor];
+  if (timeScaleFactor == 0) {
+    exitEarly();
+    return;
+  }
+
+  CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
+
+  if (animation == nil) {
+    exitEarly();
+    return;
+  }
+
+  animation.keyPath = keyPath;
+
+  id initialValue;
+  if (_beginFromCurrentState) {
+    if ([layer presentationLayer]) {
+      initialValue = [[layer presentationLayer] valueForKeyPath:keyPath];
+    } else {
+      initialValue = [layer valueForKeyPath:keyPath];
+    }
+  } else {
+    initialValue = [values firstObject];
+  }
+
+  animation.fromValue = initialValue;
+  animation.toValue = [values lastObject];
+
+  if ([animation.fromValue isEqual:animation.toValue]) {
+    exitEarly();
+    return;
+  }
+
+  MDMConfigureAnimation(animation, self.additive, timing);
+
+  if (timing.delay != 0) {
+    animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
+                           + timing.delay * timeScaleFactor);
+    animation.fillMode = kCAFillModeBackwards;
+  }
+
+  NSString *key = _additive ? nil : keyPath;
+  [_registrar addAnimation:animation toLayer:layer forKey:key completion:completion];
+
+  for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
+    tracer(layer, animation);
+  }
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {

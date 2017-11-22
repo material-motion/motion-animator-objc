@@ -15,26 +15,27 @@
  */
 
 import XCTest
-
 #if IS_BAZEL_BUILD
 import _MotionAnimator
 #else
 import MotionAnimator
 #endif
 
-class AnimationRemovalTests: XCTestCase {
+class InstantAnimationTests: XCTestCase {
+
   var animator: MotionAnimator!
   var timing: MotionTiming!
   var view: UIView!
+  var addedAnimations: [CAAnimation]!
 
-  var originalImplementation: IMP?
   override func setUp() {
     super.setUp()
 
     animator = MotionAnimator()
+
     timing = MotionTiming(delay: 0,
-                          duration: 1,
-                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
+                          duration: 0,
+                          curve: .init(type: .instant, data: (0, 0, 0, 0)),
                           repetition: .init(type: .none, amount: 0, autoreverses: false))
 
     let window = UIWindow()
@@ -44,49 +45,37 @@ class AnimationRemovalTests: XCTestCase {
 
     // Connect our layers to the render server.
     CATransaction.flush()
+
+    addedAnimations = []
+    animator.addCoreAnimationTracer { (_, animation) in
+      self.addedAnimations.append(animation)
+    }
   }
 
   override func tearDown() {
     animator = nil
-    timing = nil
     view = nil
+    addedAnimations = nil
 
     super.tearDown()
   }
 
-  func testAllAdditiveAnimationsGetsRemoved() {
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .opacity)
-    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
-
-    XCTAssertEqual(view.layer.animationKeys()!.count, 2)
-
-    animator.removeAllAnimations()
+  func testDoesNotGenerateImplicitAnimations() {
+    animator.animate(with: timing, to: view.layer, withValues: [1, 0.5], keyPath: .opacity)
 
     XCTAssertNil(view.layer.animationKeys())
-    XCTAssertEqual(view.layer.opacity, 0.5)
+    XCTAssertEqual(addedAnimations.count, 0)
   }
 
-  func testCommitAndRemoveAllAnimationsCommitsThePresentationValue() {
-    var didComplete = false
-    CATransaction.begin()
-    CATransaction.setCompletionBlock {
-      didComplete = true
+  func testDoesNotGenerateImplicitAnimationsInUIViewAnimationBlock() {
+    UIView.animate(withDuration: 0.5) {
+      self.animator.animate(with: self.timing,
+                            to: self.view.layer,
+                            withValues: [1, 0.5],
+                            keyPath: .opacity)
     }
 
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .opacity)
-    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
-
-    CATransaction.commit()
-
-    XCTAssertEqual(view.layer.animationKeys()!.count, 2)
-
-    RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
-
-    XCTAssertFalse(didComplete)
-
-    animator.stopAllAnimations()
-
     XCTAssertNil(view.layer.animationKeys())
-    XCTAssertEqual(view.layer.opacity, view.layer.presentation()?.opacity)
+    XCTAssertEqual(addedAnimations.count, 0)
   }
 }
