@@ -141,7 +141,7 @@ NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)event {
   // Check whether we're inside of an MDMAnimateImplicitly block or not.
   if (sOriginalActionForLayerImp == nil) {
-    return [NSNull null];
+    return nil; // Tell Core Animation to Keep searching for an action provider.
   }
   return ActionForLayer(layer, _cmd, layer, event);
 }

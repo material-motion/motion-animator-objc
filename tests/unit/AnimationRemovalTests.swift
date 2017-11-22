@@ -41,6 +41,9 @@ class AnimationRemovalTests: XCTestCase {
     window.makeKeyAndVisible()
     view = UIView() // Need to animate a view's layer to get implicit animations.
     window.addSubview(view)
+
+    // Connect our layers to the render server.
+    CATransaction.flush()
   }
 
   override func tearDown() {

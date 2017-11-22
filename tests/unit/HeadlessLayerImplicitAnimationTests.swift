@@ -28,43 +28,138 @@ import MotionAnimator
 // motion animator support.
 class HeadlessLayerImplicitAnimationTests: XCTestCase {
 
-  func testDoesNotImplicitlyAnimate() {
-    let layer = CALayer()
-    // No delegate = no implicit animations.
+  var window: UIWindow!
+  var layer: CALayer!
+  override func setUp() {
+    super.setUp()
 
+    window = UIWindow()
+    window.makeKeyAndVisible()
+
+    layer = CALayer()
+
+    window.layer.addSublayer(layer)
+
+    // Connect our layers to the render server.
+    CATransaction.flush()
+  }
+
+  override func tearDown() {
+    layer = nil
+    window = nil
+
+    super.tearDown()
+  }
+
+  func testUnFlushedLayerDoesNotImplicitlyAnimateInCATransaction() {
+    let unflushedLayer = CALayer()
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.5)
+    unflushedLayer.opacity = 0.5
+    CATransaction.commit()
+
+    XCTAssertNil(unflushedLayer.animationKeys())
+  }
+
+  func testDoesImplicitlyAnimateInCATransaction() {
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.5)
+    layer.opacity = 0.5
+    CATransaction.commit()
+
+    XCTAssertEqual(layer.animationKeys()!, ["opacity"])
+  }
+
+  func testDoesNotImplicitlyAnimateInCATransactionWithActionsDisabled() {
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.5)
+    CATransaction.setDisableActions(true)
+    layer.opacity = 0.5
+    CATransaction.commit()
+
+    XCTAssertNil(layer.animationKeys())
+  }
+
+  func testDoesImplicitlyAnimateInUIViewAnimateBlock() {
     UIView.animate(withDuration: 0.5) {
-      layer.opacity = 0.5
+      self.layer.opacity = 0.5
+    }
+
+    XCTAssertEqual(layer.animationKeys()!, ["opacity"])
+  }
+
+  func testDoesNotImplicitlyAnimateInUIViewAnimateBlockWithActionsDisabledInside() {
+    UIView.animate(withDuration: 0.5) {
+      CATransaction.begin()
+      CATransaction.setDisableActions(true)
+      self.layer.opacity = 0.5
+      CATransaction.commit()
     }
 
     XCTAssertNil(layer.animationKeys())
   }
 
-  func testDoesNotImplicitlyAnimateWithLayerDelegateAlone() {
-    let layer = CALayer()
+  func testDoesNotImplicitlyAnimateInUIViewAnimateBlockWithActionsDisabledOutside() {
+    CATransaction.begin()
+    CATransaction.setDisableActions(true)
+    UIView.animate(withDuration: 0.5) {
+      self.layer.opacity = 0.5
+    }
+    CATransaction.commit()
+
+    XCTAssertNil(layer.animationKeys())
+  }
+
+  func testDoesImplicitlyAnimateInCATransactionWithLayerDelegateAlone() {
+    // Delegate will allow us to do implicit animations, but only via the motion animator.
+    layer.delegate = MotionAnimator.sharedLayerDelegate()
+
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.5)
+    layer.opacity = 0.5
+    CATransaction.commit()
+
+    XCTAssertEqual(layer.animationKeys()!, ["opacity"])
+  }
+
+  func testDoesNotImplicitlyAnimateInCATransactionWithLayerDelegateAloneAndActionsAreDisabled() {
+    // Delegate will allow us to do implicit animations, but only via the motion animator.
+    layer.delegate = MotionAnimator.sharedLayerDelegate()
+
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.5)
+    CATransaction.setDisableActions(true)
+    layer.opacity = 0.5
+    CATransaction.commit()
+
+    XCTAssertNil(layer.animationKeys())
+  }
+
+  func testDoesImplicitlyAnimateInUIViewAnimateBlockWithLayerDelegateAlone() {
     // Delegate will allow us to do implicit animations, but only via the motion animator.
     layer.delegate = MotionAnimator.sharedLayerDelegate()
 
     UIView.animate(withDuration: 0.5) {
-      layer.opacity = 0.5
+      self.layer.opacity = 0.5
     }
 
-    XCTAssertNil(layer.animationKeys())
+    XCTAssertEqual(layer.animationKeys()!, ["opacity"])
   }
 
   func testDoesImplicitlyAnimateWithLayerDelegateAndAnimator() {
-    let layer = CALayer()
     layer.delegate = MotionAnimator.sharedLayerDelegate()
 
     let animator = MotionAnimator()
+    animator.additive = false
     let timing = MotionTiming(delay: 0,
                               duration: 1,
                               curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
                               repetition: .init(type: .none, amount: 0, autoreverses: false))
 
     animator.animate(with: timing) {
-      layer.opacity = 0.5
+      self.layer.opacity = 0.5
     }
 
-    XCTAssertEqual(layer.animationKeys()?.count, 1)
+    XCTAssertEqual(layer.animationKeys()!, ["opacity"])
   }
 }
