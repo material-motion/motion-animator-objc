@@ -53,12 +53,12 @@ class ImplicitAnimationTests: XCTestCase {
     CATransaction.flush()
 
     originalImplementation =
-      class_getMethodImplementation(UIView.self, #selector(UIView.action(for:forKey:)))
+      class_getMethodImplementation(CALayer.self, #selector(CALayer.action(forKey:)))
   }
 
   override func tearDown() {
     let implementation =
-        class_getMethodImplementation(UIView.self, #selector(UIView.action(for:forKey:)))
+        class_getMethodImplementation(CALayer.self, #selector(CALayer.action(forKey:)))
     XCTAssertEqual(originalImplementation, implementation)
 
     animator = nil

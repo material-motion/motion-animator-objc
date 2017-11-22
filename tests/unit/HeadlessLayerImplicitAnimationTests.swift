@@ -67,7 +67,9 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
     layer.opacity = 0.5
     CATransaction.commit()
 
-    XCTAssertEqual(layer.animationKeys()!, ["opacity"])
+    let animation = layer.animation(forKey: "opacity") as! CABasicAnimation
+    XCTAssertEqual(animation.keyPath, "opacity")
+    XCTAssertEqual(animation.duration, 0.5)
   }
 
   func testDoesNotImplicitlyAnimateInCATransactionWithActionsDisabled() {
@@ -80,12 +82,43 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
     XCTAssertNil(layer.animationKeys())
   }
 
+  func testCATransactionTimingTakesPrecedenceOverUIViewTimingInside() {
+    UIView.animate(withDuration: 0.5) {
+      CATransaction.begin()
+      CATransaction.setAnimationDuration(0.2)
+      self.layer.opacity = 0.5
+      CATransaction.commit()
+    }
+
+    let animation = layer.animation(forKey: "opacity") as! CABasicAnimation
+    XCTAssertEqual(animation.keyPath, "opacity")
+    XCTAssertEqual(animation.duration, 0.2)
+  }
+
+  // Verifies the somewhat counter-intuitive fact that CATransaction's animation duration always
+  // takes precedence over UIView's animation duration. This means that animating a headless layer
+  // using UIView animation APIs may not result in the expected timings.
+  func testCATransactionTimingTakesPrecedenceOverUIViewTimingOutside() {
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.2)
+    UIView.animate(withDuration: 0.5) {
+      self.layer.opacity = 0.5
+    }
+    CATransaction.commit()
+
+    let animation = layer.animation(forKey: "opacity") as! CABasicAnimation
+    XCTAssertEqual(animation.keyPath, "opacity")
+    XCTAssertEqual(animation.duration, 0.2)
+  }
+
   func testDoesImplicitlyAnimateInUIViewAnimateBlock() {
     UIView.animate(withDuration: 0.5) {
       self.layer.opacity = 0.5
     }
 
-    XCTAssertEqual(layer.animationKeys()!, ["opacity"])
+    let animation = layer.animation(forKey: "opacity") as! CABasicAnimation
+    XCTAssertEqual(animation.keyPath, "opacity")
+    XCTAssertEqual(animation.duration, CATransaction.animationDuration())
   }
 
   func testDoesNotImplicitlyAnimateInUIViewAnimateBlockWithActionsDisabledInside() {
@@ -110,8 +143,27 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
     XCTAssertNil(layer.animationKeys())
   }
 
+  func testAnimatorTimingTakesPrecedenceOverCATransactionTiming() {
+    let animator = MotionAnimator()
+    animator.additive = false
+    let timing = MotionTiming(delay: 0,
+                              duration: 1,
+                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
+                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+
+    animator.animate(with: timing) {
+      self.layer.opacity = 0.5
+    }
+
+    let animation = layer.animation(forKey: "opacity") as! CABasicAnimation
+    XCTAssertEqual(animation.keyPath, "opacity")
+    XCTAssertEqual(animation.duration, timing.duration)
+  }
+
+  // MARK: Deprecated tests.
+
+  @available(*, deprecated)
   func testDoesImplicitlyAnimateInCATransactionWithLayerDelegateAlone() {
-    // Delegate will allow us to do implicit animations, but only via the motion animator.
     layer.delegate = MotionAnimator.sharedLayerDelegate()
 
     CATransaction.begin()
@@ -122,8 +174,8 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
     XCTAssertEqual(layer.animationKeys()!, ["opacity"])
   }
 
+  @available(*, deprecated)
   func testDoesNotImplicitlyAnimateInCATransactionWithLayerDelegateAloneAndActionsAreDisabled() {
-    // Delegate will allow us to do implicit animations, but only via the motion animator.
     layer.delegate = MotionAnimator.sharedLayerDelegate()
 
     CATransaction.begin()
@@ -135,8 +187,8 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
     XCTAssertNil(layer.animationKeys())
   }
 
+  @available(*, deprecated)
   func testDoesImplicitlyAnimateInUIViewAnimateBlockWithLayerDelegateAlone() {
-    // Delegate will allow us to do implicit animations, but only via the motion animator.
     layer.delegate = MotionAnimator.sharedLayerDelegate()
 
     UIView.animate(withDuration: 0.5) {
@@ -146,6 +198,7 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
     XCTAssertEqual(layer.animationKeys()!, ["opacity"])
   }
 
+  @available(*, deprecated)
   func testDoesImplicitlyAnimateWithLayerDelegateAndAnimator() {
     layer.delegate = MotionAnimator.sharedLayerDelegate()
 
