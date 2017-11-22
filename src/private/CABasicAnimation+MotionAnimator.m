@@ -35,6 +35,10 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
       animation = [CABasicAnimation animation];
       animation.timingFunction = MDMTimingFunctionWithControlPoints(timing.curve.data);
       animation.duration = timing.duration * timeScaleFactor;
+
+      if (animation.duration == 0) {
+        return nil;
+      }
       break;
 
     case MDMMotionCurveTypeSpring: {
