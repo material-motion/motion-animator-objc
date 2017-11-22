@@ -49,6 +49,9 @@ class ImplicitAnimationTests: XCTestCase {
       self.addedAnimations.append(animation)
     }
 
+    // Connect our layers to the render server.
+    CATransaction.flush()
+
     originalImplementation =
       class_getMethodImplementation(UIView.self, #selector(UIView.action(for:forKey:)))
   }
@@ -186,5 +189,24 @@ class ImplicitAnimationTests: XCTestCase {
 
     XCTAssertEqual(addedAnimations.count, 0)
     XCTAssertEqual(view.alpha, 0)
+  }
+
+  func testBackingLayerDoesNotImplicitlyAnimate() {
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.5)
+
+    view.layer.opacity = 0.5
+
+    CATransaction.commit()
+
+    XCTAssertNil(view.layer.animationKeys())
+  }
+
+  func testBackingLayerDoesAnimateInsideUIViewAnimateBlock() {
+    UIView.animate(withDuration: 0.5) {
+      self.view.layer.opacity = 0.5
+    }
+
+    XCTAssertEqual(view.layer.animationKeys()!, ["opacity"])
   }
 }

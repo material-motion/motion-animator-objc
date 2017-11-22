@@ -43,6 +43,9 @@ class InstantAnimationTests: XCTestCase {
     view = UIView() // Need to animate a view's layer to get implicit animations.
     window.addSubview(view)
 
+    // Connect our layers to the render server.
+    CATransaction.flush()
+
     addedAnimations = []
     animator.addCoreAnimationTracer { (_, animation) in
       self.addedAnimations.append(animation)
