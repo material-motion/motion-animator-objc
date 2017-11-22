@@ -75,7 +75,7 @@ static NSMutableArray<MDMActionContext *> *sActionContext = nil;
 @interface MDMLayerDelegate: NSObject <CALayerDelegate>
 @end
 
-static id<CAAction> ActionForKey(CALayer *self, SEL _cmd, NSString *event) {
+static id<CAAction> ActionForKey(CALayer *layer, SEL _cmd, NSString *event) {
   NSCAssert([NSStringFromSelector(_cmd) isEqualToString:
                 NSStringFromSelector(@selector(actionForKey:))],
             @"Invalid method signature.");
@@ -87,15 +87,15 @@ static id<CAAction> ActionForKey(CALayer *self, SEL _cmd, NSString *event) {
     // Graceful handling of invalid state on non-debug builds for if our context is nil invokes our
     // original implementation:
     return ((id<CAAction>(*)(id, SEL, NSString *))sOriginalActionForKeyLayerImp)
-              (self, _cmd, event);
+              (layer, _cmd, event);
   }
 
   // We don't have access to the "to" value of our animation here, so we unfortunately can't
   // calculate additive values if the animator is configured as such. So, to support additive
   // animations, we queue up the modified actions and then add them all at the end of our
   // MDMAnimateImplicitly invocation.
-  id initialValue = [self valueForKeyPath:event];
-  [context addActionForLayer:self keyPath:event withInitialValue:initialValue];
+  id initialValue = [layer valueForKeyPath:event];
+  [context addActionForLayer:layer keyPath:event withInitialValue:initialValue];
   return [NSNull null];
 }
 
