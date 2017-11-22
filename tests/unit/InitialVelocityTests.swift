@@ -121,6 +121,19 @@ class InitialVelocityTests: XCTestCase {
     }
   }
 
+  func testVelocityInfluencesDuration() {
+    let velocity: CGFloat = 50
+    animate(from: 0, to: 100, withVelocity: velocity)
+
+    XCTAssertEqual(addedAnimations.count, 3)
+    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+      XCTAssertEqual(animation.duration, animation.settlingDuration,
+                     "from: \(animation.fromValue!), "
+                      + "to: \(animation.toValue!), "
+                      + "withVelocity: \(velocity)")
+    }
+  }
+
   private func animate(from: CGFloat, to: CGFloat, withVelocity velocity: CGFloat) {
     let timing = MotionTiming(delay: 0,
                               duration: 0.7,
