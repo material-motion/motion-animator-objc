@@ -71,6 +71,11 @@
   };
 
   CGFloat timeScaleFactor = [self computedTimeScaleFactor];
+  if (timeScaleFactor == 0) {
+    exitEarly();
+    return;
+  }
+
   CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
 
   if (animation == nil) {
