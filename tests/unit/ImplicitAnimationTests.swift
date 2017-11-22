@@ -49,6 +49,9 @@ class ImplicitAnimationTests: XCTestCase {
       self.addedAnimations.append(animation)
     }
 
+    // Connect our layers to the render server.
+    CATransaction.flush()
+
     originalImplementation =
       class_getMethodImplementation(UIView.self, #selector(UIView.action(for:forKey:)))
   }

@@ -40,7 +40,7 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
 
     window.layer.addSublayer(layer)
 
-    // Connect our layer to the render server.
+    // Connect our layers to the render server.
     CATransaction.flush()
   }
 
