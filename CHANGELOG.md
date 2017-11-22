@@ -1,3 +1,31 @@
+# 2.5.0
+
+This minor release makes CALayer implicit animation support more robust while simplifying the internal animator implementation.
+
+## New deprecations
+
+`MDMMotionAnimator`'s `+sharedLayerDelegate` API has been deprecated and is no longer needed to animate headless CALayer instances.
+
+## New features
+
+The animator now supports additive animations on CALayer's `shadowOffset` property.
+
+## Source changes
+
+* [Improved robustness of implicit animation support (#53)](https://github.com/material-motion/motion-animator-objc/commit/f2724c03d4c4ffb0c1cdd9b15bd8e9070c42a85b) (featherless)
+* [If timeScaleFactor is 0 then exit early. (#58)](https://github.com/material-motion/motion-animator-objc/commit/68456b3fe31766baaa791fc20cec2f1eab47657e) (featherless)
+* [Spring animations now take velocity into account when determining duration. (#56)](https://github.com/material-motion/motion-animator-objc/commit/a8a40ea7a25dfe74753fda6b64dce4ca5497e319) (featherless)
+* [Flatten the animate internal logic. (#55)](https://github.com/material-motion/motion-animator-objc/commit/47bee419abda897a6d295006215c486c69d9ff83) (featherless)
+* [Allow headless CALayers to implicitly animate when using the sharedLayerDelegate. (#57)](https://github.com/material-motion/motion-animator-objc/commit/044ad1872209b5e1bb0976786f9768c54a8ecb59) (featherless)
+* [Always commit the model layer value inside a transaction with actions disabled. (#54)](https://github.com/material-motion/motion-animator-objc/commit/5a3d65e32ee990561392983d9bc9b359e903594b) (featherless)
+* [Add shadowOffset to list of support CGSize properties. (#50)](https://github.com/material-motion/motion-animator-objc/commit/89abc77524057c27bae550e3badd320b8bea45fe) (featherless)
+
+## API changes
+
+### MDMMotionAnimator
+
+**deprecated** method: `+sharedLayerDelegate`
+
 # 2.4.0
 
 This minor release introduces support for implicitly animating CALayers that have been created
@@ -21,7 +49,7 @@ Added support for adding implicit animations to headless CALayer instances.
 
 ## API changes
 
-### MDMAnimator
+### MDMMotionAnimator
 
 **new** method: `+sharedLayerDelegate`
 
