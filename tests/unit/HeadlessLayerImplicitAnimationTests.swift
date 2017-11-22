@@ -51,6 +51,16 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
     super.tearDown()
   }
 
+  func testUnFlushedLayerDoesNotImplicitlyAnimateInCATransaction() {
+    let unflushedLayer = CALayer()
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.5)
+    unflushedLayer.opacity = 0.5
+    CATransaction.commit()
+
+    XCTAssertNil(unflushedLayer.animationKeys())
+  }
+
   func testDoesImplicitlyAnimateInCATransaction() {
     CATransaction.begin()
     CATransaction.setAnimationDuration(0.5)
