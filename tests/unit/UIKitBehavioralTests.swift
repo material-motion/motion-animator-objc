@@ -127,6 +127,9 @@ class UIKitBehavioralTests: XCTestCase {
 
   func testSomePropertiesDoNotImplicitlyAnimate() {
     let properties: [AnimatableKeyPath: Any] = [
+      .shadowOffset: CGSize(width: 1, height: 1),
+      .shadowOpacity: 0.3,
+      .shadowRadius: 5,
       .strokeStart: 0.2,
       .strokeEnd: 0.5,
     ]
@@ -153,6 +156,9 @@ class UIKitBehavioralTests: XCTestCase {
       .position: CGPoint(x: 50, y: 20),
       .rotation: 42,
       .scale: 2.5,
+      .shadowOffset: CGSize(width: 1, height: 1),
+      .shadowOpacity: 0.3,
+      .shadowRadius: 5,
       .strokeStart: 0.2,
       .strokeEnd: 0.5,
       .width: 25,
