@@ -57,10 +57,7 @@ class QuartzCoreBehavioralTests: XCTestCase {
     for (keyPath, value) in properties {
       rebuildLayer()
 
-      CATransaction.begin()
-      CATransaction.setAnimationDuration(0.5)
       layer.setValue(value, forKeyPath: keyPath.rawValue)
-      CATransaction.commit()
 
       XCTAssertNotNil(layer.animationKeys(),
                       "Expected \(keyPath.rawValue) to generate at least one animation.")
@@ -92,10 +89,7 @@ class QuartzCoreBehavioralTests: XCTestCase {
     for (keyPath, value) in properties {
       rebuildLayer()
 
-      CATransaction.begin()
-      CATransaction.setAnimationDuration(0.5)
       layer.setValue(value, forKeyPath: keyPath.rawValue)
-      CATransaction.commit()
 
       XCTAssertNotNil(layer.animationKeys(),
                       "Expected \(keyPath.rawValue) to generate at least one animation.")
@@ -117,10 +111,7 @@ class QuartzCoreBehavioralTests: XCTestCase {
     for (keyPath, value) in properties {
       rebuildLayer()
 
-      CATransaction.begin()
-      CATransaction.setAnimationDuration(0.5)
       layer.setValue(value, forKeyPath: keyPath.rawValue)
-      CATransaction.commit()
 
       XCTAssertNil(layer.animationKeys(),
                    "Expected \(keyPath.rawValue) not to generate any animations.")
