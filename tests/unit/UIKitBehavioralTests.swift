@@ -48,8 +48,7 @@ class UIKitBehavioralTests: XCTestCase {
     view = ShapeLayerBackedView()
     window.addSubview(view)
 
-    // Connect our layers to the render server.
-    CATransaction.flush()
+    rebuildView()
   }
 
   override func tearDown() {
@@ -63,10 +62,13 @@ class UIKitBehavioralTests: XCTestCase {
     view.removeFromSuperview()
     view = ShapeLayerBackedView() // Need to animate a view's layer to get implicit animations.
     oldSuperview.addSubview(view)
+
+    // Connect our layers to the render server.
+    CATransaction.flush()
   }
 
   func testSomePropertiesImplicitlyAnimateAdditively() {
-    let additiveProperties: [AnimatableKeyPath: Any] = [
+    let properties: [AnimatableKeyPath: Any] = [
       .cornerRadius: 3,
       .height: 100,
       .position: CGPoint(x: 50, y: 20),
@@ -76,7 +78,7 @@ class UIKitBehavioralTests: XCTestCase {
       .x: 12,
       .y: 23,
     ]
-    for (keyPath, value) in additiveProperties {
+    for (keyPath, value) in properties {
       rebuildView()
 
       UIView.animate(withDuration: 0.01) {
@@ -97,11 +99,11 @@ class UIKitBehavioralTests: XCTestCase {
   }
 
   func testSomePropertiesImplicitlyAnimateButNotAdditively() {
-    let additiveProperties: [AnimatableKeyPath: Any] = [
+    let properties: [AnimatableKeyPath: Any] = [
       .backgroundColor: UIColor.blue,
       .opacity: 0.5,
     ]
-    for (keyPath, value) in additiveProperties {
+    for (keyPath, value) in properties {
       rebuildView()
 
       UIView.animate(withDuration: 0.01) {
@@ -122,12 +124,12 @@ class UIKitBehavioralTests: XCTestCase {
   }
 
   func testSomePropertiesDoNotImplicitlyAnimate() {
-    let additiveProperties: [AnimatableKeyPath: Any] = [
+    let properties: [AnimatableKeyPath: Any] = [
       .strokeStart: 0.2,
       .strokeEnd: 0.5,
     ]
-    for (keyPath, value) in additiveProperties {
-      self.view.layer.removeAllAnimations()
+    for (keyPath, value) in properties {
+      rebuildView()
 
       UIView.animate(withDuration: 0.01) {
         self.view.layer.setValue(value, forKeyPath: keyPath.rawValue)
