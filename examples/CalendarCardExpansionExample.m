@@ -46,30 +46,11 @@
 
   MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
   animator.shouldReverseValues = !_expanded;
+  animator.beginFromCurrentState = YES;
 
-  if (_expanded) {
-    // We can't easily animate the hiding of the navigation bar because UIKit sets the hidden
-    // property on the navigation bar immediately if animated: is false.
-    [self.navigationController setNavigationBarHidden:true animated:true];
-
-  } else {
-    // Cache the previous value because we want to restore it in a moment.
-    BOOL wasReversingValues = animator.shouldReverseValues;
-    animator.shouldReverseValues = false;
-
-    // Let UIKit do the layout calculations for us.
-    CGFloat currentPosition = self.navigationController.navigationBar.layer.position.y;
-    [self.navigationController setNavigationBarHidden:false animated:false];
-    CGFloat desiredPosition = self.navigationController.navigationBar.layer.position.y;
-
-    [animator animateWithTiming:timing.navigationBarY
-                        toLayer:self.navigationController.navigationBar.layer
-                     withValues:@[ @(currentPosition), @(desiredPosition) ]
-                        keyPath:MDMKeyPathY];
-
-    // Restore the previous value.
-    animator.shouldReverseValues = wasReversingValues;
-  }
+  [animator animateWithTiming:timing.navigationBarY animations:^{
+    [self.navigationController setNavigationBarHidden:_expanded animated:YES];
+  }];
 
   CGRect chipFrame = [self frameForChip];
   CGRect headerFrame = [self frameForHeader];
