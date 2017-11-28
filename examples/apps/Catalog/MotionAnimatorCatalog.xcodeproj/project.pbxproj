@@ -11,6 +11,7 @@
 		660636021FACC24300C3DFB8 /* TimeScaleFactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */; };
 		6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */; };
 		664F59941FCCE27E002EC56D /* UIKitBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */; };
+		664F59961FCDB2E6002EC56D /* QuartzCoreBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */; };
 		666FAA841D384A6B000363DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666FAA831D384A6B000363DA /* AppDelegate.swift */; };
 		666FAA8B1D384A6B000363DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8A1D384A6B000363DA /* Assets.xcassets */; };
 		666FAA8E1D384A6B000363DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8C1D384A6B000363DA /* LaunchScreen.storyboard */; };
@@ -53,6 +54,7 @@
 		660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeScaleFactorTests.swift; sourceTree = "<group>"; };
 		6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialVelocityTests.swift; sourceTree = "<group>"; };
 		664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitBehavioralTests.swift; sourceTree = "<group>"; };
+		664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuartzCoreBehavioralTests.swift; sourceTree = "<group>"; };
 		666FAA801D384A6B000363DA /* MotionAnimatorCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionAnimatorCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		666FAA831D384A6B000363DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Catalog/AppDelegate.swift; sourceTree = "<group>"; };
 		666FAA8A1D384A6B000363DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				66EF6F291FC48D6A00C83A63 /* InstantAnimationTests.swift */,
 				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
 				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
+				664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */,
 				660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */,
 				664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */,
 			);
@@ -506,6 +509,7 @@
 				66EF6F2A1FC48D6A00C83A63 /* InstantAnimationTests.swift in Sources */,
 				660636021FACC24300C3DFB8 /* TimeScaleFactorTests.swift in Sources */,
 				66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */,
+				664F59961FCDB2E6002EC56D /* QuartzCoreBehavioralTests.swift in Sources */,
 				66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */,
 				6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */,
 				66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */,
