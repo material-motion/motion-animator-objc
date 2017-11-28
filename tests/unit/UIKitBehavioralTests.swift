@@ -139,5 +139,29 @@ class UIKitBehavioralTests: XCTestCase {
                    "Expected \(keyPath.rawValue) not to generate any animations.")
     }
   }
-}
 
+  func testNoPropertiesImplicitlyAnimateOutsideOfAnAnimationBlock() {
+    let properties: [AnimatableKeyPath: Any] = [
+      .backgroundColor: UIColor.blue,
+      .cornerRadius: 3,
+      .height: 100,
+      .opacity: 0.5,
+      .position: CGPoint(x: 50, y: 20),
+      .rotation: 42,
+      .scale: 2.5,
+      .strokeStart: 0.2,
+      .strokeEnd: 0.5,
+      .width: 25,
+      .x: 12,
+      .y: 23,
+    ]
+    for (keyPath, value) in properties {
+      rebuildView()
+
+      self.view.layer.setValue(value, forKeyPath: keyPath.rawValue)
+
+      XCTAssertNil(view.layer.animationKeys(),
+                   "Expected \(keyPath.rawValue) not to generate any animations.")
+    }
+  }
+}
