@@ -45,7 +45,7 @@ class UIKitBehavioralTests: XCTestCase {
 
     let window = UIWindow()
     window.makeKeyAndVisible()
-    view = ShapeLayerBackedView() // Need to animate a view's layer to get implicit animations.
+    view = ShapeLayerBackedView()
     window.addSubview(view)
 
     // Connect our layers to the render server.
