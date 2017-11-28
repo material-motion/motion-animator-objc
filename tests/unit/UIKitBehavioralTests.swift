@@ -67,6 +67,8 @@ class UIKitBehavioralTests: XCTestCase {
     CATransaction.flush()
   }
 
+  // MARK: Each animatable property needs to be added to exactly one of the following three tests
+
   func testSomePropertiesImplicitlyAnimateAdditively() {
     let properties: [AnimatableKeyPath: Any] = [
       .cornerRadius: 3,
@@ -139,5 +141,31 @@ class UIKitBehavioralTests: XCTestCase {
                    "Expected \(keyPath.rawValue) not to generate any animations.")
     }
   }
-}
 
+  // MARK: Every animatable layer property must be added to the following test
+
+  func testNoPropertiesImplicitlyAnimateOutsideOfAnAnimationBlock() {
+    let properties: [AnimatableKeyPath: Any] = [
+      .backgroundColor: UIColor.blue,
+      .cornerRadius: 3,
+      .height: 100,
+      .opacity: 0.5,
+      .position: CGPoint(x: 50, y: 20),
+      .rotation: 42,
+      .scale: 2.5,
+      .strokeStart: 0.2,
+      .strokeEnd: 0.5,
+      .width: 25,
+      .x: 12,
+      .y: 23,
+    ]
+    for (keyPath, value) in properties {
+      rebuildView()
+
+      self.view.layer.setValue(value, forKeyPath: keyPath.rawValue)
+
+      XCTAssertNil(view.layer.animationKeys(),
+                   "Expected \(keyPath.rawValue) not to generate any animations.")
+    }
+  }
+}
