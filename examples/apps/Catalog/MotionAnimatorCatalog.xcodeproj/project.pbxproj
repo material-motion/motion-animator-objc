@@ -10,6 +10,7 @@
 		2AA864EDA683CEF5FAA721BE /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DBE814C7B88BAD6337052DB /* Pods_UnitTests.framework */; };
 		660636021FACC24300C3DFB8 /* TimeScaleFactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */; };
 		6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */; };
+		664F59941FCCE27E002EC56D /* UIKitBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */; };
 		666FAA841D384A6B000363DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666FAA831D384A6B000363DA /* AppDelegate.swift */; };
 		666FAA8B1D384A6B000363DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8A1D384A6B000363DA /* Assets.xcassets */; };
 		666FAA8E1D384A6B000363DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8C1D384A6B000363DA /* LaunchScreen.storyboard */; };
@@ -51,6 +52,7 @@
 		52820916F8FAA40E942A7333 /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
 		660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeScaleFactorTests.swift; sourceTree = "<group>"; };
 		6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialVelocityTests.swift; sourceTree = "<group>"; };
+		664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitBehavioralTests.swift; sourceTree = "<group>"; };
 		666FAA801D384A6B000363DA /* MotionAnimatorCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionAnimatorCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		666FAA831D384A6B000363DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Catalog/AppDelegate.swift; sourceTree = "<group>"; };
 		666FAA8A1D384A6B000363DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
 				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
 				660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */,
+				664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */,
 			);
 			path = unit;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 			files = (
 				6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */,
 				66EF6F281FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift in Sources */,
+				664F59941FCCE27E002EC56D /* UIKitBehavioralTests.swift in Sources */,
 				66EF6F2A1FC48D6A00C83A63 /* InstantAnimationTests.swift in Sources */,
 				660636021FACC24300C3DFB8 /* TimeScaleFactorTests.swift in Sources */,
 				66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */,
