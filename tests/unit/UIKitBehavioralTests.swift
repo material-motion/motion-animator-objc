@@ -67,6 +67,8 @@ class UIKitBehavioralTests: XCTestCase {
     CATransaction.flush()
   }
 
+  // MARK: Each animatable property needs to be added to exactly one of the following three tests
+
   func testSomePropertiesImplicitlyAnimateAdditively() {
     let properties: [AnimatableKeyPath: Any] = [
       .cornerRadius: 3,
@@ -139,6 +141,8 @@ class UIKitBehavioralTests: XCTestCase {
                    "Expected \(keyPath.rawValue) not to generate any animations.")
     }
   }
+
+  // MARK: Every animatable layer property must be added to the following test
 
   func testNoPropertiesImplicitlyAnimateOutsideOfAnAnimationBlock() {
     let properties: [AnimatableKeyPath: Any] = [
