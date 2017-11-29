@@ -20,6 +20,32 @@
 
 #import <UIKit/UIKit.h>
 
+#pragma mark - Private
+
+static BOOL IsNumberValue(id someValue) {
+  return [someValue isKindOfClass:[NSNumber class]];
+}
+
+static BOOL IsCGPointType(id someValue) {
+  if ([someValue isKindOfClass:[NSValue class]]) {
+    NSValue *asValue = (NSValue *)someValue;
+    const char *objCType = @encode(CGPoint);
+    return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
+  }
+  return NO;
+}
+
+static BOOL IsCGSizeType(id someValue) {
+  if ([someValue isKindOfClass:[NSValue class]]) {
+    NSValue *asValue = (NSValue *)someValue;
+    const char *objCType = @encode(CGSize);
+    return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
+  }
+  return NO;
+}
+
+#pragma mark - Public
+
 CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor) {
   CABasicAnimation *animation;
   switch (timing.curve.type) {
@@ -67,17 +93,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
     return; // Nothing to do here.
   }
 
-  // We can't infer the from/to value types from the animation if the values are NSValue types, so
-  // we map known key paths to their data types here:
-  static NSSet *sizeKeyPaths = nil;
-  static NSSet *positionKeyPaths = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    sizeKeyPaths = [NSSet setWithArray:@[@"bounds.size", @"shadowOffset"]];
-    positionKeyPaths = [NSSet setWithArray:@[@"position", @"anchorPoint"]];
-  });
-
-  if ([animation.toValue isKindOfClass:[NSNumber class]]) {
+  if (IsNumberValue(animation.toValue)) {
     // Non-additive animations animate along a direct path between fromValue and toValue, regardless
     // of the model layer. Additive animations, on the other hand, animate towards the layer's model
     // value by applying this formula:
@@ -166,7 +182,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
       springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
     }
 
-  } else if ([sizeKeyPaths containsObject:animation.keyPath]) {
+  } else if (IsCGSizeType(animation.toValue)) {
     CGSize from = [animation.fromValue CGSizeValue];
     CGSize to = [animation.toValue CGSizeValue];
     CGSize additiveDisplacement = CGSizeMake(from.width - to.width, from.height - to.height);
@@ -198,7 +214,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
       springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
     }
 
-  } else if ([positionKeyPaths containsObject:animation.keyPath]) {
+  } else if (IsCGPointType(animation.toValue)) {
     CGPoint from = [animation.fromValue CGPointValue];
     CGPoint to = [animation.toValue CGPointValue];
     CGPoint additiveDisplacement = CGPointMake(from.x - to.x, from.y - to.y);
