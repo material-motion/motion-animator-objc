@@ -34,6 +34,9 @@ class MotionAnimatorTests: XCTestCase {
 
     animator.animate(with: timing, to: layer,
                      withValues: [UIColor.blue, UIColor.red], keyPath: .backgroundColor)
+    animator.animate(with: timing, to: layer,
+                     withValues: [CGRect.zero, CGRect(x: 0, y: 0, width: 100, height: 50)],
+                     keyPath: .bounds)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .cornerRadius)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .height)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .opacity)

@@ -71,6 +71,7 @@ class UIKitBehavioralTests: XCTestCase {
 
   func testSomePropertiesImplicitlyAnimateAdditively() {
     let properties: [AnimatableKeyPath: Any] = [
+      .bounds: CGRect(x: 0, y: 0, width: 123, height: 456),
       .cornerRadius: 3,
       .height: 100,
       .position: CGPoint(x: 50, y: 20),
@@ -150,6 +151,7 @@ class UIKitBehavioralTests: XCTestCase {
   func testNoPropertiesImplicitlyAnimateOutsideOfAnAnimationBlock() {
     let properties: [AnimatableKeyPath: Any] = [
       .backgroundColor: UIColor.blue,
+      .bounds: CGRect(x: 0, y: 0, width: 123, height: 456),
       .cornerRadius: 3,
       .height: 100,
       .opacity: 0.5,

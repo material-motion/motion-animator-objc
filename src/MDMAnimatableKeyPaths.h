@@ -53,6 +53,16 @@ typedef NSString * const MDMAnimatableKeyPath CF_TYPED_ENUM;
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBackgroundColor NS_SWIFT_NAME(backgroundColor);
 
 /**
+ Bounds.
+
+ Equivalent UIView property: bounds
+ Equivalent CALayer property: bounds
+ Expected value type: CGRect or NSValue (containing a CGRect).
+ Additive animation supported: Yes.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBounds NS_SWIFT_NAME(bounds);
+
+/**
  Corner radius.
 
  Equivalent UIView property: N/A

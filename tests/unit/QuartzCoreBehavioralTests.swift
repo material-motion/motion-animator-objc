@@ -74,6 +74,7 @@ class QuartzCoreBehavioralTests: XCTestCase {
 
   func testWhichPropertiesImplicitlyAnimateButNotAdditively() {
     let properties: [AnimatableKeyPath: Any] = [
+      .bounds: CGRect(x: 0, y: 0, width: 123, height: 456),
       .cornerRadius: 3,
       .height: 100,
       .opacity: 0.5,
