@@ -29,7 +29,7 @@ static BOOL IsNumberValue(id someValue) {
 static BOOL IsValueType(id someValue, char *objCType) {
   if ([someValue isKindOfClass:[NSValue class]]) {
     NSValue *asValue = (NSValue *)someValue;
-    return strcmp(asValue.objCType, objCType) == 0;
+    return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
   }
   return NO;
 }
