@@ -170,9 +170,12 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
     CGSize from = [animation.fromValue CGSizeValue];
     CGSize to = [animation.toValue CGSizeValue];
     CGSize additiveDisplacement = CGSizeMake(from.width - to.width, from.height - to.height);
-    animation.fromValue = [NSValue valueWithCGSize:additiveDisplacement];
-    animation.toValue = [NSValue valueWithCGSize:CGSizeZero];
-    animation.additive = true;
+
+    if (wantsAdditive) {
+      animation.fromValue = [NSValue valueWithCGSize:additiveDisplacement];
+      animation.toValue = [NSValue valueWithCGSize:CGSizeZero];
+      animation.additive = true;
+    }
 
 #pragma clang diagnostic push
     // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
@@ -199,9 +202,12 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
     CGPoint from = [animation.fromValue CGPointValue];
     CGPoint to = [animation.toValue CGPointValue];
     CGPoint additiveDisplacement = CGPointMake(from.x - to.x, from.y - to.y);
-    animation.fromValue = [NSValue valueWithCGPoint:additiveDisplacement];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointZero];
-    animation.additive = true;
+
+    if (wantsAdditive) {
+      animation.fromValue = [NSValue valueWithCGPoint:additiveDisplacement];
+      animation.toValue = [NSValue valueWithCGPoint:CGPointZero];
+      animation.additive = true;
+    }
 
 #pragma clang diagnostic push
     // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
