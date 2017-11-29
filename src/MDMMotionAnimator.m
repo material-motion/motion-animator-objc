@@ -40,26 +40,6 @@
   return self;
 }
 
-#pragma mark - Private
-
-- (CGFloat)computedTimeScaleFactor {
-  CGFloat timeScaleFactor;
-  id transactionTimeScaleFactor = [CATransaction mdm_timeScaleFactor];
-  if (transactionTimeScaleFactor != nil) {
-#if CGFLOAT_IS_DOUBLE
-    timeScaleFactor = [transactionTimeScaleFactor doubleValue];
-#else
-    timeScaleFactor = [transactionTimeScaleFactor floatValue];
-#endif
-  } else {
-    timeScaleFactor = _timeScaleFactor;
-  }
-
-  return MDMSimulatorAnimationDragCoefficient() * timeScaleFactor;
-}
-
-#pragma mark - Public
-
 - (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
@@ -177,6 +157,24 @@
 - (void)stopAllAnimations {
   [_registrar commitCurrentAnimationValuesToAllLayers];
   [_registrar removeAllAnimations];
+}
+
+#pragma mark - Private
+
+- (CGFloat)computedTimeScaleFactor {
+  CGFloat timeScaleFactor;
+  id transactionTimeScaleFactor = [CATransaction mdm_timeScaleFactor];
+  if (transactionTimeScaleFactor != nil) {
+#if CGFLOAT_IS_DOUBLE
+    timeScaleFactor = [transactionTimeScaleFactor doubleValue];
+#else
+    timeScaleFactor = [transactionTimeScaleFactor floatValue];
+#endif
+  } else {
+    timeScaleFactor = _timeScaleFactor;
+  }
+
+  return MDMSimulatorAnimationDragCoefficient() * timeScaleFactor;
 }
 
 @end
