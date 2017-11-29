@@ -209,4 +209,14 @@ class ImplicitAnimationTests: XCTestCase {
 
     XCTAssertEqual(view.layer.animationKeys()!, ["opacity"])
   }
+
+  func testUnsupportedAnimationKeyIsNotAnimated() {
+    animator.animate(with: timing) {
+      self.view.layer.sublayers = []
+    }
+
+    XCTAssertNil(view.layer.animationKeys(),
+                 "No animations should have been added, but the following keys were found: "
+                  + "\(view.layer.animationKeys()!)")
+  }
 }
