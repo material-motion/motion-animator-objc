@@ -21,6 +21,31 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
+// Returns the set of animatable key paths supported by MDMMotionAnimator's implicit animations.
+static NSSet<MDMAnimatableKeyPath> *AllAnimatableKeyPaths(void) {
+  static NSSet *animatableKeyPaths = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    animatableKeyPaths = [NSSet setWithArray:@[MDMKeyPathBackgroundColor,
+                                               MDMKeyPathBounds,
+                                               MDMKeyPathCornerRadius,
+                                               MDMKeyPathHeight,
+                                               MDMKeyPathOpacity,
+                                               MDMKeyPathPosition,
+                                               MDMKeyPathRotation,
+                                               MDMKeyPathScale,
+                                               MDMKeyPathShadowOffset,
+                                               MDMKeyPathShadowOpacity,
+                                               MDMKeyPathShadowRadius,
+                                               MDMKeyPathStrokeStart,
+                                               MDMKeyPathStrokeEnd,
+                                               MDMKeyPathWidth,
+                                               MDMKeyPathX,
+                                               MDMKeyPathY]];
+  });
+  return animatableKeyPaths;
+}
+
 @interface MDMActionContext: NSObject
 @property(nonatomic, readonly) NSArray<MDMImplicitAction *> *interceptedActions;
 @end
@@ -83,9 +108,9 @@ static id<CAAction> ActionForKey(CALayer *layer, SEL _cmd, NSString *event) {
   MDMActionContext *context = [sActionContext lastObject];
   NSCAssert(context != nil, @"MotionAnimator action method invoked out of implicit scope.");
 
-  if (context == nil) {
-    // Graceful handling of invalid state on non-debug builds for if our context is nil invokes our
-    // original implementation:
+  BOOL shouldAnimateWithAnimator = [AllAnimatableKeyPaths() containsObject:event];
+  if (context == nil || !shouldAnimateWithAnimator) {
+    // Fall through to the original CALayer implementation.
     return ((id<CAAction>(*)(id, SEL, NSString *))sOriginalActionForKeyLayerImp)
               (layer, _cmd, event);
   }
