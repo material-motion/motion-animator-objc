@@ -162,7 +162,7 @@ class ImplicitAnimationTests: XCTestCase {
     do {
       let animation = addedAnimations
         .flatMap { $0 as? CABasicAnimation }
-        .first(where: { $0.keyPath == "bounds"})!
+        .first(where: { $0.keyPath == AnimatableKeyPath.bounds.rawValue})!
       XCTAssertFalse(animation.isAdditive)
       XCTAssertEqual(animation.fromValue as! CGRect, .init(x: 0, y: 0, width: 0, height: 0))
       XCTAssertEqual(animation.toValue as! CGRect, .init(x: 0, y: 0, width: 100, height: 100))
