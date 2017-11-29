@@ -44,6 +44,16 @@ static BOOL IsCGSizeType(id someValue) {
   return NO;
 }
 
+static BOOL IsInAdditiveAnimationBlacklist(NSString *keyPath) {
+  static NSSet *nonAdditiveKeyPaths = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    nonAdditiveKeyPaths = [NSSet setWithArray:@[@"backgroundColor", @"opacity"]];
+  });
+
+  return [nonAdditiveKeyPaths containsObject:keyPath];
+}
+
 #pragma mark - Public
 
 CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor) {
@@ -87,6 +97,9 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
 }
 
 BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue) {
+  if (IsInAdditiveAnimationBlacklist(keyPath)) {
+    return NO;
+  }
   return IsNumberValue(toValue) || IsCGSizeType(toValue) || IsCGPointType(toValue);
 }
 

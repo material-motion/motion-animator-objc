@@ -55,15 +55,15 @@ class AnimationRemovalTests: XCTestCase {
   }
 
   func testAllAdditiveAnimationsGetsRemoved() {
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .opacity)
-    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
+    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .cornerRadius)
+    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .cornerRadius)
 
     XCTAssertEqual(view.layer.animationKeys()!.count, 2)
 
     animator.removeAllAnimations()
 
     XCTAssertNil(view.layer.animationKeys())
-    XCTAssertEqual(view.layer.opacity, 0.5)
+    XCTAssertEqual(view.layer.cornerRadius, 0.5)
   }
 
   func testCommitAndRemoveAllAnimationsCommitsThePresentationValue() {
@@ -73,8 +73,8 @@ class AnimationRemovalTests: XCTestCase {
       didComplete = true
     }
 
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .opacity)
-    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
+    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .cornerRadius)
+    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .cornerRadius)
 
     CATransaction.commit()
 
@@ -87,6 +87,6 @@ class AnimationRemovalTests: XCTestCase {
     animator.stopAllAnimations()
 
     XCTAssertNil(view.layer.animationKeys())
-    XCTAssertEqual(view.layer.opacity, view.layer.presentation()?.opacity)
+    XCTAssertEqual(view.layer.cornerRadius, view.layer.presentation()?.cornerRadius)
   }
 }
