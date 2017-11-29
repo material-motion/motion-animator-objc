@@ -59,12 +59,16 @@
   }
   values = MDMCoerceUIKitValuesToCoreAnimationValues(values);
 
-  [CATransaction begin];
-  [CATransaction setDisableActions:YES];
-  [layer setValue:[values lastObject] forKeyPath:keyPath];
-  [CATransaction commit];
+  void (^commitToModelLayer)(void) = ^{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    [layer setValue:[values lastObject] forKeyPath:keyPath];
+    [CATransaction commit];
+  };
 
   void (^exitEarly)(void) = ^{
+    commitToModelLayer();
+
     if (completion) {
       completion();
     }
@@ -114,6 +118,8 @@
 
   NSString *key = _additive ? nil : keyPath;
   [_registrar addAnimation:animation toLayer:layer forKey:key completion:completion];
+
+  commitToModelLayer();
 
   for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
     tracer(layer, animation);
