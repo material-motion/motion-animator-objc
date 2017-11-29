@@ -150,6 +150,17 @@
   [_tracers addObject:[tracer copy]];
 }
 
+- (void)removeAllAnimations {
+  [_registrar removeAllAnimations];
+}
+
+- (void)stopAllAnimations {
+  [_registrar commitCurrentAnimationValuesToAllLayers];
+  [_registrar removeAllAnimations];
+}
+
+#pragma mark - Private
+
 - (CGFloat)computedTimeScaleFactor {
   CGFloat timeScaleFactor;
   id transactionTimeScaleFactor = [CATransaction mdm_timeScaleFactor];
@@ -164,15 +175,6 @@
   }
 
   return MDMSimulatorAnimationDragCoefficient() * timeScaleFactor;
-}
-
-- (void)removeAllAnimations {
-  [_registrar removeAllAnimations];
-}
-
-- (void)stopAllAnimations {
-  [_registrar commitCurrentAnimationValuesToAllLayers];
-  [_registrar removeAllAnimations];
 }
 
 @end
