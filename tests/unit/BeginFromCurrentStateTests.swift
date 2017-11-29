@@ -83,11 +83,12 @@ class BeginFromCurrentStateTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(fromValue, initialValue,
-                   "Expected the animation to start from \(initialValue), but it did not.")
+    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
+                               "Expected the animation to start from \(initialValue), "
+                                + "but it did not.")
 
-    XCTAssertEqual(view.layer.opacity, 0.5,
-                   "The layer's opacity was not set to the animation's final value.")
+    XCTAssertEqualWithAccuracy(view.layer.opacity, 0.5, accuracy: 0.0001,
+                               "The layer's opacity was not set to the animation's final value.")
   }
 
   func testImplicitlyAnimatesFromModelValue() {
@@ -119,11 +120,12 @@ class BeginFromCurrentStateTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(fromValue, initialValue,
-                   "Expected the animation to start from \(initialValue), but it did not.")
+    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
+                               "Expected the animation to start from \(initialValue), "
+                                + "but it did not.")
 
-    XCTAssertEqual(view.layer.opacity, 0.5,
-                   "The layer's opacity was not set to the animation's final value.")
+    XCTAssertEqualWithAccuracy(view.layer.opacity, 0.5, accuracy: 0.0001,
+                               "The layer's opacity was not set to the animation's final value.")
   }
 
   func testExplicitlyAnimatesFromPresentationValue() {
@@ -160,11 +162,12 @@ class BeginFromCurrentStateTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(fromValue, initialValue,
-                   "Expected the animation to start from \(initialValue), but it did not.")
+    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
+                               "Expected the animation to start from \(initialValue), "
+                                + "but it did not.")
 
-    XCTAssertEqual(view.layer.opacity, 0.2,
-                   "The layer's opacity was not set to the animation's final value.")
+    XCTAssertEqualWithAccuracy(view.layer.opacity, 0.2, accuracy: 0.0001,
+                               "The layer's opacity was not set to the animation's final value.")
   }
 
   func testImplicitlyAnimatesFromPresentationValue() {
@@ -204,10 +207,11 @@ class BeginFromCurrentStateTests: XCTestCase {
       return
     }
 
-    XCTAssertEqual(fromValue, initialValue,
-                   "Expected the animation to start from \(initialValue), but it did not.")
+    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
+                               "Expected the animation to start from \(initialValue), "
+                                + "but it did not.")
 
-    XCTAssertEqual(view.layer.opacity, 0.2,
-                   "The layer's opacity was not set to the animation's final value.")
+    XCTAssertEqualWithAccuracy(view.layer.opacity, 0.2, accuracy: 0.0001,
+                               "The layer's opacity was not set to the animation's final value.")
   }
 }
