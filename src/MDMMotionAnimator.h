@@ -42,7 +42,9 @@ NS_SWIFT_NAME(MotionAnimator)
 @property(nonatomic, assign) CGFloat timeScaleFactor;
 
 /**
- If enabled, all animations will be added with their values reversed.
+ If enabled, explicitly-provided values will be reversed before animating.
+
+ This property does not affect the animateWithTiming:animations: family of methods.
 
  Disabled by default.
  */

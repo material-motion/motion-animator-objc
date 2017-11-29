@@ -18,7 +18,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface MDMImplicitAction: NSObject
-@property(nonatomic, strong, readonly) id initialValue;
+@property(nonatomic, strong, readonly) id initialModelValue;
+@property(nonatomic, readonly) BOOL hadPresentationLayer;
+@property(nonatomic, strong, readonly) id initialPresentationValue;
 @property(nonatomic, copy, readonly) NSString *keyPath;
 @property(nonatomic, strong, readonly) CALayer *layer;
 @end
