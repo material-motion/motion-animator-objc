@@ -35,7 +35,7 @@ class AdditiveAnimationTests: XCTestCase {
 
     timing = MotionTiming(delay: 0,
                           duration: 1,
-                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
+                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 1, p2y: 1),
                           repetition: .init(type: .none, amount: 0, autoreverses: false))
 
     let window = UIWindow()
@@ -74,7 +74,7 @@ class AdditiveAnimationTests: XCTestCase {
     XCTAssertTrue(animation.isAdditive, "Animation is not additive when it should be.")
   }
 
-  func testSizeKeyPathsAnimateAdditively() {
+  func testCGSizeKeyPathsAnimateAdditively() {
     animator.animate(with: timing, to: view.layer,
                      withValues: [CGSize(width: 0, height: 0),
                                   CGSize(width: 1, height: 2)], keyPath: .shadowOffset)
@@ -95,7 +95,7 @@ class AdditiveAnimationTests: XCTestCase {
     XCTAssertTrue(animation.isAdditive, "Animation is not additive when it should be.")
   }
 
-  func testPositionKeyPathsAnimateAdditively() {
+  func testCGPointKeyPathsAnimateAdditively() {
     animator.animate(with: timing, to: view.layer,
                      withValues: [CGPoint(x: 0, y: 0),
                                   CGPoint(x: 1, y: 2)], keyPath: .position)
