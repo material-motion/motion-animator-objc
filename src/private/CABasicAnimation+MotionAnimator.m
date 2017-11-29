@@ -180,7 +180,9 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) 
       // As for our sign, if absoluteInitialVelocity matches the direction of displacement, then our
       // sign will be positive. Otherwise, our sign will be negative, as expected by Core Animation.
 
-      springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+      if (displacement != 0) {
+        springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+      }
     }
 
   } else if (IsCGSizeType(animation.toValue)) {
@@ -211,7 +213,9 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) 
       CGFloat displacement = -biggestDelta;
       CGFloat absoluteInitialVelocity =
           timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
-      springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+      if (displacement != 0) {
+        springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+      }
     }
 
   } else if (IsCGPointType(animation.toValue)) {
@@ -242,7 +246,9 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) 
       CGFloat displacement = -biggestDelta;
       CGFloat absoluteInitialVelocity =
           timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
-      springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+      if (displacement != 0) {
+        springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+      }
     }
   }
 
