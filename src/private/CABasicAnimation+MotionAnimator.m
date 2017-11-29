@@ -26,9 +26,19 @@ static BOOL IsNumberValue(id someValue) {
   return [someValue isKindOfClass:[NSNumber class]];
 }
 
-static BOOL IsValueType(id someValue, char *objCType) {
+static BOOL IsCGPointType(id someValue) {
   if ([someValue isKindOfClass:[NSValue class]]) {
     NSValue *asValue = (NSValue *)someValue;
+    const char *objCType = @encode(CGPoint);
+    return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
+  }
+  return NO;
+}
+
+static BOOL IsCGSizeType(id someValue) {
+  if ([someValue isKindOfClass:[NSValue class]]) {
+    NSValue *asValue = (NSValue *)someValue;
+    const char *objCType = @encode(CGSize);
     return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
   }
   return NO;
@@ -172,7 +182,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
       springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
     }
 
-  } else if (IsValueType(animation.toValue, @encode(CGSize))) {
+  } else if (IsCGSizeType(animation.toValue)) {
     CGSize from = [animation.fromValue CGSizeValue];
     CGSize to = [animation.toValue CGSizeValue];
     CGSize additiveDisplacement = CGSizeMake(from.width - to.width, from.height - to.height);
@@ -204,7 +214,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
       springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
     }
 
-  } else if (IsValueType(animation.toValue, @encode(CGPoint))) {
+  } else if (IsCGPointType(animation.toValue)) {
     CGPoint from = [animation.fromValue CGPointValue];
     CGPoint to = [animation.toValue CGPointValue];
     CGPoint additiveDisplacement = CGPointMake(from.x - to.x, from.y - to.y);
