@@ -210,6 +210,28 @@ class ImplicitAnimationTests: XCTestCase {
     XCTAssertEqual(view.layer.animationKeys()!, ["opacity"])
   }
 
+  func testDurationOfZeroRunsAnimationsBlockButGeneratesNoAnimations() {
+    timing.duration = 0
+
+    animator.animate(with: timing) {
+      self.view.alpha = 0
+    }
+
+    XCTAssertEqual(addedAnimations.count, 0)
+    XCTAssertEqual(view.alpha, 0)
+  }
+
+  func testTimeScaleFactorOfZeroRunsAnimationsBlockButGeneratesNoAnimations() {
+    animator.timeScaleFactor = 0
+
+    animator.animate(with: timing) {
+      self.view.alpha = 0
+    }
+
+    XCTAssertEqual(addedAnimations.count, 0)
+    XCTAssertEqual(view.alpha, 0)
+  }
+
   func testUnsupportedAnimationKeyIsNotAnimated() {
     animator.animate(with: timing) {
       self.view.layer.sublayers = []
