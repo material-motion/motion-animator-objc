@@ -109,6 +109,10 @@
         } completion:completion];
 
   commitToModelLayer();
+
+  for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
+    tracer(layer, animation);
+  }
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
@@ -159,6 +163,10 @@
                  return action.initialModelValue;
                }
              } completion:nil];
+
+    for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
+      tracer(action.layer, animation);
+    }
   }
 
   [CATransaction commit];
@@ -233,10 +241,6 @@
   }
 
   [_registrar addAnimation:animation toLayer:layer forKey:key completion:completion];
-
-  for (void (^tracer)(CALayer *, CAAnimation *) in _tracers) {
-    tracer(layer, animation);
-  }
 }
 
 @end
