@@ -19,7 +19,6 @@
 #import "CAMediaTimingFunction+MotionAnimator.h"
 
 #import <UIKit/UIKit.h>
-#import <tgmath.h>
 
 #pragma mark - Private
 
