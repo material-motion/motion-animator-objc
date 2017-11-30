@@ -6,7 +6,6 @@
 [![codecov](https://codecov.io/gh/material-motion/motion-animator-objc/branch/develop/graph/badge.svg)](https://codecov.io/gh/material-motion/motion-animator-objc)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/MotionAnimator.svg)](https://cocoapods.org/pods/MotionAnimator)
 [![Platform](https://img.shields.io/cocoapods/p/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
-[![Docs](https://img.shields.io/cocoapods/metrics/doc-percent/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 
 ---
 
