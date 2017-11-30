@@ -21,14 +21,6 @@
 #import <UIKit/UIKit.h>
 #import <tgmath.h>
 
-#ifndef CGFLOAT_EPSILON
-#if CGFLOAT_IS_DOUBLE
-#define CGFLOAT_EPSILON DBL_EPSILON
-#else
-#define CGFLOAT_EPSILON FLT_EPSILON
-#endif  // CGFLOAT_IS_DOUBLE
-#endif  // CGFLOAT_EPSILON
-
 #pragma mark - Private
 
 static BOOL IsNumberValue(id someValue) {
@@ -189,7 +181,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) 
       // As for our sign, if absoluteInitialVelocity matches the direction of displacement, then our
       // sign will be positive. Otherwise, our sign will be negative, as expected by Core Animation.
 
-      if (fabs(displacement) > CGFLOAT_EPSILON) {
+      if (fabs(displacement) > 0.00001) {
         springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
       }
     }
@@ -222,7 +214,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) 
       CGFloat displacement = -biggestDelta;
       CGFloat absoluteInitialVelocity =
           timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
-      if (fabs(displacement) > CGFLOAT_EPSILON) {
+      if (fabs(displacement) > 0.00001) {
         springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
       }
     }
@@ -255,7 +247,7 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) 
       CGFloat displacement = -biggestDelta;
       CGFloat absoluteInitialVelocity =
           timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
-      if (fabs(displacement) > CGFLOAT_EPSILON) {
+      if (fabs(displacement) > 0.00001) {
         springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
       }
     }
