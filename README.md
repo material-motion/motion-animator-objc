@@ -270,6 +270,11 @@ and a key path:
 Animation's additive animation APIs. You can simply re-execute the `animate` calls when your
 transition's direction changes and the animator will add new animations for the updated direction.
 
+## Helpful literature
+
+- [Additive animations: animateWithDuration in iOS 8](http://iosoteric.com/additive-animations-animatewithduration-in-ios-8/)
+- [WWDC 2014 video on additive animations](https://developer.apple.com/videos/play/wwdc2014/236/)
+
 ## Contributing
 
 We welcome contributions!
