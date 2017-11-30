@@ -125,6 +125,11 @@
   NSArray<MDMImplicitAction *> *actions = MDMAnimateImplicitly(animations);
 
   void (^exitEarly)(void) = ^{
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    animations();
+    [CATransaction commit];
+
     if (completion) {
       completion();
     }
