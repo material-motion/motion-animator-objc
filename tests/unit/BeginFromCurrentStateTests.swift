@@ -26,6 +26,7 @@ class BeginFromCurrentStateTests: XCTestCase {
   var animator: MotionAnimator!
   var timing: MotionTiming!
   var view: UIView!
+  var addedAnimations: [CAAnimation]!
 
   override func setUp() {
     super.setUp()
@@ -44,6 +45,11 @@ class BeginFromCurrentStateTests: XCTestCase {
     view = UIView() // Need to animate a view's layer to get implicit animations.
     window.addSubview(view)
 
+    addedAnimations = []
+    animator.addCoreAnimationTracer { (_, animation) in
+      self.addedAnimations.append(animation)
+    }
+
     // Connect our layers to the render server.
     CATransaction.flush()
   }
@@ -52,6 +58,7 @@ class BeginFromCurrentStateTests: XCTestCase {
     animator = nil
     timing = nil
     view = nil
+    addedAnimations = nil
 
     super.tearDown()
   }
