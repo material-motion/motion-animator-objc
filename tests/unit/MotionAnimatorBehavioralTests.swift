@@ -64,7 +64,7 @@ class AnimatorBehavioralTests: XCTestCase {
     .y: 23,
   ]
 
-  func testAllLayerBackedViewPropertiesExplicitlyAnimate() {
+  func testAllKeyPathsExplicitlyAnimateWithLayerBackingUIView() {
     for (keyPath, value) in properties {
       let view = ShapeLayerBackedView()
       window.addSubview(view)
@@ -89,7 +89,7 @@ class AnimatorBehavioralTests: XCTestCase {
     }
   }
 
-  func testAllLayerBackedViewPropertiesImplicitlyAnimate() {
+  func testAllKeyPathsImplicitlyAnimateWithLayerBackingUIView() {
     for (keyPath, value) in properties {
       let view = ShapeLayerBackedView()
       window.addSubview(view)
@@ -112,7 +112,7 @@ class AnimatorBehavioralTests: XCTestCase {
     }
   }
 
-  func testAllHeadlessLayerPropertiesExplicitlyAnimate() {
+  func testAllKeyPathsExplicitlyAnimateWithHeadlessLayer() {
     for (keyPath, value) in properties {
       let layer = CAShapeLayer()
       window.layer.addSublayer(layer)
@@ -137,7 +137,7 @@ class AnimatorBehavioralTests: XCTestCase {
     }
   }
 
-  func testAllHeadlessLayerPropertiesImplicitlyAnimate() {
+  func testAllKeyPathsImplicitlyAnimateWithHeadlessLayer() {
     for (keyPath, value) in properties {
       let layer = CAShapeLayer()
       window.layer.addSublayer(layer)

@@ -23,7 +23,7 @@
 		667A3F4C1DEE269400CB3A99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 667A3F4A1DEE269400CB3A99 /* LaunchScreen.storyboard */; };
 		667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A3F531DEE273000CB3A99 /* TableOfContents.swift */; };
 		6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668726491EF04B4C00113675 /* MotionAnimatorTests.swift */; };
-		669B6CA91FD0547100B80B76 /* AnimatorBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B6CA81FD0547100B80B76 /* AnimatorBehavioralTests.swift */; };
+		669B6CA91FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */; };
 		66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */; };
 		66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */; };
 		66DD4BF51EEF0ECB00207119 /* CalendarCardExpansionExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */; };
@@ -76,7 +76,7 @@
 		667A3F4D1DEE269400CB3A99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		667A3F531DEE273000CB3A99 /* TableOfContents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContents.swift; sourceTree = "<group>"; };
 		668726491EF04B4C00113675 /* MotionAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorTests.swift; sourceTree = "<group>"; };
-		669B6CA81FD0547100B80B76 /* AnimatorBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBehavioralTests.swift; sourceTree = "<group>"; };
+		669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorBehavioralTests.swift; sourceTree = "<group>"; };
 		66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationRemovalTests.swift; sourceTree = "<group>"; };
 		66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitAnimationTests.swift; sourceTree = "<group>"; };
 		66DD4BF31EEF0ECB00207119 /* CalendarCardExpansionExample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarCardExpansionExample.h; sourceTree = "<group>"; };
@@ -227,13 +227,13 @@
 			isa = PBXGroup;
 			children = (
 				664F599B1FCE67DB002EC56D /* AdditiveAnimatorTests.swift */,
-				669B6CA81FD0547100B80B76 /* AnimatorBehavioralTests.swift */,
 				66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */,
 				664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */,
 				66EF6F271FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift */,
 				66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */,
 				6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */,
 				66EF6F291FC48D6A00C83A63 /* InstantAnimationTests.swift */,
+				669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */,
 				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
 				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
 				664F59991FCE6661002EC56D /* NonAdditiveAnimatorTests.swift */,
@@ -528,7 +528,7 @@
 				6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */,
 				664F59981FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift in Sources */,
 				66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */,
-				669B6CA91FD0547100B80B76 /* AnimatorBehavioralTests.swift in Sources */,
+				669B6CA91FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
