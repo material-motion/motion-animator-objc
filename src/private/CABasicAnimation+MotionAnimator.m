@@ -86,10 +86,12 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
   return animation;
 }
 
-void MDMConfigureAnimation(CABasicAnimation *animation,
-                           BOOL wantsAdditive,
-                           MDMMotionTiming timing) {
-  if (!wantsAdditive && timing.curve.type != MDMMotionCurveTypeSpring) {
+BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue) {
+  return IsNumberValue(toValue) || IsCGSizeType(toValue) || IsCGPointType(toValue);
+}
+
+void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) {
+  if (!animation.additive && timing.curve.type != MDMMotionCurveTypeSpring) {
     return; // Nothing to do here.
   }
 
@@ -126,10 +128,9 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
     CGFloat displacement = to - from;
     CGFloat additiveDisplacement = -displacement;
 
-    if (wantsAdditive) {
+    if (animation.additive) {
       animation.fromValue = @(additiveDisplacement);
       animation.toValue = @0;
-      animation.additive = true;
     }
 
 #pragma clang diagnostic push
@@ -187,10 +188,9 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
     CGSize to = [animation.toValue CGSizeValue];
     CGSize additiveDisplacement = CGSizeMake(from.width - to.width, from.height - to.height);
 
-    if (wantsAdditive) {
+    if (animation.additive) {
       animation.fromValue = [NSValue valueWithCGSize:additiveDisplacement];
       animation.toValue = [NSValue valueWithCGSize:CGSizeZero];
-      animation.additive = true;
     }
 
 #pragma clang diagnostic push
@@ -219,10 +219,9 @@ void MDMConfigureAnimation(CABasicAnimation *animation,
     CGPoint to = [animation.toValue CGPointValue];
     CGPoint additiveDisplacement = CGPointMake(from.x - to.x, from.y - to.y);
 
-    if (wantsAdditive) {
+    if (animation.additive) {
       animation.fromValue = [NSValue valueWithCGPoint:additiveDisplacement];
       animation.toValue = [NSValue valueWithCGPoint:CGPointZero];
-      animation.additive = true;
     }
 
 #pragma clang diagnostic push

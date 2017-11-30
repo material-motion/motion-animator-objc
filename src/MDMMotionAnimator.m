@@ -88,27 +88,39 @@
   }
 
   animation.keyPath = keyPath;
+  animation.toValue = [values lastObject];
 
-  id initialValue;
-  if (_beginFromCurrentState) {
-    if ([layer presentationLayer]) {
-      initialValue = [[layer presentationLayer] valueForKeyPath:keyPath];
+  animation.additive = self.additive && MDMCanAnimationBeAdditive(keyPath, animation.toValue);
+
+  // Now that we know whether the animation will be additive, we can calculate the from value.
+  id fromValue;
+  if (self.beginFromCurrentState) {
+    // Additive animations always read from the model layer's value so that the new displacement
+    // reflects the change in destination and momentum appears to be conserved across multiple
+    // animations.
+    //
+    // Non-additive animations should try to read from the presentation layer's current value
+    // because we'll be interrupting whatever animation previously existed and immediately moving
+    // toward the new destination.
+    BOOL wantsPresentationValue = !animation.additive;
+
+    if (wantsPresentationValue && [layer presentationLayer]) {
+      fromValue = [[layer presentationLayer] valueForKeyPath:keyPath];
     } else {
-      initialValue = [layer valueForKeyPath:keyPath];
+      fromValue = [layer valueForKeyPath:keyPath];
     }
   } else {
-    initialValue = [values firstObject];
+    fromValue = [values firstObject];
   }
 
-  animation.fromValue = initialValue;
-  animation.toValue = [values lastObject];
+  animation.fromValue = fromValue;
 
   if ([animation.fromValue isEqual:animation.toValue]) {
     exitEarly();
     return;
   }
 
-  MDMConfigureAnimation(animation, self.additive, timing);
+  MDMConfigureAnimation(animation, timing);
 
   if (timing.delay != 0) {
     animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
