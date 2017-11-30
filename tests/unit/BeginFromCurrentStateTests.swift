@@ -244,6 +244,6 @@ class BeginFromCurrentStateTests: XCTestCase {
     XCTAssertFalse(animation.isAdditive)
     XCTAssertEqual(animation.keyPath, AnimatableKeyPath.opacity.rawValue)
     XCTAssertEqual(animation.fromValue as! Float, initialValue)
-    XCTAssertEqual(animation.toValue as! CGFloat, 1.0)
+    XCTAssertEqualWithAccuracy(animation.toValue as! CGFloat, 1.0, accuracy: 0.0001)
   }
 }
