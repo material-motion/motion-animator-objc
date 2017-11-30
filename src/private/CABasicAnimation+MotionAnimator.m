@@ -44,7 +44,7 @@ static BOOL IsCGSizeType(id someValue) {
   return NO;
 }
 
-static BOOL IsInAdditiveAnimationBlacklist(NSString *keyPath) {
+static BOOL IsAnimationKeyPathAlwaysNonAdditive(NSString *keyPath) {
   static NSSet *nonAdditiveKeyPaths = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
@@ -97,7 +97,7 @@ CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeSca
 }
 
 BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue) {
-  if (IsInAdditiveAnimationBlacklist(keyPath)) {
+  if (IsAnimationKeyPathAlwaysNonAdditive(keyPath)) {
     return NO;
   }
   return IsNumberValue(toValue) || IsCGSizeType(toValue) || IsCGPointType(toValue);
