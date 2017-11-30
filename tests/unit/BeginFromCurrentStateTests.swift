@@ -214,4 +214,29 @@ class BeginFromCurrentStateTests: XCTestCase {
     XCTAssertEqualWithAccuracy(view.layer.opacity, 0.2, accuracy: 0.0001,
                                "The layer's opacity was not set to the animation's final value.")
   }
+
+  func testViewAnimatesFromPresentationLayer() {
+    animator.beginFromCurrentState = true
+    animator.additive = false
+
+    animator.animate(with: timing) {
+      self.view.alpha = 0.5
+    }
+
+    RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
+
+    let initialValue = view.layer.presentation()!.opacity
+
+    animator.animate(with: timing) {
+      self.view.alpha = 1.0
+    }
+
+    XCTAssertEqual(addedAnimations.count, 2)
+
+    let animation = addedAnimations.last as! CABasicAnimation
+    XCTAssertFalse(animation.isAdditive)
+    XCTAssertEqual(animation.keyPath, AnimatableKeyPath.opacity.rawValue)
+    XCTAssertEqual(animation.fromValue as! Float, initialValue)
+    XCTAssertEqual(animation.toValue as! CGFloat, 1.0)
+  }
 }
