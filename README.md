@@ -73,8 +73,8 @@ struct CalendarChipMotionSpec CalendarChipSpec = {
 ```
 
 Our spec defines two different transition states: expansion and collapse. At runtime, we determine
-which of these two specs we intend to use and then use the timings to animate our views with an
-instance of `MDMMotionAnimator`:
+which of these two specs we need and then use the timings to animate our views with an instance of
+`MDMMotionAnimator`:
 
 ```objc
 CalendarChipTiming timing = _expanded ? CalendarChipSpec.expansion : CalendarChipSpec.collapse;
