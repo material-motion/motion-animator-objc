@@ -33,6 +33,4 @@ FOUNDATION_EXPORT BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue);
 //
 // Not all animation value types support being additive. If an animation's value type was not
 // supported, the animation's values will not be modified.
-//
-// If the from and to values of the animation match then the behavior is undefined.
 FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing);
