@@ -1,11 +1,11 @@
 language: objective-c
-osx_image: xcode8.1
+osx_image: xcode8.3
 sudo: false
 before_install:
   - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
   - pod install --repo-update
 script:
   - set -o pipefail
-  - xcodebuild build -workspace MotionAnimator.xcworkspace -scheme MotionAnimatorCatalog -sdk "iphonesimulator10.1" -destination "name=iPhone 6s,OS=10.1" ONLY_ACTIVE_ARCH=YES | xcpretty -c;
+  - xcodebuild build -workspace MotionAnimator.xcworkspace -scheme MotionAnimatorCatalog -sdk "iphonesimulator10.3" -destination "name=iPhone 6s,OS=10.1" ONLY_ACTIVE_ARCH=YES | xcpretty -c;
 after_success:
   - bash <(curl -s https://codecov.io/bash)
