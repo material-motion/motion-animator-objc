@@ -12,9 +12,9 @@
 		6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */; };
 		664F59941FCCE27E002EC56D /* UIKitBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */; };
 		664F59961FCDB2E6002EC56D /* QuartzCoreBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */; };
+		664F59981FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */; };
 		664F599A1FCE6661002EC56D /* NonAdditiveAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59991FCE6661002EC56D /* NonAdditiveAnimatorTests.swift */; };
 		664F599C1FCE67DB002EC56D /* AdditiveAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F599B1FCE67DB002EC56D /* AdditiveAnimatorTests.swift */; };
-		664F59981FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */; };
 		666FAA841D384A6B000363DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666FAA831D384A6B000363DA /* AppDelegate.swift */; };
 		666FAA8B1D384A6B000363DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8A1D384A6B000363DA /* Assets.xcassets */; };
 		666FAA8E1D384A6B000363DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8C1D384A6B000363DA /* LaunchScreen.storyboard */; };
@@ -23,6 +23,7 @@
 		667A3F4C1DEE269400CB3A99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 667A3F4A1DEE269400CB3A99 /* LaunchScreen.storyboard */; };
 		667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A3F531DEE273000CB3A99 /* TableOfContents.swift */; };
 		6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668726491EF04B4C00113675 /* MotionAnimatorTests.swift */; };
+		669B6CA91FD0547100B80B76 /* AnimatorBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B6CA81FD0547100B80B76 /* AnimatorBehavioralTests.swift */; };
 		66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */; };
 		66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */; };
 		66DD4BF51EEF0ECB00207119 /* CalendarCardExpansionExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */; };
@@ -58,9 +59,9 @@
 		6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialVelocityTests.swift; sourceTree = "<group>"; };
 		664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitBehavioralTests.swift; sourceTree = "<group>"; };
 		664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuartzCoreBehavioralTests.swift; sourceTree = "<group>"; };
+		664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeginFromCurrentStateTests.swift; sourceTree = "<group>"; };
 		664F59991FCE6661002EC56D /* NonAdditiveAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonAdditiveAnimatorTests.swift; sourceTree = "<group>"; };
 		664F599B1FCE67DB002EC56D /* AdditiveAnimatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdditiveAnimatorTests.swift; sourceTree = "<group>"; };
-		664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeginFromCurrentStateTests.swift; sourceTree = "<group>"; };
 		666FAA801D384A6B000363DA /* MotionAnimatorCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionAnimatorCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		666FAA831D384A6B000363DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Catalog/AppDelegate.swift; sourceTree = "<group>"; };
 		666FAA8A1D384A6B000363DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -75,6 +76,7 @@
 		667A3F4D1DEE269400CB3A99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		667A3F531DEE273000CB3A99 /* TableOfContents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContents.swift; sourceTree = "<group>"; };
 		668726491EF04B4C00113675 /* MotionAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorTests.swift; sourceTree = "<group>"; };
+		669B6CA81FD0547100B80B76 /* AnimatorBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatorBehavioralTests.swift; sourceTree = "<group>"; };
 		66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationRemovalTests.swift; sourceTree = "<group>"; };
 		66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitAnimationTests.swift; sourceTree = "<group>"; };
 		66DD4BF31EEF0ECB00207119 /* CalendarCardExpansionExample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CalendarCardExpansionExample.h; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				664F599B1FCE67DB002EC56D /* AdditiveAnimatorTests.swift */,
+				669B6CA81FD0547100B80B76 /* AnimatorBehavioralTests.swift */,
 				66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */,
 				664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */,
 				66EF6F271FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift */,
@@ -525,6 +528,7 @@
 				6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */,
 				664F59981FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift in Sources */,
 				66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */,
+				669B6CA91FD0547100B80B76 /* AnimatorBehavioralTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
