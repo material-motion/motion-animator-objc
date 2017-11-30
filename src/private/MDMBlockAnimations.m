@@ -17,6 +17,7 @@
 #import "MDMBlockAnimations.h"
 
 #import "MDMMotionAnimator.h"
+#import "MDMAnimatableKeyPaths.h"
 
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
@@ -58,13 +59,14 @@ static NSMutableArray<MDMActionContext *> *sActionContext = nil;
 @implementation MDMImplicitAction
 
 - (instancetype)initWithLayer:(CALayer *)layer
-                      keyPath:(NSString *)keyPath
-                 initialValue:(id)initialValue {
+                      keyPath:(NSString *)keyPath {
   self = [super init];
   if (self) {
     _layer = layer;
     _keyPath = [keyPath copy];
-    _initialValue = initialValue;
+    _initialModelValue = [_layer valueForKeyPath:_keyPath];
+    _hadPresentationLayer = [_layer presentationLayer] != nil;
+    _initialPresentationValue = [[_layer presentationLayer] valueForKeyPath:_keyPath];
   }
   return self;
 }
@@ -83,12 +85,8 @@ static NSMutableArray<MDMActionContext *> *sActionContext = nil;
   return self;
 }
 
-- (void)addActionForLayer:(CALayer *)layer
-                  keyPath:(NSString *)keyPath
-         withInitialValue:(id)initialValue {
-  [_interceptedActions addObject:[[MDMImplicitAction alloc] initWithLayer:layer
-                                                                  keyPath:keyPath
-                                                             initialValue:initialValue]];
+- (void)addActionForLayer:(CALayer *)layer keyPath:(NSString *)keyPath {
+  [_interceptedActions addObject:[[MDMImplicitAction alloc] initWithLayer:layer keyPath:keyPath]];
 }
 
 - (NSArray<MDMImplicitAction *> *)interceptedActions {
@@ -119,8 +117,7 @@ static id<CAAction> ActionForKey(CALayer *layer, SEL _cmd, NSString *event) {
   // calculate additive values if the animator is configured as such. So, to support additive
   // animations, we queue up the modified actions and then add them all at the end of our
   // MDMAnimateImplicitly invocation.
-  id initialValue = [layer valueForKeyPath:event];
-  [context addActionForLayer:layer keyPath:event withInitialValue:initialValue];
+  [context addActionForLayer:layer keyPath:event];
   return [NSNull null];
 }
 
