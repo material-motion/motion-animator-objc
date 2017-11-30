@@ -181,7 +181,7 @@ class UIKitBehavioralTests: XCTestCase {
   //
   // The following tests indicate that UIKit treats .beginFromCurrentState differently depending
   // on the key path being animated. This difference is in line with whether or not a key path is
-  // animated additively or not
+  // animated additively or not.
   //
   // > See testSomePropertiesImplicitlyAnimateAdditively and
   // > testSomePropertiesImplicitlyAnimateButNotAdditively for a list of which key paths are
