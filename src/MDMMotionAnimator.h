@@ -42,7 +42,9 @@ NS_SWIFT_NAME(MotionAnimator)
 @property(nonatomic, assign) CGFloat timeScaleFactor;
 
 /**
- If enabled, all animations will be added with their values reversed.
+ If enabled, explicitly-provided values will be reversed before animating.
+
+ This property does not affect the animateWithTiming:animations: family of methods.
 
  Disabled by default.
  */
@@ -99,7 +101,9 @@ NS_SWIFT_NAME(MotionAnimator)
  UIKit types will be coerced to their Core Animation equivalent. Supported UIKit values include
  UIColor and UIBezierPath.
  @param keyPath The key path of the property to be animated.
- @param completion The completion handler will be executed once this animation has come to rest.
+ @param completion A block object to be executed when the animation ends or is removed from the
+ animation hierarchy. If the duration of the animation is 0, this block is executed immediately.
+ The block is escaping and will be released once the animations have completed.
  */
 - (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(nonnull CALayer *)layer
@@ -125,8 +129,9 @@ NS_SWIFT_NAME(MotionAnimator)
  @param animations The block to be executed. Any animatable properties changed within this block
  will result in animations being added to the view's layer with the provided timing. The block is
  non-escaping.
- @param completion The completion handler will be executed once all added animations have come to
- rest. The block is escaping and will be released once the animations have completed.
+ @param completion A block object to be executed once the animation sequence ends or it has been
+ removed from the animation hierarchy. If the duration of the animation is 0, this block is executed
+ immediately. The block is escaping and will be released once the animation sequence has completed.
  */
 - (void)animateWithTiming:(MDMMotionTiming)timing
                animations:(nonnull void (^)(void))animations

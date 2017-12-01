@@ -24,13 +24,13 @@
 FOUNDATION_EXPORT
 CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor);
 
-// Attempts to configure the provided animation to be additive and, if the animation is a spring
-// animation, will extract the initial velocity from the timing and apply it to the animation.
+// Returns a Boolean indicating whether or not an animation with the given key path and toValue
+// can be animated additively.
+FOUNDATION_EXPORT BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue);
+
+// If the animation's additive property is enabled, then its from/to values will be transformed into
+// additive equivalents.
 //
 // Not all animation value types support being additive. If an animation's value type was not
 // supported, the animation's values will not be modified.
-//
-// If the from and to values of the animation match then the behavior is undefined.
-FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation,
-                                             BOOL wantsAdditive,
-                                             MDMMotionTiming timing);
+FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing);

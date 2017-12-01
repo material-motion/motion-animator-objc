@@ -70,20 +70,20 @@
 
   layer.opacity = 0.5;
 
-  [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:@"opacity"];
+  [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:@"cornerRadius"];
 
-  XCTAssertEqual(layer.opacity, 0);
+  XCTAssertEqual(layer.cornerRadius, 0);
 }
 
 - (void)testCubicBezierAnimationFloatValue {
   MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
 
-  NSString *keyPath = @"opacity";
+  NSString *keyPath = @"cornerRadius";
 
   CALayer *layer = [[CALayer alloc] init];
 
   // Setting to some bogus value because it will be ignored with the default animator settings.
-  layer.opacity = 0.5;
+  layer.cornerRadius = 0.5;
 
   MDMMotionTiming timing = {
     .delay = 0.5,
@@ -119,19 +119,19 @@
 
   [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:keyPath];
 
-  XCTAssertEqual(layer.opacity, 1);
+  XCTAssertEqual(layer.cornerRadius, 1);
   XCTAssertTrue(didAddAnimation);
 }
 
 - (void)testSpringAnimationFloatValue {
   MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
 
-  NSString *keyPath = @"opacity";
+  NSString *keyPath = @"cornerRadius";
 
   CALayer *layer = [[CALayer alloc] init];
 
   // Setting to some bogus value because it will be ignored with the default animator settings.
-  layer.opacity = 0.5;
+  layer.cornerRadius = 0.5;
 
   MDMMotionTiming timing = {
     .delay = 0.5,
@@ -166,7 +166,7 @@
 
   [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:keyPath];
 
-  XCTAssertEqual(layer.opacity, 1);
+  XCTAssertEqual(layer.cornerRadius, 1);
   XCTAssertTrue(didAddAnimation);
 }
 

@@ -162,7 +162,7 @@ class ImplicitAnimationTests: XCTestCase {
     do {
       let animation = addedAnimations
         .flatMap { $0 as? CABasicAnimation }
-        .first(where: { $0.keyPath == "bounds"})!
+        .first(where: { $0.keyPath == AnimatableKeyPath.bounds.rawValue})!
       XCTAssertFalse(animation.isAdditive)
       XCTAssertEqual(animation.fromValue as! CGRect, .init(x: 0, y: 0, width: 0, height: 0))
       XCTAssertEqual(animation.toValue as! CGRect, .init(x: 0, y: 0, width: 100, height: 100))
@@ -208,5 +208,37 @@ class ImplicitAnimationTests: XCTestCase {
     }
 
     XCTAssertEqual(view.layer.animationKeys()!, ["opacity"])
+  }
+
+  func testDurationOfZeroRunsAnimationsBlockButGeneratesNoAnimations() {
+    timing.duration = 0
+
+    animator.animate(with: timing) {
+      self.view.alpha = 0
+    }
+
+    XCTAssertEqual(addedAnimations.count, 0)
+    XCTAssertEqual(view.alpha, 0)
+  }
+
+  func testTimeScaleFactorOfZeroRunsAnimationsBlockButGeneratesNoAnimations() {
+    animator.timeScaleFactor = 0
+
+    animator.animate(with: timing) {
+      self.view.alpha = 0
+    }
+
+    XCTAssertEqual(addedAnimations.count, 0)
+    XCTAssertEqual(view.alpha, 0)
+  }
+
+  func testUnsupportedAnimationKeyIsNotAnimated() {
+    animator.animate(with: timing) {
+      self.view.layer.sublayers = []
+    }
+
+    XCTAssertNil(view.layer.animationKeys(),
+                 "No animations should have been added, but the following keys were found: "
+                  + "\(view.layer.animationKeys()!)")
   }
 }
