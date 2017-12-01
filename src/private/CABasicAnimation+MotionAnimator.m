@@ -44,6 +44,15 @@ static BOOL IsCGSizeType(id someValue) {
   return NO;
 }
 
+static BOOL IsCATransform3DType(id someValue) {
+  if ([someValue isKindOfClass:[NSValue class]]) {
+    NSValue *asValue = (NSValue *)someValue;
+    const char *objCType = @encode(CATransform3D);
+    return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
+  }
+  return NO;
+}
+
 static BOOL IsAnimationKeyPathAlwaysNonAdditive(NSString *keyPath) {
   static NSSet *nonAdditiveKeyPaths = nil;
   static dispatch_once_t onceToken;
@@ -100,7 +109,10 @@ BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue) {
   if (IsAnimationKeyPathAlwaysNonAdditive(keyPath)) {
     return NO;
   }
-  return IsNumberValue(toValue) || IsCGSizeType(toValue) || IsCGPointType(toValue);
+  return (IsNumberValue(toValue)
+          || IsCGSizeType(toValue)
+          || IsCGPointType(toValue)
+          || IsCATransform3DType(toValue));
 }
 
 void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) {
@@ -262,6 +274,16 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) 
       if (fabs(displacement) > 0.00001) {
         springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
       }
+    }
+
+  } else if (IsCATransform3DType(animation.toValue)) {
+    CATransform3D from = [animation.fromValue CATransform3DValue];
+    CATransform3D to = [animation.toValue CATransform3DValue];
+
+    if (animation.additive) {
+      CATransform3D divisor = CATransform3DInvert(to);
+      animation.fromValue = [NSValue valueWithCATransform3D:CATransform3DConcat(from, divisor)];
+      animation.toValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
     }
   }
 
