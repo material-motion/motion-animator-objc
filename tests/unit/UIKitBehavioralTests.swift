@@ -176,4 +176,184 @@ class UIKitBehavioralTests: XCTestCase {
                    "Expected \(keyPath.rawValue) not to generate any animations.")
     }
   }
+
+  // MARK: .beginFromCurrentState option behavior
+  //
+  // The following tests indicate that UIKit treats .beginFromCurrentState differently depending
+  // on the key path being animated. This difference is in line with whether or not a key path is
+  // animated additively or not.
+  //
+  // > See testSomePropertiesImplicitlyAnimateAdditively and
+  // > testSomePropertiesImplicitlyAnimateButNotAdditively for a list of which key paths are
+  // > animated which way.
+  //
+  // Notably, ONLY non-additive key paths are affected by the beginFromCurrentState option. This
+  // likely became the case starting in iOS 8 when additive animations were enabled by default.
+  // Additive animations will always animate additively regardless of whether or not you provide
+  // this flag.
+
+  func testDefaultsAnimatesOpacityNonAdditivelyFromItsModelLayerState() {
+    UIView.animate(withDuration: 0.1) {
+      self.view.alpha = 0.5
+    }
+
+    RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
+
+    let initialValue = self.view.layer.opacity
+
+    UIView.animate(withDuration: 0.1) {
+      self.view.alpha = 0.2
+    }
+
+    XCTAssertNotNil(view.layer.animationKeys(),
+                    "Expected an animation to be added, but none were found.")
+    guard let animationKeys = view.layer.animationKeys() else {
+      return
+    }
+    XCTAssertEqual(animationKeys.count, 1,
+                   "Expected only one animation to be added, but the following were found: "
+                    + "\(animationKeys).")
+    guard let key = animationKeys.first,
+      let animation = view.layer.animation(forKey: key) as? CABasicAnimation else {
+        return
+    }
+
+    XCTAssertFalse(animation.isAdditive, "Expected the animation not to be additive, but it was.")
+
+    XCTAssertTrue(animation.fromValue is Float,
+                  "The animation's from value was not a number type: "
+                    + String(describing: animation.fromValue))
+    guard let fromValue = animation.fromValue as? Float else {
+      return
+    }
+
+    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
+                               "Expected the animation to start from \(initialValue), "
+                                + "but it did not.")
+  }
+
+  func testBeginFromCurrentStateAnimatesOpacityNonAdditivelyFromItsPresentationLayerState() {
+    UIView.animate(withDuration: 0.1) {
+      self.view.alpha = 0.5
+    }
+
+    RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
+
+    let initialValue = self.view.layer.presentation()!.opacity
+
+    UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { 
+      self.view.alpha = 0.2
+    }, completion: nil)
+
+    XCTAssertNotNil(view.layer.animationKeys(),
+                    "Expected an animation to be added, but none were found.")
+    guard let animationKeys = view.layer.animationKeys() else {
+      return
+    }
+    XCTAssertEqual(animationKeys.count, 1,
+                   "Expected only one animation to be added, but the following were found: "
+                    + "\(animationKeys).")
+    guard let key = animationKeys.first,
+      let animation = view.layer.animation(forKey: key) as? CABasicAnimation else {
+        return
+    }
+
+    XCTAssertFalse(animation.isAdditive, "Expected the animation not to be additive, but it was.")
+
+    XCTAssertTrue(animation.fromValue is Float,
+                  "The animation's from value was not a number type: "
+                    + String(describing: animation.fromValue))
+    guard let fromValue = animation.fromValue as? Float else {
+      return
+    }
+
+    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
+                               "Expected the animation to start from \(initialValue), "
+                                + "but it did not.")
+  }
+
+  func testDefaultsAnimatesPositionAdditivelyFromItsModelLayerState() {
+    UIView.animate(withDuration: 0.1) {
+      self.view.layer.position = CGPoint(x: 100, y: self.view.layer.position.y)
+    }
+
+    RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
+
+    let initialValue = self.view.layer.position
+
+    UIView.animate(withDuration: 0.1) {
+      self.view.layer.position = CGPoint(x: 20, y: self.view.layer.position.y)
+    }
+
+    let displacement = initialValue.x - self.view.layer.position.x
+
+    XCTAssertNotNil(view.layer.animationKeys(),
+                    "Expected an animation to be added, but none were found.")
+    guard let animationKeys = view.layer.animationKeys() else {
+      return
+    }
+    XCTAssertEqual(animationKeys.count, 2,
+                   "Expected two animations to be added, but the following were found: "
+                    + "\(animationKeys).")
+    guard let key = animationKeys.first(where: { $0 != "position" }),
+      let animation = view.layer.animation(forKey: key) as? CABasicAnimation else {
+        return
+    }
+
+    XCTAssertTrue(animation.isAdditive, "Expected the animation to be additive, but it wasn't.")
+
+    XCTAssertTrue(animation.fromValue is CGPoint,
+                  "The animation's from value was not a point type: "
+                    + String(describing: animation.fromValue))
+    guard let fromValue = animation.fromValue as? CGPoint else {
+      return
+    }
+
+    XCTAssertEqualWithAccuracy(fromValue.x, displacement, accuracy: 0.0001,
+                               "Expected the animation to have a delta of \(displacement), "
+                                + "but it did not.")
+  }
+
+  func testBeginFromCurrentStateAnimatesPositionAdditivelyFromItsModelLayerState() {
+    UIView.animate(withDuration: 0.1) {
+      self.view.layer.position = CGPoint(x: 100, y: self.view.layer.position.y)
+    }
+
+    RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
+
+    let initialValue = self.view.layer.position
+
+    UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: {
+      self.view.layer.position = CGPoint(x: 20, y: self.view.layer.position.y)
+    }, completion: nil)
+
+    let displacement = initialValue.x - self.view.layer.position.x
+
+    XCTAssertNotNil(view.layer.animationKeys(),
+                    "Expected an animation to be added, but none were found.")
+    guard let animationKeys = view.layer.animationKeys() else {
+      return
+    }
+    XCTAssertEqual(animationKeys.count, 2,
+                   "Expected two animations to be added, but the following were found: "
+                    + "\(animationKeys).")
+    guard let key = animationKeys.first(where: { $0 != "position" }),
+      let animation = view.layer.animation(forKey: key) as? CABasicAnimation else {
+        return
+    }
+
+    XCTAssertTrue(animation.isAdditive, "Expected the animation to be additive, but it wasn't.")
+
+    XCTAssertTrue(animation.fromValue is CGPoint,
+                  "The animation's from value was not a point type: "
+                    + String(describing: animation.fromValue))
+    guard let fromValue = animation.fromValue as? CGPoint else {
+      return
+    }
+
+    XCTAssertEqualWithAccuracy(fromValue.x, displacement, accuracy: 0.0001,
+                               "Expected the animation to have a delta of \(displacement), "
+                                + "but it did not.")
+  }
+
 }
