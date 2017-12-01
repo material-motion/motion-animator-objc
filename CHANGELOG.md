@@ -1,7 +1,47 @@
-# #develop#
+# 2.6.0
 
- TODO: Enumerate changes.
+This minor release increases test coverage, fixes a variety of bugs related to `beginFromCurrentState`, and generally improves the stability and robustness of the underlying implementation.
 
+## New features
+
+The following key paths are now officially supported: `MDMKeyPathBounds`, `MDMKeyPathShadowOffset`, `MDMKeyPathShadowOpacity`, and `MDMKeyPathShadowRadius`.
+
+## Source changes
+
+* [Add tests verifying the UIKit beginFromCurrentState option behavior. (#84)](https://github.com/material-motion/motion-animator-objc/commit/a91ac69ead2ac86709a67c6589e6f053ffee5aeb) (featherless)
+* [Disable additive animations for backgroundColor and opacity. (#66)](https://github.com/material-motion/motion-animator-objc/commit/3c6e3385adc3a386d2481e19beb7b4530751b8e4) (featherless)
+* [Run the implicit animations block when exiting early. (#81)](https://github.com/material-motion/motion-animator-objc/commit/3a563c574e915ae9edeeec90884ba24478ab9a24) (featherless)
+* [Clarify when completion is invoked in the docs. (#82)](https://github.com/material-motion/motion-animator-objc/commit/e7e0ce6d07a6b27a25256068fda0b45322099b11) (featherless)
+* [Implement a motion animator behavioral test. (#80)](https://github.com/material-motion/motion-animator-objc/commit/562c43b24837e399fd042d97cea65c975033cfd8) (featherless)
+* [Refactor common code from explicit/implicit animation implementations. (#78)](https://github.com/material-motion/motion-animator-objc/commit/6d801b3d0077712328483a2e0af40197945c11f1) (featherless)
+* [Check for divide-by-zero before calculating the initial velocity of spring animations. (#75)](https://github.com/material-motion/motion-animator-objc/commit/45f355f49c4be3818d5b646be78a500e3666af4f) (featherless)
+* [Add fallback mechanism for non-additive animations when beginFromCurrentState is enabled. (#76)](https://github.com/material-motion/motion-animator-objc/commit/433eb5fa683562428c0fa44a38d85e2bd740e6c9) (featherless)
+* [Fix the bounds key path docs to indicate that additive animations are not supported. (#77)](https://github.com/material-motion/motion-animator-objc/commit/efa8937c6872c0946b0679734472dc87d5fc0502) (featherless)
+* [Use objcType to identify the value types. (#73)](https://github.com/material-motion/motion-animator-objc/commit/5e6b649377d4f77fbef9332350cf22551fb65986) (featherless)
+* [Fix bug where beginFromCurrentState would not start from the current model/presentation value. (#71)](https://github.com/material-motion/motion-animator-objc/commit/74c0d5323220e0852afb6eb10e830f685ecdf724) (featherless)
+* [Only animate CGSize and CGPoint key paths additively if additive is enabled. (#72)](https://github.com/material-motion/motion-animator-objc/commit/524b3cb34d58d5354aa84bd9e5789cfddf8ea787) (featherless)
+* [Add public/private marks to the animator implementation. (#70)](https://github.com/material-motion/motion-animator-objc/commit/71d22e2d42b25bedeb6dcb5b1080cfd4e4b3cbd8) (featherless)
+* [Add MDMAllAnimatableKeyPaths API for retrieving all animatable key paths. (#69)](https://github.com/material-motion/motion-animator-objc/commit/f743ca076734cbb31964946cb62178fef0601b00) (featherless)
+* [Add bounds to the list of supported key paths. (#68)](https://github.com/material-motion/motion-animator-objc/commit/b0a5f373b925d4a94ebcd12b1d689d27b09cb693) (featherless)
+* [Document each animatable key path. (#65)](https://github.com/material-motion/motion-animator-objc/commit/f05e787b0814dfc90ae86ad8590edb5c30b9e27c) (featherless)
+* [Add shadow key paths to the animatable keypaths list. (#64)](https://github.com/material-motion/motion-animator-objc/commit/18a0edd13e2c26fc18ec20933b0bf8c8cd6905ad) (featherless)
+* [Add UIKit behavioral test verifying that layer values never implicitly animate outside of an animation block. (#63)](https://github.com/material-motion/motion-animator-objc/commit/efa04ffb41552b5a83151da3778e9b073c92a44b) (featherless)
+* [Add CALayer behavioral tests. (#62)](https://github.com/material-motion/motion-animator-objc/commit/e6bc2195f7dbfef146dd36101c458590ceb29c8f) (featherless)
+* [Add UIKit behavioral tests. (#60)](https://github.com/material-motion/motion-animator-objc/commit/ed203c883433d8a891d931ff408f5442434982c8) (featherless)
+
+## API changes
+
+### MDMAnimatableKeyPaths
+
+**new** supported key paths: `MDMKeyPathBounds`, `MDMKeyPathShadowOffset`, `MDMKeyPathShadowOpacity`, and `MDMKeyPathShadowRadius`.
+
+## Non-source changes
+
+* [Add literature docs.](https://github.com/material-motion/motion-animator-objc/commit/ab856f69147a781226e9db8fd4c083d5d2ec77cf) (Jeff Verkoeyen)
+* [Make use of the implicit animator in the example. (#79)](https://github.com/material-motion/motion-animator-objc/commit/f505ecf8b2d85b77db5af961639a1f39437ac2fd) (featherless)
+* [Fix minor wording in the readme.](https://github.com/material-motion/motion-animator-objc/commit/2d6be5f5073f9a499a48aec13f0708b457569f44) (Jeff Verkoeyen)
+* [Drop cocoadocs from the readme.](https://github.com/material-motion/motion-animator-objc/commit/2692850cdf0f78a7356d867e9e4a303fd261bd31) (Jeff Verkoeyen)
+* [Update travis.yml with latest supported Xcode release.](https://github.com/material-motion/motion-animator-objc/commit/5a48e0084d079997227f73596a71b5caf91c0834) (Jeff Verkoeyen)
 
 # 2.5.0
 
