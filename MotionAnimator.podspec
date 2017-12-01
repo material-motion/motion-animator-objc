@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "MotionAnimator"
   s.summary      = "A Motion Animator creates performant, interruptible animations from motion specs."
-  s.version      = "2.5.0"
+  s.version      = "2.6.0"
   s.authors      = "The Material Motion Authors"
   s.license      = "Apache 2.0"
   s.homepage     = "https://github.com/material-motion/motion-animator-objc"
