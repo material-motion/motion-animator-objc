@@ -18,6 +18,15 @@
 
 #import <UIKit/UIKit.h>
 
+static BOOL IsCGAffineTransformType(id someValue) {
+  if ([someValue isKindOfClass:[NSValue class]]) {
+    NSValue *asValue = (NSValue *)someValue;
+    const char *objCType = @encode(CGAffineTransform);
+    return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
+  }
+  return NO;
+}
+
 NSArray* MDMCoerceUIKitValuesToCoreAnimationValues(NSArray *values) {
   if ([[values firstObject] isKindOfClass:[UIColor class]]) {
     NSMutableArray *convertedArray = [NSMutableArray arrayWithCapacity:values.count];
@@ -30,6 +39,14 @@ NSArray* MDMCoerceUIKitValuesToCoreAnimationValues(NSArray *values) {
     NSMutableArray *convertedArray = [NSMutableArray arrayWithCapacity:values.count];
     for (UIBezierPath *bezierPath in values) {
       [convertedArray addObject:(id)bezierPath.CGPath];
+    }
+    values = convertedArray;
+
+  } else if (IsCGAffineTransformType([values firstObject])) {
+    NSMutableArray *convertedArray = [NSMutableArray arrayWithCapacity:values.count];
+    for (NSValue *value in values) {
+      CATransform3D asTransform3D = CATransform3DMakeAffineTransform(value.CGAffineTransformValue);
+      [convertedArray addObject:[NSValue valueWithCATransform3D:asTransform3D]];
     }
     values = convertedArray;
   }

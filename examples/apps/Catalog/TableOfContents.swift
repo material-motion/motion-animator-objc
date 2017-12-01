@@ -16,12 +16,9 @@
 
 // MARK: Catalog by convention
 
-// Example entry in the table of contents:
-// Extend a UIViewController instance and implement catalogBreadcrumbs(), returning the list of
-// breadcrumbs required to navigate to an instance of this view controller.
-//
-//extension ExampleViewController {
-//  class func catalogBreadcrumbs() -> [String] {
-//    return ["Example"]
-//  }
-//}
+extension TapToBounceExampleViewController {
+  class func catalogBreadcrumbs() -> [String] {
+    return ["Tap to bounce"]
+  }
+}
+

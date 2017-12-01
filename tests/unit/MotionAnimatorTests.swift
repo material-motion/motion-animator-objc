@@ -50,6 +50,9 @@ class MotionAnimatorTests: XCTestCase {
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .shadowRadius)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .strokeStart)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .strokeEnd)
+    animator.animate(with: timing, to: layer,
+                     withValues: [CGAffineTransform(rotationAngle: 12),
+                                  CGAffineTransform(rotationAngle: 50)], keyPath: .transform)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .width)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .x)
     animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .y)
