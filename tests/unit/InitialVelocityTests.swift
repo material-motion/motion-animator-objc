@@ -135,15 +135,16 @@ class InitialVelocityTests: XCTestCase {
   }
 
   private func animate(from: CGFloat, to: CGFloat, withVelocity velocity: CGFloat) {
-    let springCurve = MDMSpringTimingCurve(mass: 1, tension: 1, friction: 1,
-                                           initialVelocity: velocity)
-    let traits = MDMAnimationTraits(delay: 0, duration: 0.7, timingCurve: springCurve)
-    animator.animate(with: traits, to: CALayer(), withValues: [from, to],
+    let timing = MotionTiming(delay: 0,
+                              duration: 0.7,
+                              curve: .init(type: .spring, data: (1, 1, 1, velocity)),
+                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+    animator.animate(with: timing, to: CALayer(), withValues: [from, to],
                      keyPath: .opacity)
-    animator.animate(with: traits, to: CALayer(), withValues: [CGPoint(x: from, y: from),
+    animator.animate(with: timing, to: CALayer(), withValues: [CGPoint(x: from, y: from),
                                                                CGPoint(x: to, y: to)],
                      keyPath: .position)
-    animator.animate(with: traits, to: CALayer(), withValues: [CGSize(width: from, height: from),
+    animator.animate(with: timing, to: CALayer(), withValues: [CGSize(width: from, height: from),
                                                                CGSize(width: to, height: to)],
                      keyPath: .init(rawValue: "bounds.size"))
   }

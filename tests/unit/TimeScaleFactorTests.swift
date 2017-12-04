@@ -23,7 +23,10 @@ import MotionAnimator
 
 class TimeScaleFactorTests: XCTestCase {
 
-  let traits = MDMAnimationTraits(duration: 1)
+  let timing = MotionTiming(delay: 0,
+                            duration: 1,
+                            curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
+                            repetition: .init(type: .none, amount: 0, autoreverses: false))
   var layer: CALayer!
   var addedAnimations: [CAAnimation]!
   var animator: MotionAnimator!
@@ -49,7 +52,7 @@ class TimeScaleFactorTests: XCTestCase {
   }
 
   func testDefaultTimeScaleFactorDoesNotModifyDuration() {
-    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .rotation)
+    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .rotation)
 
     XCTAssertEqual(addedAnimations.count, 1)
     let animation = addedAnimations.last!
@@ -59,23 +62,23 @@ class TimeScaleFactorTests: XCTestCase {
   func testExplicitTimeScaleFactorChangesDuration() {
     animator.timeScaleFactor = 0.5
 
-    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .rotation)
+    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .rotation)
 
     XCTAssertEqual(addedAnimations.count, 1)
     let animation = addedAnimations.last!
-    XCTAssertEqual(animation.duration, traits.duration * 0.5)
+    XCTAssertEqual(animation.duration, timing.duration * 0.5)
   }
 
   func testTransactionTimeScaleFactorChangesDuration() {
     CATransaction.begin()
     CATransaction.mdm_setTimeScaleFactor(0.5)
 
-    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .rotation)
+    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .rotation)
     CATransaction.commit()
 
     XCTAssertEqual(addedAnimations.count, 1)
     let animation = addedAnimations.last!
-    XCTAssertEqual(animation.duration, traits.duration * 0.5)
+    XCTAssertEqual(animation.duration, timing.duration * 0.5)
   }
 
   func testTransactionTimeScaleFactorOverridesAnimatorTimeScaleFactor() {
@@ -84,13 +87,13 @@ class TimeScaleFactorTests: XCTestCase {
     CATransaction.begin()
     CATransaction.mdm_setTimeScaleFactor(0.5)
 
-    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .rotation)
+    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .rotation)
 
     CATransaction.commit()
 
     XCTAssertEqual(addedAnimations.count, 1)
     let animation = addedAnimations.last!
-    XCTAssertEqual(animation.duration, traits.duration * 0.5)
+    XCTAssertEqual(animation.duration, timing.duration * 0.5)
   }
 
   func testNilTransactionTimeScaleFactorUsesAnimatorTimeScaleFactor() {
@@ -100,12 +103,12 @@ class TimeScaleFactorTests: XCTestCase {
     CATransaction.mdm_setTimeScaleFactor(0.5)
     CATransaction.mdm_setTimeScaleFactor(nil)
 
-    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .rotation)
+    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .rotation)
 
     CATransaction.commit()
 
     XCTAssertEqual(addedAnimations.count, 1)
     let animation = addedAnimations.last!
-    XCTAssertEqual(animation.duration, traits.duration * 2)
+    XCTAssertEqual(animation.duration, timing.duration * 2)
   }
 }

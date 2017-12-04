@@ -40,14 +40,14 @@
   return self;
 }
 
-- (void)animateWithTraits:(MDMAnimationTraits *)traits
+- (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
                   keyPath:(MDMAnimatableKeyPath)keyPath {
-  [self animateWithTraits:traits toLayer:layer withValues:values keyPath:keyPath completion:nil];
+  [self animateWithTiming:timing toLayer:layer withValues:values keyPath:keyPath completion:nil];
 }
 
-- (void)animateWithTraits:(MDMAnimationTraits *)traits
+- (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(CALayer *)layer
                withValues:(NSArray *)values
                   keyPath:(MDMAnimatableKeyPath)keyPath
@@ -80,7 +80,7 @@
     return;
   }
 
-  CABasicAnimation *animation = MDMAnimationFromTiming(traits, timeScaleFactor);
+  CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
 
   if (animation == nil) {
     exitEarly();
@@ -92,7 +92,7 @@
   [self addAnimation:animation
              toLayer:layer
          withKeyPath:keyPath
-              traits:traits
+              timing:timing
      timeScaleFactor:timeScaleFactor
          destination:[values lastObject]
         initialValue:^(BOOL wantsPresentationValue) {
@@ -115,11 +115,11 @@
   }
 }
 
-- (void)animateWithTraits:(MDMAnimationTraits *)traits animations:(void (^)(void))animations {
-  [self animateWithTraits:traits animations:animations completion:nil];
+- (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
+  [self animateWithTiming:timing animations:animations completion:nil];
 }
 
-- (void)animateWithTraits:(MDMAnimationTraits *)traits
+- (void)animateWithTiming:(MDMMotionTiming)timing
                animations:(void (^)(void))animations
                completion:(void(^)(void))completion {
   NSArray<MDMImplicitAction *> *actions = MDMAnimateImplicitly(animations);
@@ -142,7 +142,7 @@
   }
 
   // We'll reuse this animation template for each action.
-  CABasicAnimation *animationTemplate = MDMAnimationFromTiming(traits, timeScaleFactor);
+  CABasicAnimation *animationTemplate = MDMAnimationFromTiming(timing, timeScaleFactor);
   if (animationTemplate == nil) {
     exitEarly();
     return;
@@ -157,7 +157,7 @@
     [self addAnimation:animation
                toLayer:action.layer
            withKeyPath:action.keyPath
-                traits:traits
+                timing:timing
        timeScaleFactor:timeScaleFactor
            destination:[action.layer valueForKeyPath:action.keyPath]
           initialValue:^(BOOL wantsPresentationValue) {
@@ -214,7 +214,7 @@
 - (void)addAnimation:(CABasicAnimation *)animation
              toLayer:(CALayer *)layer
          withKeyPath:(NSString *)keyPath
-              traits:(MDMAnimationTraits *)traits
+              timing:(MDMMotionTiming)timing
      timeScaleFactor:(CGFloat)timeScaleFactor
          destination:(id)destination
         initialValue:(id(^)(BOOL wantsPresentationValue))initialValueBlock
@@ -237,11 +237,11 @@
 
   NSString *key = animation.additive ? nil : keyPath;
 
-  MDMConfigureAnimation(animation, traits);
+  MDMConfigureAnimation(animation, timing);
 
-  if (traits.delay != 0) {
+  if (timing.delay != 0) {
     animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
-                           + traits.delay * timeScaleFactor);
+                           + timing.delay * timeScaleFactor);
     animation.fillMode = kCAFillModeBackwards;
   }
 

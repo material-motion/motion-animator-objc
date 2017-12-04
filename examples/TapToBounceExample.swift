@@ -40,22 +40,21 @@ class TapToBounceExampleViewController: UIViewController {
                      for: [.touchUpInside, .touchUpOutside, .touchDragExit])
   }
 
-  let traits = MDMAnimationTraits(delay: 0,
-                                  duration: 0.5,
-                                  timingCurve: MDMSpringTimingCurve(mass: 1,
-                                                                    tension: 100,
-                                                                    friction: 10))
+  let timing = MotionTiming(delay: 0,
+                            duration: 0.5,
+                            curve: MotionCurveMakeSpring(mass: 1, tension: 100, friction: 10),
+                            repetition: .init())
 
   func didFocus(_ sender: UIButton) {
     let animator = MotionAnimator()
-    animator.animate(with: traits) {
+    animator.animate(with: timing) {
       sender.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
     }
   }
 
   func didUnfocus(_ sender: UIButton) {
     let animator = MotionAnimator()
-    animator.animate(with: traits) {
+    animator.animate(with: timing) {
       sender.transform = .identity
     }
   }

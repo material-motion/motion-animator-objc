@@ -24,7 +24,7 @@ import MotionAnimator
 
 class BeginFromCurrentStateTests: XCTestCase {
   var animator: MotionAnimator!
-  var traits: MDMAnimationTraits!
+  var timing: MotionTiming!
   var view: UIView!
   var addedAnimations: [CAAnimation]!
 
@@ -35,7 +35,10 @@ class BeginFromCurrentStateTests: XCTestCase {
 
     animator.beginFromCurrentState = true
 
-    traits = MDMAnimationTraits(duration: 1)
+    timing = MotionTiming(delay: 0,
+                          duration: 1,
+                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
+                          repetition: .init(type: .none, amount: 0, autoreverses: false))
 
     let window = UIWindow()
     window.makeKeyAndVisible()
@@ -53,7 +56,7 @@ class BeginFromCurrentStateTests: XCTestCase {
 
   override func tearDown() {
     animator = nil
-    traits = nil
+    timing = nil
     view = nil
     addedAnimations = nil
 
@@ -65,7 +68,7 @@ class BeginFromCurrentStateTests: XCTestCase {
 
     animator.additive = false
 
-    animator.animate(with: traits, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
+    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
 
     XCTAssertNotNil(view.layer.animationKeys(),
                     "Expected an animation to be added, but none were found.")
@@ -100,7 +103,7 @@ class BeginFromCurrentStateTests: XCTestCase {
 
     animator.additive = false
 
-    animator.animate(with: traits) {
+    animator.animate(with: timing) {
       self.view.alpha = 0.5
     }
 
@@ -135,7 +138,7 @@ class BeginFromCurrentStateTests: XCTestCase {
   func testExplicitlyAnimatesFromPresentationValue() {
     animator.additive = false
 
-    animator.animate(with: traits, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
+    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
     RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
 
     XCTAssertNotNil(view.layer.presentation(), "No presentation layer found.")
@@ -144,7 +147,7 @@ class BeginFromCurrentStateTests: XCTestCase {
     }
     let initialValue = presentation.opacity
 
-    animator.animate(with: traits, to: view.layer, withValues: [0, 0.2], keyPath: .opacity)
+    animator.animate(with: timing, to: view.layer, withValues: [0, 0.2], keyPath: .opacity)
 
     XCTAssertNotNil(view.layer.animationKeys(),
                     "Expected an animation to be added, but none were found.")
@@ -177,7 +180,7 @@ class BeginFromCurrentStateTests: XCTestCase {
   func testImplicitlyAnimatesFromPresentationValue() {
     animator.additive = false
 
-    animator.animate(with: traits, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
+    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .opacity)
 
     RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
 
@@ -187,7 +190,7 @@ class BeginFromCurrentStateTests: XCTestCase {
     }
     let initialValue = presentation.opacity
 
-    animator.animate(with: traits) {
+    animator.animate(with: timing) {
       self.view.alpha = 0.2
     }
 
@@ -223,7 +226,7 @@ class BeginFromCurrentStateTests: XCTestCase {
     animator.beginFromCurrentState = true
     animator.additive = false
 
-    animator.animate(with: traits) {
+    animator.animate(with: timing) {
       self.view.alpha = 0.5
     }
 
@@ -231,7 +234,7 @@ class BeginFromCurrentStateTests: XCTestCase {
 
     let initialValue = view.layer.presentation()!.opacity
 
-    animator.animate(with: traits) {
+    animator.animate(with: timing) {
       self.view.alpha = 1.0
     }
 

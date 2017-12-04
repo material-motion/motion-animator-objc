@@ -65,39 +65,44 @@ static BOOL IsAnimationKeyPathAlwaysNonAdditive(NSString *keyPath) {
 
 #pragma mark - Public
 
-CABasicAnimation *MDMAnimationFromTiming(MDMAnimationTraits * traits, CGFloat timeScaleFactor) {
-  if (traits.timingCurve == nil) {
-    return nil;
-  }
-
-  if ([traits.timingCurve isKindOfClass:[CAMediaTimingFunction class]]) {
-    CFTimeInterval duration = traits.duration * timeScaleFactor;
-    if (duration == 0) {
-      return nil;
-    }
-    CABasicAnimation *animation = [CABasicAnimation animation];
-    animation.timingFunction = (CAMediaTimingFunction *)traits.timingCurve;
-    animation.duration = duration;
-    return animation;
-  }
-
-  if ([traits.timingCurve isKindOfClass:[MDMSpringTimingCurve class]]) {
-    MDMSpringTimingCurve *springTiming = (MDMSpringTimingCurve *)traits.timingCurve;
+CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor) {
+  CABasicAnimation *animation;
+  switch (timing.curve.type) {
+    case MDMMotionCurveTypeInstant:
+      animation = nil;
+      break;
 
 #pragma clang diagnostic push
-    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
-    // linking against the public API on iOS 9+.
-#pragma clang diagnostic ignored "-Wpartial-availability"
-    CASpringAnimation *animation = [CASpringAnimation animation];
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    case MDMMotionCurveTypeDefault:
 #pragma clang diagnostic pop
-    animation.mass = springTiming.mass;
-    animation.stiffness = springTiming.tension;
-    animation.damping = springTiming.friction;
-    animation.duration = traits.duration;
-    return animation;
-  }
+    case MDMMotionCurveTypeBezier:
+      animation = [CABasicAnimation animation];
+      animation.timingFunction = MDMTimingFunctionWithControlPoints(timing.curve.data);
+      animation.duration = timing.duration * timeScaleFactor;
 
-  return nil;
+      if (animation.duration == 0) {
+        return nil;
+      }
+      break;
+
+    case MDMMotionCurveTypeSpring: {
+#pragma clang diagnostic push
+      // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+      // linking against the public API on iOS 9+.
+#pragma clang diagnostic ignored "-Wpartial-availability"
+      CASpringAnimation *spring = [CASpringAnimation animation];
+#pragma clang diagnostic pop
+      spring.mass = timing.curve.data[MDMSpringMotionCurveDataIndexMass];
+      spring.stiffness = timing.curve.data[MDMSpringMotionCurveDataIndexTension];
+      spring.damping = timing.curve.data[MDMSpringMotionCurveDataIndexFriction];
+      spring.duration = timing.duration;
+
+      animation = spring;
+      break;
+    }
+  }
+  return animation;
 }
 
 BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue) {
@@ -110,18 +115,8 @@ BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue) {
           || IsCATransform3DType(toValue));
 }
 
-void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * traits) {
-#pragma clang diagnostic push
-  // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
-  // linking against the public API on iOS 9+.
-#pragma clang diagnostic ignored "-Wpartial-availability"
-  BOOL isSpringAnimation = ([animation isKindOfClass:[CASpringAnimation class]]
-                            && [traits.timingCurve isKindOfClass:[MDMSpringTimingCurve class]]);
-  MDMSpringTimingCurve *springTimingCurve = (MDMSpringTimingCurve *)traits.timingCurve;
-  CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
-#pragma clang diagnostic pop
-
-  if (!animation.additive && !isSpringAnimation) {
+void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing) {
+  if (!animation.additive && timing.curve.type != MDMMotionCurveTypeSpring) {
     return; // Nothing to do here.
   }
 
@@ -163,10 +158,17 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
       animation.toValue = @0;
     }
 
-    if (isSpringAnimation) {
-      CGFloat absoluteInitialVelocity = springTimingCurve.initialVelocity;
+#pragma clang diagnostic push
+    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+    // linking against the public API on iOS 9+.
+#pragma clang diagnostic ignored "-Wpartial-availability"
+    if ([animation isKindOfClass:[CASpringAnimation class]]) {
+      CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
+#pragma clang diagnostic pop
 
-      // Our traits's initialVelocity is in points per second, but Core Animation expects initial
+      CGFloat absoluteInitialVelocity = timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
+
+      // Our timing's initialVelocity is in points per second, but Core Animation expects initial
       // velocity to be in terms of displacement per second.
       //
       // From the UIView animateWithDuration header docs:
@@ -218,7 +220,13 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
       animation.toValue = [NSValue valueWithCGSize:CGSizeZero];
     }
 
-    if (isSpringAnimation) {
+#pragma clang diagnostic push
+    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+    // linking against the public API on iOS 9+.
+#pragma clang diagnostic ignored "-Wpartial-availability"
+    if ([animation isKindOfClass:[CASpringAnimation class]]) {
+      CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
+#pragma clang diagnostic pop
       // Core Animation's velocity system is single dimensional, so we pick the dominant direction
       // of movement and normalize accordingly.
       CGFloat biggestDelta;
@@ -228,7 +236,8 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
         biggestDelta = additiveDisplacement.height;
       }
       CGFloat displacement = -biggestDelta;
-      CGFloat absoluteInitialVelocity = springTimingCurve.initialVelocity;
+      CGFloat absoluteInitialVelocity =
+          timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
       if (fabs(displacement) > 0.00001) {
         springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
       }
@@ -244,7 +253,13 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
       animation.toValue = [NSValue valueWithCGPoint:CGPointZero];
     }
 
-    if (isSpringAnimation) {
+#pragma clang diagnostic push
+    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+    // linking against the public API on iOS 9+.
+#pragma clang diagnostic ignored "-Wpartial-availability"
+    if ([animation isKindOfClass:[CASpringAnimation class]]) {
+      CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
+#pragma clang diagnostic pop
       // Core Animation's velocity system is single dimensional, so we pick the dominant direction
       // of movement and normalize accordingly.
       CGFloat biggestDelta;
@@ -254,7 +269,8 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
         biggestDelta = additiveDisplacement.y;
       }
       CGFloat displacement = -biggestDelta;
-      CGFloat absoluteInitialVelocity = springTimingCurve.initialVelocity;
+      CGFloat absoluteInitialVelocity =
+          timing.curve.data[MDMSpringMotionCurveDataIndexInitialVelocity];
       if (fabs(displacement) > 0.00001) {
         springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
       }
@@ -271,7 +287,13 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
     }
   }
 
-  if (isSpringAnimation) {
+  // Update the animation's duration to match the proposed settling duration.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wpartial-availability"
+  if ([animation isKindOfClass:[CASpringAnimation class]]) {
+    CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
+#pragma clang diagnostic pop
+
     // This API is only available on iOS 9+
     if ([springAnimation respondsToSelector:@selector(settlingDuration)]) {
       animation.duration = springAnimation.settlingDuration;
