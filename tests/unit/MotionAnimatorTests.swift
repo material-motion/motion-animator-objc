@@ -26,38 +26,35 @@ class MotionAnimatorTests: XCTestCase {
 
   func testAnimatorAPIsCompile() {
     let animator = MotionAnimator()
-    let timing = MotionTiming(delay: 0,
-                              duration: 1,
-                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+    let traits = MDMAnimationTraits(duration: 1)
     let layer = CALayer()
 
-    animator.animate(with: timing, to: layer,
+    animator.animate(with: traits, to: layer,
                      withValues: [UIColor.blue, UIColor.red], keyPath: .backgroundColor)
-    animator.animate(with: timing, to: layer,
+    animator.animate(with: traits, to: layer,
                      withValues: [CGRect.zero, CGRect(x: 0, y: 0, width: 100, height: 50)],
                      keyPath: .bounds)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .cornerRadius)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .height)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .opacity)
-    animator.animate(with: timing, to: layer,
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .cornerRadius)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .height)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .opacity)
+    animator.animate(with: traits, to: layer,
                      withValues: [CGPoint.zero, CGPoint(x: 1, y: 1)], keyPath: .position)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .rotation)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .scale)
-    animator.animate(with: timing, to: layer,
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .rotation)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .scale)
+    animator.animate(with: traits, to: layer,
                      withValues: [CGSize.zero, CGSize(width: 1, height: 1)], keyPath: .shadowOffset)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .shadowOpacity)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .shadowRadius)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .strokeStart)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .strokeEnd)
-    animator.animate(with: timing, to: layer,
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .shadowOpacity)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .shadowRadius)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .strokeStart)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .strokeEnd)
+    animator.animate(with: traits, to: layer,
                      withValues: [CGAffineTransform(rotationAngle: 12),
                                   CGAffineTransform(rotationAngle: 50)], keyPath: .transform)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .width)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .x)
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .y)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .width)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .x)
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .y)
 
-    animator.animate(with: timing, to: layer, withValues: [0, 1], keyPath: .init(rawValue: "bounds.size.width"))
+    animator.animate(with: traits, to: layer, withValues: [0, 1], keyPath: .init(rawValue: "bounds.size.width"))
 
     XCTAssertTrue(true)
   }
@@ -65,11 +62,7 @@ class MotionAnimatorTests: XCTestCase {
   func testAnimatorOnlyUsesSingleNonAdditiveAnimationForKeyPath() {
     let animator = MotionAnimator()
     animator.additive = false
-
-    let timing = MotionTiming(delay: 0,
-                              duration: 1,
-                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+    let traits = MDMAnimationTraits(duration: 1)
 
     let window = UIWindow()
     window.makeKeyAndVisible()
@@ -79,7 +72,7 @@ class MotionAnimatorTests: XCTestCase {
     XCTAssertEqual(view.layer.delegate as? UIView, view)
 
     UIView.animate(withDuration: 0.5) {
-      animator.animate(with: timing, to: view.layer, withValues: [0, 1], keyPath: .rotation)
+      animator.animate(with: traits, to: view.layer, withValues: [0, 1], keyPath: .rotation)
 
       XCTAssertEqual(view.layer.animationKeys()?.count, 1)
     }
@@ -87,11 +80,7 @@ class MotionAnimatorTests: XCTestCase {
 
   func testCompletionCallbackIsExecutedWithZeroDuration() {
     let animator = MotionAnimator()
-
-    let timing = MotionTiming(delay: 0,
-                              duration: 0,
-                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+    let traits = MDMAnimationTraits(duration: 1)
 
     let window = UIWindow()
     window.makeKeyAndVisible()
@@ -101,7 +90,7 @@ class MotionAnimatorTests: XCTestCase {
     XCTAssertEqual(view.layer.delegate as? UIView, view)
 
     let didComplete = expectation(description: "Did complete")
-    animator.animate(with: timing, to: view.layer, withValues: [0, 1], keyPath: .rotation) {
+    animator.animate(with: traits, to: view.layer, withValues: [0, 1], keyPath: .rotation) {
       didComplete.fulfill()
     }
 

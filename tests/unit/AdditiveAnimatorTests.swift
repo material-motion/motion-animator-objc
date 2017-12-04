@@ -23,7 +23,7 @@ import MotionAnimator
 
 class AdditiveAnimationTests: XCTestCase {
   var animator: MotionAnimator!
-  var timing: MotionTiming!
+  var traits: MDMAnimationTraits!
   var view: UIView!
 
   override func setUp() {
@@ -33,10 +33,7 @@ class AdditiveAnimationTests: XCTestCase {
 
     animator.additive = true
 
-    timing = MotionTiming(delay: 0,
-                          duration: 1,
-                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 1, p2y: 1),
-                          repetition: .init(type: .none, amount: 0, autoreverses: false))
+    traits = MDMAnimationTraits(duration: 1)
 
     let window = UIWindow()
     window.makeKeyAndVisible()
@@ -49,14 +46,14 @@ class AdditiveAnimationTests: XCTestCase {
 
   override func tearDown() {
     animator = nil
-    timing = nil
+    traits = nil
     view = nil
 
     super.tearDown()
   }
 
   func testNumericKeyPathsAnimateAdditively() {
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .cornerRadius)
+    animator.animate(with: traits, to: view.layer, withValues: [1, 0], keyPath: .cornerRadius)
 
     XCTAssertNotNil(view.layer.animationKeys(),
                     "Expected an animation to be added, but none were found.")
@@ -75,7 +72,7 @@ class AdditiveAnimationTests: XCTestCase {
   }
 
   func testCGSizeKeyPathsAnimateAdditively() {
-    animator.animate(with: timing, to: view.layer,
+    animator.animate(with: traits, to: view.layer,
                      withValues: [CGSize(width: 0, height: 0),
                                   CGSize(width: 1, height: 2)], keyPath: .shadowOffset)
 
@@ -96,7 +93,7 @@ class AdditiveAnimationTests: XCTestCase {
   }
 
   func testCGPointKeyPathsAnimateAdditively() {
-    animator.animate(with: timing, to: view.layer,
+    animator.animate(with: traits, to: view.layer,
                      withValues: [CGPoint(x: 0, y: 0),
                                   CGPoint(x: 1, y: 2)], keyPath: .position)
 

@@ -27,7 +27,7 @@
 #import "MDMCoreAnimationTraceable.h"
 
 /**
- An animator adds Core Animation animations to a layer based on a provided motion timing.
+ An animator adds Core Animation animations to a layer based on a provided motion traits.
  */
 NS_SWIFT_NAME(MotionAnimator)
 @interface MDMMotionAnimator : NSObject <MDMCoreAnimationTraceable>
@@ -44,7 +44,7 @@ NS_SWIFT_NAME(MotionAnimator)
 /**
  If enabled, explicitly-provided values will be reversed before animating.
 
- This property does not affect the animateWithTiming:animations: family of methods.
+ This property does not affect the animateWithTraits:animations: family of methods.
 
  Disabled by default.
  */
@@ -70,32 +70,32 @@ NS_SWIFT_NAME(MotionAnimator)
 @property(nonatomic, assign) BOOL additive;
 
 /**
- Adds a single animation to the layer with the given timing structure.
+ Adds a single animation to the layer with the given traits structure.
 
  If `additive` is disabled, the animation will be added to the layer with the keyPath as its key.
  In this case, multiple invocations of this function on the same key path will remove the
  animations added from prior invocations.
 
- @param timing The timing to be used for the animation.
+ @param traits The traits to be used for the animation.
  @param layer The layer to be animated.
  @param values The values to be used in the animation. Must contain exactly two values. Supported
  UIKit types will be coerced to their Core Animation equivalent. Supported UIKit values include
  UIColor and UIBezierPath.
  @param keyPath The key path of the property to be animated.
  */
-- (void)animateWithTiming:(MDMMotionTiming)timing
+- (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                   toLayer:(nonnull CALayer *)layer
                withValues:(nonnull NSArray *)values
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath;
 
 /**
- Adds a single animation to the layer with the given timing structure.
+ Adds a single animation to the layer with the given traits structure.
 
  If `additive` is disabled, the animation will be added to the layer with the keyPath as its key.
  In this case, multiple invocations of this function on the same key path will remove the
  animations added from prior invocations.
 
- @param timing The timing to be used for the animation.
+ @param traits The traits to be used for the animation.
  @param layer The layer to be animated.
  @param values The values to be used in the animation. Must contain exactly two values. Supported
  UIKit types will be coerced to their Core Animation equivalent. Supported UIKit values include
@@ -105,35 +105,36 @@ NS_SWIFT_NAME(MotionAnimator)
  animation hierarchy. If the duration of the animation is 0, this block is executed immediately.
  The block is escaping and will be released once the animations have completed.
  */
-- (void)animateWithTiming:(MDMMotionTiming)timing
+- (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                   toLayer:(nonnull CALayer *)layer
                withValues:(nonnull NSArray *)values
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath
                completion:(nullable void(^)(void))completion;
 
 /**
- Performs `animations` using the timing provided.
+ Performs `animations` using the traits provided.
 
- @param timing The timing to be used for the animation.
+ @param traits The traits to be used for the animation.
  @param animations The block to be executed. Any animatable properties changed within this block
- will result in animations being added to the view's layer with the provided timing. The block is
+ will result in animations being added to the view's layer with the provided traits. The block is
  non-escaping.
  */
-- (void)animateWithTiming:(MDMMotionTiming)timing animations:(nonnull void(^)(void))animations;
+- (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
+               animations:(nonnull void(^)(void))animations;
 
 /**
- Performs `animations` using the timing provided and executes the completion handler once all added
+ Performs `animations` using the traits provided and executes the completion handler once all added
  animations have completed.
 
- @param timing The timing to be used for the animation.
+ @param traits The traits to be used for the animation.
  @param animations The block to be executed. Any animatable properties changed within this block
- will result in animations being added to the view's layer with the provided timing. The block is
+ will result in animations being added to the view's layer with the provided traits. The block is
  non-escaping.
  @param completion A block object to be executed once the animation sequence ends or it has been
  removed from the animation hierarchy. If the duration of the animation is 0, this block is executed
  immediately. The block is escaping and will be released once the animation sequence has completed.
  */
-- (void)animateWithTiming:(MDMMotionTiming)timing
+- (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                animations:(nonnull void (^)(void))animations
                completion:(nullable void(^)(void))completion;
 

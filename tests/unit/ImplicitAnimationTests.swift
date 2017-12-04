@@ -23,7 +23,7 @@ import MotionAnimator
 
 class ImplicitAnimationTests: XCTestCase {
   var animator: MotionAnimator!
-  var timing: MotionTiming!
+  var traits: MDMAnimationTraits!
   var view: UIView!
   var addedAnimations: [CAAnimation]!
 
@@ -34,10 +34,7 @@ class ImplicitAnimationTests: XCTestCase {
     animator = MotionAnimator()
     animator.additive = false
 
-    timing = MotionTiming(delay: 0,
-                          duration: 0.7,
-                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 1, p2y: 1),
-                          repetition: .init(type: .none, amount: 0, autoreverses: false))
+    traits = MDMAnimationTraits(duration: 1)
 
     let window = UIWindow()
     window.makeKeyAndVisible()
@@ -69,7 +66,7 @@ class ImplicitAnimationTests: XCTestCase {
   }
 
   func testNoActionAddsNoAnimations() {
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       // No-op
     }
 
@@ -77,7 +74,7 @@ class ImplicitAnimationTests: XCTestCase {
   }
 
   func testOneActionAddsOneAnimation() {
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       self.view.alpha = 0
     }
 
@@ -86,18 +83,21 @@ class ImplicitAnimationTests: XCTestCase {
     XCTAssertEqual(animation.keyPath, AnimatableKeyPath.opacity.rawValue)
     XCTAssertEqual(animation.fromValue as! CGFloat, 1)
     XCTAssertEqual(animation.toValue as! CGFloat, 0)
-    XCTAssertEqual(animation.duration, timing.duration)
+    XCTAssertEqual(animation.duration, traits.duration)
 
-    let addedCurve = MotionCurve(fromTimingFunction: animation.timingFunction!)
-    XCTAssertEqual(addedCurve.type, timing.curve.type)
-    XCTAssertEqual(addedCurve.data.0, timing.curve.data.0)
-    XCTAssertEqual(addedCurve.data.1, timing.curve.data.1)
-    XCTAssertEqual(addedCurve.data.2, timing.curve.data.2)
-    XCTAssertEqual(addedCurve.data.3, timing.curve.data.3)
+    let timingCurve = traits.timingCurve as! CAMediaTimingFunction
+    XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.x, animation.timingFunction!.mdm_point1.x,
+                               accuracy: 0.001)
+    XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.y, animation.timingFunction!.mdm_point1.y,
+                               accuracy: 0.001)
+    XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.x, animation.timingFunction!.mdm_point2.x,
+                               accuracy: 0.001)
+    XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.y, animation.timingFunction!.mdm_point2.y,
+                               accuracy: 0.001)
   }
 
   func testTwoActionsAddsTwoAnimations() {
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       self.view.alpha = 0
       self.view.center = .init(x: 50, y: 50)
     }
@@ -110,14 +110,17 @@ class ImplicitAnimationTests: XCTestCase {
       XCTAssertEqual(animation.keyPath, AnimatableKeyPath.opacity.rawValue)
       XCTAssertEqual(animation.fromValue as! CGFloat, 1)
       XCTAssertEqual(animation.toValue as! CGFloat, 0)
-      XCTAssertEqual(animation.duration, timing.duration)
+      XCTAssertEqual(animation.duration, traits.duration)
 
-      let addedCurve = MotionCurve(fromTimingFunction: animation.timingFunction!)
-      XCTAssertEqual(addedCurve.type, timing.curve.type)
-      XCTAssertEqual(addedCurve.data.0, timing.curve.data.0)
-      XCTAssertEqual(addedCurve.data.1, timing.curve.data.1)
-      XCTAssertEqual(addedCurve.data.2, timing.curve.data.2)
-      XCTAssertEqual(addedCurve.data.3, timing.curve.data.3)
+      let timingCurve = traits.timingCurve as! CAMediaTimingFunction
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.x, animation.timingFunction!.mdm_point1.x,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.y, animation.timingFunction!.mdm_point1.y,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.x, animation.timingFunction!.mdm_point2.x,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.y, animation.timingFunction!.mdm_point2.y,
+                                 accuracy: 0.001)
     }
     do {
       let animation = addedAnimations[1] as! CABasicAnimation
@@ -125,19 +128,22 @@ class ImplicitAnimationTests: XCTestCase {
       XCTAssertEqual(animation.keyPath, AnimatableKeyPath.position.rawValue)
       XCTAssertEqual(animation.fromValue as! CGPoint, .init(x: 0, y: 0))
       XCTAssertEqual(animation.toValue as! CGPoint, .init(x: 50, y: 50))
-      XCTAssertEqual(animation.duration, timing.duration)
+      XCTAssertEqual(animation.duration, traits.duration)
 
-      let addedCurve = MotionCurve(fromTimingFunction: animation.timingFunction!)
-      XCTAssertEqual(addedCurve.type, timing.curve.type)
-      XCTAssertEqual(addedCurve.data.0, timing.curve.data.0)
-      XCTAssertEqual(addedCurve.data.1, timing.curve.data.1)
-      XCTAssertEqual(addedCurve.data.2, timing.curve.data.2)
-      XCTAssertEqual(addedCurve.data.3, timing.curve.data.3)
+      let timingCurve = traits.timingCurve as! CAMediaTimingFunction
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.x, animation.timingFunction!.mdm_point1.x,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.y, animation.timingFunction!.mdm_point1.y,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.x, animation.timingFunction!.mdm_point2.x,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.y, animation.timingFunction!.mdm_point2.y,
+                                 accuracy: 0.001)
     }
   }
 
   func testFrameActionAddsTwoAnimations() {
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       self.view.frame = .init(x: 0, y: 0, width: 100, height: 100)
     }
 
@@ -150,14 +156,17 @@ class ImplicitAnimationTests: XCTestCase {
       XCTAssertFalse(animation.isAdditive)
       XCTAssertEqual(animation.fromValue as! CGPoint, .init(x: 0, y: 0))
       XCTAssertEqual(animation.toValue as! CGPoint, .init(x: 50, y: 50))
-      XCTAssertEqual(animation.duration, timing.duration)
+      XCTAssertEqual(animation.duration, traits.duration)
 
-      let addedCurve = MotionCurve(fromTimingFunction: animation.timingFunction!)
-      XCTAssertEqual(addedCurve.type, timing.curve.type)
-      XCTAssertEqual(addedCurve.data.0, timing.curve.data.0)
-      XCTAssertEqual(addedCurve.data.1, timing.curve.data.1)
-      XCTAssertEqual(addedCurve.data.2, timing.curve.data.2)
-      XCTAssertEqual(addedCurve.data.3, timing.curve.data.3)
+      let timingCurve = traits.timingCurve as! CAMediaTimingFunction
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.x, animation.timingFunction!.mdm_point1.x,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.y, animation.timingFunction!.mdm_point1.y,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.x, animation.timingFunction!.mdm_point2.x,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.y, animation.timingFunction!.mdm_point2.y,
+                                 accuracy: 0.001)
     }
     do {
       let animation = addedAnimations
@@ -166,14 +175,17 @@ class ImplicitAnimationTests: XCTestCase {
       XCTAssertFalse(animation.isAdditive)
       XCTAssertEqual(animation.fromValue as! CGRect, .init(x: 0, y: 0, width: 0, height: 0))
       XCTAssertEqual(animation.toValue as! CGRect, .init(x: 0, y: 0, width: 100, height: 100))
-      XCTAssertEqual(animation.duration, timing.duration)
+      XCTAssertEqual(animation.duration, traits.duration)
 
-      let addedCurve = MotionCurve(fromTimingFunction: animation.timingFunction!)
-      XCTAssertEqual(addedCurve.type, timing.curve.type)
-      XCTAssertEqual(addedCurve.data.0, timing.curve.data.0)
-      XCTAssertEqual(addedCurve.data.1, timing.curve.data.1)
-      XCTAssertEqual(addedCurve.data.2, timing.curve.data.2)
-      XCTAssertEqual(addedCurve.data.3, timing.curve.data.3)
+      let timingCurve = traits.timingCurve as! CAMediaTimingFunction
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.x, animation.timingFunction!.mdm_point1.x,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point1.y, animation.timingFunction!.mdm_point1.y,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.x, animation.timingFunction!.mdm_point2.x,
+                                 accuracy: 0.001)
+      XCTAssertEqualWithAccuracy(timingCurve.mdm_point2.y, animation.timingFunction!.mdm_point2.y,
+                                 accuracy: 0.001)
     }
   }
 
@@ -181,7 +193,7 @@ class ImplicitAnimationTests: XCTestCase {
     CATransaction.begin()
     CATransaction.setDisableActions(true)
 
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       self.view.alpha = 0
     }
 
@@ -211,9 +223,9 @@ class ImplicitAnimationTests: XCTestCase {
   }
 
   func testDurationOfZeroRunsAnimationsBlockButGeneratesNoAnimations() {
-    timing.duration = 0
+    let traits = MDMAnimationTraits(duration: 0)
 
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       self.view.alpha = 0
     }
 
@@ -224,7 +236,7 @@ class ImplicitAnimationTests: XCTestCase {
   func testTimeScaleFactorOfZeroRunsAnimationsBlockButGeneratesNoAnimations() {
     animator.timeScaleFactor = 0
 
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       self.view.alpha = 0
     }
 
@@ -233,7 +245,7 @@ class ImplicitAnimationTests: XCTestCase {
   }
 
   func testUnsupportedAnimationKeyIsNotAnimated() {
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       self.view.layer.sublayers = []
     }
 

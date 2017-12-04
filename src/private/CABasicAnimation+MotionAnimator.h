@@ -20,9 +20,9 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 
-// Returns a basic animation configured with the provided timing and scale factor.
+// Returns a basic animation configured with the provided traits and scale factor.
 FOUNDATION_EXPORT
-CABasicAnimation *MDMAnimationFromTiming(MDMMotionTiming timing, CGFloat timeScaleFactor);
+CABasicAnimation *MDMAnimationFromTiming(MDMAnimationTraits * traits, CGFloat timeScaleFactor);
 
 // Returns a Boolean indicating whether or not an animation with the given key path and toValue
 // can be animated additively.
@@ -33,4 +33,4 @@ FOUNDATION_EXPORT BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue);
 //
 // Not all animation value types support being additive. If an animation's value type was not
 // supported, the animation's values will not be modified.
-FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation, MDMMotionTiming timing);
+FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * traits);

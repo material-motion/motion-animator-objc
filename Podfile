@@ -5,6 +5,7 @@ target "MotionAnimatorCatalog" do
   pod 'CatalogByConvention'
   pod 'MotionAnimator', :path => './'
   project 'examples/apps/Catalog/MotionAnimatorCatalog.xcodeproj'
+  pod 'MotionInterchange', :path => '../motion-interchange-objc/'
 end
 
 target "UnitTests" do

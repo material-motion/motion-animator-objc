@@ -24,7 +24,6 @@ import MotionAnimator
 class InstantAnimationTests: XCTestCase {
 
   var animator: MotionAnimator!
-  var timing: MotionTiming!
   var view: UIView!
   var addedAnimations: [CAAnimation]!
 
@@ -32,11 +31,6 @@ class InstantAnimationTests: XCTestCase {
     super.setUp()
 
     animator = MotionAnimator()
-
-    timing = MotionTiming(delay: 0,
-                          duration: 0,
-                          curve: .init(type: .instant, data: (0, 0, 0, 0)),
-                          repetition: .init(type: .none, amount: 0, autoreverses: false))
 
     let window = UIWindow()
     window.makeKeyAndVisible()
@@ -61,15 +55,42 @@ class InstantAnimationTests: XCTestCase {
   }
 
   func testDoesNotGenerateImplicitAnimations() {
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0.5], keyPath: .opacity)
+    let traits = MDMAnimationTraits(duration: 0)
+
+    animator.animate(with: traits, to: view.layer, withValues: [1, 0.5], keyPath: .opacity)
 
     XCTAssertNil(view.layer.animationKeys())
     XCTAssertEqual(addedAnimations.count, 0)
   }
 
   func testDoesNotGenerateImplicitAnimationsInUIViewAnimationBlock() {
+    let traits = MDMAnimationTraits(duration: 0)
+
     UIView.animate(withDuration: 0.5) {
-      self.animator.animate(with: self.timing,
+      self.animator.animate(with: traits,
+                            to: self.view.layer,
+                            withValues: [1, 0.5],
+                            keyPath: .opacity)
+    }
+
+    XCTAssertNil(view.layer.animationKeys())
+    XCTAssertEqual(addedAnimations.count, 0)
+  }
+
+  func testDoesNotGenerateImplicitAnimationsWithNilCurve() {
+    let traits = MDMAnimationTraits(delay: 0, duration: 0.5, timingCurve: nil)
+
+    animator.animate(with: traits, to: view.layer, withValues: [1, 0.5], keyPath: .opacity)
+
+    XCTAssertNil(view.layer.animationKeys())
+    XCTAssertEqual(addedAnimations.count, 0)
+  }
+
+  func testDoesNotGenerateImplicitAnimationsInUIViewAnimationBlockWithNilCurve() {
+    let traits = MDMAnimationTraits(delay: 0, duration: 0.5, timingCurve: nil)
+
+    UIView.animate(withDuration: 0.5) {
+      self.animator.animate(with: traits,
                             to: self.view.layer,
                             withValues: [1, 0.5],
                             keyPath: .opacity)

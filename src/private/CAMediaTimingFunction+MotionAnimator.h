@@ -18,6 +18,6 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 
-// Returns a timing function with the given control points.
+// Returns a traits function with the given control points.
 FOUNDATION_EXPORT
 CAMediaTimingFunction* MDMTimingFunctionWithControlPoints(CGFloat controlPoints[4]);
