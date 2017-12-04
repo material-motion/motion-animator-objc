@@ -40,18 +40,18 @@
   return self;
 }
 
-- (void)animateWithTiming:(MDMMotionTiming)timing
-                  toLayer:(CALayer *)layer
-               withValues:(NSArray *)values
+- (void)animateWithTraits:(MDMAnimationTraits *)traits
+                   values:(NSArray *)values
+                    layer:(CALayer *)layer
                   keyPath:(MDMAnimatableKeyPath)keyPath {
-  [self animateWithTiming:timing toLayer:layer withValues:values keyPath:keyPath completion:nil];
+  [self animateWithTraits:traits values:values layer:layer keyPath:keyPath completion:nil];
 }
 
-- (void)animateWithTiming:(MDMMotionTiming)timing
-                  toLayer:(CALayer *)layer
-               withValues:(NSArray *)values
+- (void)animateWithTraits:(MDMAnimationTraits *)traits
+                   values:(NSArray *)values
+                    layer:(CALayer *)layer
                   keyPath:(MDMAnimatableKeyPath)keyPath
-               completion:(void(^)(void))completion {
+               completion:(void(^)(BOOL))completion {
   NSAssert([values count] == 2, @"The values array must contain exactly two values.");
 
   if (_shouldReverseValues) {
@@ -70,7 +70,7 @@
     commitToModelLayer();
 
     if (completion) {
-      completion();
+      completion(YES);
     }
   };
 
@@ -80,7 +80,7 @@
     return;
   }
 
-  CABasicAnimation *animation = MDMAnimationFromTiming(timing, timeScaleFactor);
+  CABasicAnimation *animation = MDMAnimationFromTiming(traits, timeScaleFactor);
 
   if (animation == nil) {
     exitEarly();
@@ -92,7 +92,7 @@
   [self addAnimation:animation
              toLayer:layer
          withKeyPath:keyPath
-              timing:timing
+              traits:traits
      timeScaleFactor:timeScaleFactor
          destination:[values lastObject]
         initialValue:^(BOOL wantsPresentationValue) {
@@ -115,13 +115,13 @@
   }
 }
 
-- (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
-  [self animateWithTiming:timing animations:animations completion:nil];
+- (void)animateWithTraits:(MDMAnimationTraits *)traits animations:(void (^)(void))animations {
+  [self animateWithTraits:traits animations:animations completion:nil];
 }
 
-- (void)animateWithTiming:(MDMMotionTiming)timing
+- (void)animateWithTraits:(MDMAnimationTraits *)traits
                animations:(void (^)(void))animations
-               completion:(void(^)(void))completion {
+               completion:(void(^)(BOOL))completion {
   NSArray<MDMImplicitAction *> *actions = MDMAnimateImplicitly(animations);
 
   void (^exitEarly)(void) = ^{
@@ -131,7 +131,7 @@
     [CATransaction commit];
 
     if (completion) {
-      completion();
+      completion(YES);
     }
   };
 
@@ -142,14 +142,18 @@
   }
 
   // We'll reuse this animation template for each action.
-  CABasicAnimation *animationTemplate = MDMAnimationFromTiming(timing, timeScaleFactor);
+  CABasicAnimation *animationTemplate = MDMAnimationFromTiming(traits, timeScaleFactor);
   if (animationTemplate == nil) {
     exitEarly();
     return;
   }
 
   [CATransaction begin];
-  [CATransaction setCompletionBlock:completion];
+  if (completion) {
+    [CATransaction setCompletionBlock:^{
+      completion(YES);
+    }];
+  }
 
   for (MDMImplicitAction *action in actions) {
     CABasicAnimation *animation = [animationTemplate copy];
@@ -157,7 +161,7 @@
     [self addAnimation:animation
                toLayer:action.layer
            withKeyPath:action.keyPath
-                timing:timing
+                traits:traits
        timeScaleFactor:timeScaleFactor
            destination:[action.layer valueForKeyPath:action.keyPath]
           initialValue:^(BOOL wantsPresentationValue) {
@@ -193,6 +197,45 @@
   [_registrar removeAllAnimations];
 }
 
+#pragma mark - Legacy
+
+- (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithMotionTiming:timing];
+  [self animateWithTraits:traits animations:animations];
+}
+
+- (void)animateWithTiming:(MDMMotionTiming)timing
+               animations:(void (^)(void))animations
+               completion:(void (^)(void))completion {
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithMotionTiming:timing];
+  [self animateWithTraits:traits animations:animations completion:^(BOOL didComplete) {
+    completion();
+  }];
+}
+
+- (void)animateWithTiming:(MDMMotionTiming)timing
+                  toLayer:(CALayer *)layer
+               withValues:(NSArray *)values
+                  keyPath:(MDMAnimatableKeyPath)keyPath {
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithMotionTiming:timing];
+  [self animateWithTraits:traits values:values layer:layer keyPath:keyPath];
+}
+
+- (void)animateWithTiming:(MDMMotionTiming)timing
+                  toLayer:(CALayer *)layer
+               withValues:(NSArray *)values
+                  keyPath:(MDMAnimatableKeyPath)keyPath
+               completion:(void (^)(void))completion {
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithMotionTiming:timing];
+  [self animateWithTraits:traits
+                   values:values
+                    layer:layer
+                  keyPath:keyPath
+               completion:^(BOOL didComplete) {
+    completion();
+  }];
+}
+
 #pragma mark - Private
 
 - (CGFloat)computedTimeScaleFactor {
@@ -214,11 +257,11 @@
 - (void)addAnimation:(CABasicAnimation *)animation
              toLayer:(CALayer *)layer
          withKeyPath:(NSString *)keyPath
-              timing:(MDMMotionTiming)timing
+              traits:(MDMAnimationTraits *)traits
      timeScaleFactor:(CGFloat)timeScaleFactor
          destination:(id)destination
         initialValue:(id(^)(BOOL wantsPresentationValue))initialValueBlock
-          completion:(void(^)(void))completion {
+          completion:(void(^)(BOOL))completion {
   // Must configure the keyPath and toValue before we can identify whether the animation supports
   // being additive.
   animation.keyPath = keyPath;
@@ -237,11 +280,11 @@
 
   NSString *key = animation.additive ? nil : keyPath;
 
-  MDMConfigureAnimation(animation, timing);
+  MDMConfigureAnimation(animation, traits);
 
-  if (timing.delay != 0) {
+  if (traits.delay != 0) {
     animation.beginTime = ([layer convertTime:CACurrentMediaTime() fromLayer:nil]
-                           + timing.delay * timeScaleFactor);
+                           + traits.delay * timeScaleFactor);
     animation.fillMode = kCAFillModeBackwards;
   }
 

@@ -27,13 +27,11 @@
 
   CALayer *layer = [[CALayer alloc] init];
 
-  MDMMotionTiming timing = {
-    .duration = 0,
-  };
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithDuration:0];
 
   layer.opacity = 0.5;
 
-  [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:@"opacity"];
+  [animator animateWithTraits:traits values:@[ @0, @1 ] layer:layer keyPath:@"opacity"];
 
   XCTAssertEqual(layer.opacity, 1);
 }
@@ -43,14 +41,14 @@
 
   CALayer *layer = [[CALayer alloc] init];
 
-  MDMMotionTiming timing = {
-    .duration = 0,
-  };
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithDuration:0];
 
   layer.opacity = 0.5;
 
   __block BOOL didInvokeCompletion = false;
-  [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:@"opacity" completion:^{
+  [animator animateWithTraits:traits values:@[ @0, @1 ]
+                        layer:layer keyPath:@"opacity"
+                   completion:^(BOOL didComplete) {
     didInvokeCompletion = true;
   }];
 
@@ -64,13 +62,11 @@
 
   CALayer *layer = [[CALayer alloc] init];
 
-  MDMMotionTiming timing = {
-    .duration = 0,
-  };
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithDuration:0];
 
   layer.opacity = 0.5;
 
-  [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:@"cornerRadius"];
+  [animator animateWithTraits:traits values:@[ @0, @1 ] layer:layer keyPath:@"cornerRadius"];
 
   XCTAssertEqual(layer.cornerRadius, 0);
 }
@@ -85,11 +81,11 @@
   // Setting to some bogus value because it will be ignored with the default animator settings.
   layer.cornerRadius = 0.5;
 
-  MDMMotionTiming timing = {
-    .delay = 0.5,
-    .duration = 1,
-    .curve = MDMMotionCurveMakeBezier(0.1, 0.2, 0.3, 0.4),
-  };
+  CAMediaTimingFunction *timingFunction =
+      [CAMediaTimingFunction functionWithControlPoints:0.1 :0.2 :0.3 :0.4];
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithDelay:0.5
+                                                                duration:1
+                                                             timingCurve:timingFunction];
 
   __block BOOL didAddAnimation = false;
   [animator addCoreAnimationTracer:^(CALayer *layer, CAAnimation *animation) {
@@ -98,7 +94,7 @@
 
     XCTAssertEqual(basicAnimation.keyPath, keyPath);
 
-    XCTAssertEqual(basicAnimation.duration, timing.duration);
+    XCTAssertEqual(basicAnimation.duration, traits.duration);
     XCTAssertGreaterThan(basicAnimation.beginTime, 0);
 
     XCTAssertTrue(basicAnimation.additive);
@@ -109,15 +105,15 @@
     float point2[2];
     [basicAnimation.timingFunction getControlPointAtIndex:1 values:point1];
     [basicAnimation.timingFunction getControlPointAtIndex:2 values:point2];
-    XCTAssertEqualWithAccuracy(timing.curve.data[0], point1[0], 0.00001);
-    XCTAssertEqualWithAccuracy(timing.curve.data[1], point1[1], 0.00001);
-    XCTAssertEqualWithAccuracy(timing.curve.data[2], point2[0], 0.00001);
-    XCTAssertEqualWithAccuracy(timing.curve.data[3], point2[1], 0.00001);
+    XCTAssertEqualWithAccuracy(timingFunction.mdm_point1.x, point1[0], 0.00001);
+    XCTAssertEqualWithAccuracy(timingFunction.mdm_point1.y, point1[1], 0.00001);
+    XCTAssertEqualWithAccuracy(timingFunction.mdm_point2.x, point2[0], 0.00001);
+    XCTAssertEqualWithAccuracy(timingFunction.mdm_point2.y, point2[1], 0.00001);
 
     didAddAnimation = true;
   }];
 
-  [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:keyPath];
+  [animator animateWithTraits:traits values:@[ @0, @1 ] layer:layer keyPath:keyPath];
 
   XCTAssertEqual(layer.cornerRadius, 1);
   XCTAssertTrue(didAddAnimation);
@@ -133,11 +129,11 @@
   // Setting to some bogus value because it will be ignored with the default animator settings.
   layer.cornerRadius = 0.5;
 
-  MDMMotionTiming timing = {
-    .delay = 0.5,
-    .duration = 1,
-    .curve = MDMMotionCurveMakeSpring(0.1, 0.2, 0.3),
-  };
+  MDMSpringTimingCurve *springCurve =
+      [[MDMSpringTimingCurve alloc] initWithMass:0.1 tension:0.2 friction:0.3];
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithDelay:0.5
+                                                                duration:1
+                                                             timingCurve:springCurve];
 
   __block BOOL didAddAnimation = false;
   [animator addCoreAnimationTracer:^(CALayer *layer, CAAnimation *animation) {
@@ -149,7 +145,7 @@
     if ([springAnimation respondsToSelector:@selector(settlingDuration)]) {
       XCTAssertEqual(springAnimation.duration, springAnimation.settlingDuration);
     } else {
-      XCTAssertEqual(springAnimation.duration, timing.duration);
+      XCTAssertEqual(springAnimation.duration, traits.duration);
     }
     XCTAssertGreaterThan(springAnimation.beginTime, 0);
 
@@ -157,14 +153,14 @@
     XCTAssertEqual([springAnimation.fromValue doubleValue], -1);
     XCTAssertEqual([springAnimation.toValue doubleValue], 0);
 
-    XCTAssertEqualWithAccuracy(timing.curve.data[0], springAnimation.mass, 0.00001);
-    XCTAssertEqualWithAccuracy(timing.curve.data[1], springAnimation.stiffness, 0.00001);
-    XCTAssertEqualWithAccuracy(timing.curve.data[2], springAnimation.damping, 0.00001);
+    XCTAssertEqualWithAccuracy(springCurve.mass, springAnimation.mass, 0.00001);
+    XCTAssertEqualWithAccuracy(springCurve.tension, springAnimation.stiffness, 0.00001);
+    XCTAssertEqualWithAccuracy(springCurve.friction, springAnimation.damping, 0.00001);
 
     didAddAnimation = true;
   }];
 
-  [animator animateWithTiming:timing toLayer:layer withValues:@[ @0, @1 ] keyPath:keyPath];
+  [animator animateWithTraits:traits values:@[ @0, @1 ] layer:layer keyPath:keyPath];
 
   XCTAssertEqual(layer.cornerRadius, 1);
   XCTAssertTrue(didAddAnimation);

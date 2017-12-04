@@ -23,7 +23,7 @@ import MotionAnimator
 
 class AnimatorBehavioralTests: XCTestCase {
   var window: UIWindow!
-  var timing: MotionTiming!
+  var traits: MDMAnimationTraits!
 
   var originalImplementation: IMP?
   override func setUp() {
@@ -32,14 +32,11 @@ class AnimatorBehavioralTests: XCTestCase {
     window = UIWindow()
     window.makeKeyAndVisible()
 
-    timing = MotionTiming(delay: 0,
-                          duration: 1,
-                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
-                          repetition: .init(type: .none, amount: 0, autoreverses: false))
+    traits = MDMAnimationTraits(duration: 1)
   }
 
   override func tearDown() {
-    timing = nil
+    traits = nil
     window = nil
 
     super.tearDown()
@@ -75,10 +72,8 @@ class AnimatorBehavioralTests: XCTestCase {
 
       let animator = MotionAnimator()
       let initialValue = view.layer.value(forKeyPath: keyPath.rawValue) ?? NSNull()
-      animator.animate(with: timing,
-                       to: view.layer,
-                       withValues: [initialValue, value],
-                       keyPath: keyPath)
+      animator.animate(with: traits, values: [initialValue, value],
+                       layer: view.layer, keyPath: keyPath)
 
       XCTAssertNotNil(view.layer.animationKeys(),
                       "Expected \(keyPath.rawValue) to generate animations with the following "
@@ -99,7 +94,7 @@ class AnimatorBehavioralTests: XCTestCase {
       CATransaction.flush()
 
       let animator = MotionAnimator()
-      animator.animate(with: timing) {
+      animator.animate(with: traits) {
         view.layer.setValue(value, forKeyPath: keyPath.rawValue)
       }
 
@@ -123,10 +118,8 @@ class AnimatorBehavioralTests: XCTestCase {
 
       let animator = MotionAnimator()
       let initialValue = layer.value(forKeyPath: keyPath.rawValue) ?? NSNull()
-      animator.animate(with: timing,
-                       to: layer,
-                       withValues: [initialValue, value],
-                       keyPath: keyPath)
+      animator.animate(with: traits, values: [initialValue, value],
+                       layer: layer, keyPath: keyPath)
 
       XCTAssertNotNil(layer.animationKeys(),
                       "Expected \(keyPath.rawValue) to generate animations with the following "
@@ -147,7 +140,7 @@ class AnimatorBehavioralTests: XCTestCase {
       CATransaction.flush()
 
       let animator = MotionAnimator()
-      animator.animate(with: timing) {
+      animator.animate(with: traits) {
         layer.setValue(value, forKeyPath: keyPath.rawValue)
       }
 

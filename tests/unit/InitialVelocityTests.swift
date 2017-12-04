@@ -51,7 +51,7 @@ class InitialVelocityTests: XCTestCase {
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
       XCTAssertEqual(animation.initialVelocity, 0.5,
                      "from: \(animation.fromValue!), "
-                      + "to: \(animation.toValue!), "
+                      + "layer: \(animation.toValue!), "
                       + "withVelocity: \(velocity)")
     }
   }
@@ -64,7 +64,7 @@ class InitialVelocityTests: XCTestCase {
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
       XCTAssertEqual(animation.initialVelocity, 0.5,
                      "from: \(animation.fromValue!), "
-                      + "to: \(animation.toValue!), "
+                      + "layer: \(animation.toValue!), "
                       + "withVelocity: \(velocity)")
     }
   }
@@ -77,7 +77,7 @@ class InitialVelocityTests: XCTestCase {
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
       XCTAssertGreaterThan(animation.initialVelocity, 0,
                            "from: \(animation.fromValue!), "
-                            + "to: \(animation.toValue!), "
+                            + "layer: \(animation.toValue!), "
                             + "withVelocity: \(velocity)")
     }
   }
@@ -90,7 +90,7 @@ class InitialVelocityTests: XCTestCase {
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
       XCTAssertLessThan(animation.initialVelocity, 0,
                         "from: \(animation.fromValue!), "
-                          + "to: \(animation.toValue!), "
+                          + "layer: \(animation.toValue!), "
                           + "withVelocity: \(velocity)")
     }
   }
@@ -103,7 +103,7 @@ class InitialVelocityTests: XCTestCase {
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
       XCTAssertGreaterThan(animation.initialVelocity, 0,
                            "from: \(animation.fromValue!), "
-                            + "to: \(animation.toValue!), "
+                            + "layer: \(animation.toValue!), "
                             + "withVelocity: \(velocity)")
     }
   }
@@ -116,7 +116,7 @@ class InitialVelocityTests: XCTestCase {
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
       XCTAssertLessThan(animation.initialVelocity, 0,
                         "from: \(animation.fromValue!), "
-                          + "to: \(animation.toValue!), "
+                          + "layer: \(animation.toValue!), "
                           + "withVelocity: \(velocity)")
     }
   }
@@ -129,24 +129,23 @@ class InitialVelocityTests: XCTestCase {
     addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
       XCTAssertEqual(animation.duration, animation.settlingDuration,
                      "from: \(animation.fromValue!), "
-                      + "to: \(animation.toValue!), "
+                      + "layer: \(animation.toValue!), "
                       + "withVelocity: \(velocity)")
     }
   }
 
   private func animate(from: CGFloat, to: CGFloat, withVelocity velocity: CGFloat) {
-    let timing = MotionTiming(delay: 0,
-                              duration: 0.7,
-                              curve: .init(type: .spring, data: (1, 1, 1, velocity)),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
-    animator.animate(with: timing, to: CALayer(), withValues: [from, to],
-                     keyPath: .opacity)
-    animator.animate(with: timing, to: CALayer(), withValues: [CGPoint(x: from, y: from),
-                                                               CGPoint(x: to, y: to)],
-                     keyPath: .position)
-    animator.animate(with: timing, to: CALayer(), withValues: [CGSize(width: from, height: from),
-                                                               CGSize(width: to, height: to)],
-                     keyPath: .init(rawValue: "bounds.size"))
+    let springCurve = MDMSpringTimingCurve(mass: 1, tension: 1, friction: 1,
+                                           initialVelocity: velocity)
+    let traits = MDMAnimationTraits(delay: 0, duration: 0.7, timingCurve: springCurve)
+    animator.animate(with: traits, values: [from, to],
+                     layer: CALayer(), keyPath: .opacity)
+    animator.animate(with: traits, values: [CGPoint(x: from, y: from),
+                                            CGPoint(x: to, y: to)],
+                     layer: CALayer(), keyPath: .position)
+    animator.animate(with: traits, values: [CGSize(width: from, height: from),
+                                            CGSize(width: to, height: to)],
+                     layer: CALayer(), keyPath: .init(rawValue: "bounds.size"))
   }
 }
 
