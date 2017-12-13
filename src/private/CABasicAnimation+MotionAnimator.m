@@ -65,7 +65,7 @@ static BOOL IsAnimationKeyPathAlwaysNonAdditive(NSString *keyPath) {
 
 #pragma mark - Public
 
-CABasicAnimation *MDMAnimationFromTiming(MDMAnimationTraits * traits, CGFloat timeScaleFactor) {
+CABasicAnimation *MDMAnimationFromTraits(MDMAnimationTraits *traits, CGFloat timeScaleFactor) {
   if (traits.timingCurve == nil) {
     return nil;
   }

@@ -97,7 +97,7 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
 
   // Verifies the somewhat counter-intuitive fact that CATransaction's animation duration always
   // takes precedence over UIView's animation duration. This means that animating a headless layer
-  // using UIView animation APIs may not result in the expected traitss.
+  // using UIView animation APIs may not result in the expected traits.
   func testCATransactionTimingTakesPrecedenceOverUIViewTimingOutside() {
     CATransaction.begin()
     CATransaction.setAnimationDuration(0.2)

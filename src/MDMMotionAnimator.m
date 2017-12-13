@@ -80,7 +80,7 @@
     return;
   }
 
-  CABasicAnimation *animation = MDMAnimationFromTiming(traits, timeScaleFactor);
+  CABasicAnimation *animation = MDMAnimationFromTraits(traits, timeScaleFactor);
 
   if (animation == nil) {
     exitEarly();
@@ -142,7 +142,7 @@
   }
 
   // We'll reuse this animation template for each action.
-  CABasicAnimation *animationTemplate = MDMAnimationFromTiming(traits, timeScaleFactor);
+  CABasicAnimation *animationTemplate = MDMAnimationFromTraits(traits, timeScaleFactor);
   if (animationTemplate == nil) {
     exitEarly();
     return;
