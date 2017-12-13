@@ -27,7 +27,7 @@
 #import "MDMCoreAnimationTraceable.h"
 
 /**
- An animator adds Core Animation animations to a layer based on a provided motion traits.
+ An animator adds Core Animation animations to a layer using animation traits.
  */
 NS_SWIFT_NAME(MotionAnimator)
 @interface MDMMotionAnimator : NSObject <MDMCoreAnimationTraceable>
