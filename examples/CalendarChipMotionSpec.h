@@ -17,24 +17,26 @@
 #import <Foundation/Foundation.h>
 #import <MotionInterchange/MotionInterchange.h>
 
-typedef struct CalendarChipTiming {
-  MDMMotionTiming chipWidth;
-  MDMMotionTiming chipHeight;
-  MDMMotionTiming chipY;
+@protocol CalendarChipTiming <NSObject>
 
-  MDMMotionTiming chipContentOpacity;
-  MDMMotionTiming headerContentOpacity;
+@property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *chipWidth;
+@property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *chipHeight;
+@property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *chipY;
 
-  MDMMotionTiming navigationBarY;
-} CalendarChipTiming;
+@property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *chipContentOpacity;
+@property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *headerContentOpacity;
+
+@property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *navigationBarY;
+
+@end
 
 @interface CalendarChipMotionSpec: NSObject
 
-@property(nonatomic, class, readonly) CalendarChipTiming expansion;
-@property(nonatomic, class, readonly) CalendarChipTiming collapse;
+@property(nonatomic, class, strong, nonnull, readonly) id<CalendarChipTiming> expansion;
+@property(nonatomic, class, strong, nonnull, readonly) id<CalendarChipTiming> collapse;
 
 // This object is not meant to be instantiated.
-- (instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 @end
 
