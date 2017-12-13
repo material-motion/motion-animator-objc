@@ -70,9 +70,8 @@ class UIKitBehavioralTests: XCTestCase {
   // MARK: Each animatable property needs to be added to exactly one of the following three tests
 
   func testSomePropertiesImplicitlyAnimateAdditively() {
-    let properties: [AnimatableKeyPath: Any] = [
+    let baselineProperties: [AnimatableKeyPath: Any] = [
       .bounds: CGRect(x: 0, y: 0, width: 123, height: 456),
-      .cornerRadius: 3,
       .height: 100,
       .position: CGPoint(x: 50, y: 20),
       .rotation: 42,
@@ -82,6 +81,15 @@ class UIKitBehavioralTests: XCTestCase {
       .x: 12,
       .y: 23,
     ]
+    let properties: [AnimatableKeyPath: Any]
+    if #available(iOS 11.0, *) {
+      // Corner radius became implicitly animatable in iOS 11.
+      var baselineWithCornerRadiusProperties = baselineProperties
+      baselineWithCornerRadiusProperties[.cornerRadius] = 3
+      properties = baselineWithCornerRadiusProperties
+    } else {
+      properties = baselineProperties
+    }
     for (keyPath, value) in properties {
       rebuildView()
 
@@ -103,11 +111,11 @@ class UIKitBehavioralTests: XCTestCase {
   }
 
   func testSomePropertiesImplicitlyAnimateButNotAdditively() {
-    let properties: [AnimatableKeyPath: Any] = [
+    let baselineProperties: [AnimatableKeyPath: Any] = [
       .backgroundColor: UIColor.blue,
       .opacity: 0.5,
     ]
-    for (keyPath, value) in properties {
+    for (keyPath, value) in baselineProperties {
       rebuildView()
 
       UIView.animate(withDuration: 0.01) {
@@ -128,13 +136,26 @@ class UIKitBehavioralTests: XCTestCase {
   }
 
   func testSomePropertiesDoNotImplicitlyAnimate() {
-    let properties: [AnimatableKeyPath: Any] = [
+    let baselineProperties: [AnimatableKeyPath: Any] = [
+      .cornerRadius: 3,
       .shadowOffset: CGSize(width: 1, height: 1),
       .shadowOpacity: 0.3,
       .shadowRadius: 5,
       .strokeStart: 0.2,
       .strokeEnd: 0.5,
     ]
+
+    let properties: [AnimatableKeyPath: Any]
+    if #available(iOS 11.0, *) {
+      // Corner radius became implicitly animatable in iOS 11.
+      var baselineWithOutCornerRadius = baselineProperties
+      baselineWithOutCornerRadius.removeValue(forKey: .cornerRadius)
+      properties = baselineWithOutCornerRadius
+
+    } else {
+      properties = baselineProperties
+    }
+
     for (keyPath, value) in properties {
       rebuildView()
 
