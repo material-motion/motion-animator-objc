@@ -24,16 +24,13 @@ import MotionAnimator
 class QuartzCoreBehavioralTests: XCTestCase {
   var layer: CAShapeLayer!
 
+  var window: UIWindow!
   var originalImplementation: IMP?
   override func setUp() {
     super.setUp()
 
-    let window = UIWindow()
+    window = UIWindow()
     window.makeKeyAndVisible()
-    layer = CAShapeLayer()
-    window.layer.addSublayer(layer)
-
-    rebuildLayer()
   }
 
   override func tearDown() {
@@ -43,10 +40,8 @@ class QuartzCoreBehavioralTests: XCTestCase {
   }
 
   private func rebuildLayer() {
-    let oldSuperlayer = layer.superlayer!
-    layer.removeFromSuperlayer()
     layer = CAShapeLayer()
-    oldSuperlayer.addSublayer(layer)
+    window.layer.addSublayer(layer)
 
     // Connect our layers to the render server.
     CATransaction.flush()
