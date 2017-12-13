@@ -228,7 +228,7 @@
                completion:(void (^)(void))completion {
   MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithMotionTiming:timing];
   [self animateWithTraits:traits
-            between:values
+                  between:values
                     layer:layer
                   keyPath:keyPath
                completion:^(BOOL didComplete) {
