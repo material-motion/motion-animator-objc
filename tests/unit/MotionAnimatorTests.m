@@ -31,7 +31,7 @@
 
   layer.opacity = 0.5;
 
-  [animator animateWithTraits:traits values:@[ @0, @1 ] layer:layer keyPath:@"opacity"];
+  [animator animateWithTraits:traits between:@[ @0, @1 ] layer:layer keyPath:@"opacity"];
 
   XCTAssertEqual(layer.opacity, 1);
 }
@@ -46,7 +46,7 @@
   layer.opacity = 0.5;
 
   __block BOOL didInvokeCompletion = false;
-  [animator animateWithTraits:traits values:@[ @0, @1 ]
+  [animator animateWithTraits:traits between:@[ @0, @1 ]
                         layer:layer keyPath:@"opacity"
                    completion:^(BOOL didComplete) {
     didInvokeCompletion = true;
@@ -66,7 +66,7 @@
 
   layer.opacity = 0.5;
 
-  [animator animateWithTraits:traits values:@[ @0, @1 ] layer:layer keyPath:@"cornerRadius"];
+  [animator animateWithTraits:traits between:@[ @0, @1 ] layer:layer keyPath:@"cornerRadius"];
 
   XCTAssertEqual(layer.cornerRadius, 0);
 }
@@ -113,7 +113,7 @@
     didAddAnimation = true;
   }];
 
-  [animator animateWithTraits:traits values:@[ @0, @1 ] layer:layer keyPath:keyPath];
+  [animator animateWithTraits:traits between:@[ @0, @1 ] layer:layer keyPath:keyPath];
 
   XCTAssertEqual(layer.cornerRadius, 1);
   XCTAssertTrue(didAddAnimation);
@@ -160,7 +160,7 @@
     didAddAnimation = true;
   }];
 
-  [animator animateWithTraits:traits values:@[ @0, @1 ] layer:layer keyPath:keyPath];
+  [animator animateWithTraits:traits between:@[ @0, @1 ] layer:layer keyPath:keyPath];
 
   XCTAssertEqual(layer.cornerRadius, 1);
   XCTAssertTrue(didAddAnimation);

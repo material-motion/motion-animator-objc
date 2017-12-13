@@ -72,7 +72,7 @@ class AnimatorBehavioralTests: XCTestCase {
 
       let animator = MotionAnimator()
       let initialValue = view.layer.value(forKeyPath: keyPath.rawValue) ?? NSNull()
-      animator.animate(with: traits, values: [initialValue, value],
+      animator.animate(with: traits, between: [initialValue, value],
                        layer: view.layer, keyPath: keyPath)
 
       XCTAssertNotNil(view.layer.animationKeys(),
@@ -118,7 +118,7 @@ class AnimatorBehavioralTests: XCTestCase {
 
       let animator = MotionAnimator()
       let initialValue = layer.value(forKeyPath: keyPath.rawValue) ?? NSNull()
-      animator.animate(with: traits, values: [initialValue, value],
+      animator.animate(with: traits, between: [initialValue, value],
                        layer: layer, keyPath: keyPath)
 
       XCTAssertNotNil(layer.animationKeys(),

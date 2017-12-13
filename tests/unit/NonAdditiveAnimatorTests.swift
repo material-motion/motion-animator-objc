@@ -53,7 +53,7 @@ class NonAdditiveAnimationTests: XCTestCase {
   }
 
   func testNumericKeyPathsDontAnimateAdditively() {
-    animator.animate(with: traits, values: [1, 0], layer: view.layer, keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [1, 0], layer: view.layer, keyPath: .cornerRadius)
 
     XCTAssertNotNil(view.layer.animationKeys(),
                     "Expected an animation to be added, but none were found.")
@@ -72,7 +72,7 @@ class NonAdditiveAnimationTests: XCTestCase {
   }
 
   func testSizeKeyPathsDontAnimateAdditively() {
-    animator.animate(with: traits, values: [CGSize(width: 0, height: 0),
+    animator.animate(with: traits, between: [CGSize(width: 0, height: 0),
                                             CGSize(width: 1, height: 2)],
                      layer: view.layer, keyPath: .shadowOffset)
 
@@ -93,7 +93,7 @@ class NonAdditiveAnimationTests: XCTestCase {
   }
 
   func testPositionKeyPathsDontAnimateAdditively() {
-    animator.animate(with: traits, values: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 2)],
+    animator.animate(with: traits, between: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 2)],
                      layer: view.layer, keyPath: .position)
 
     XCTAssertNotNil(view.layer.animationKeys(),
@@ -113,7 +113,7 @@ class NonAdditiveAnimationTests: XCTestCase {
   }
 
   func testRectKeyPathsDontAnimateAdditively() {
-    animator.animate(with: traits, values: [CGRect(x: 0, y: 0, width: 0, height: 0),
+    animator.animate(with: traits, between: [CGRect(x: 0, y: 0, width: 0, height: 0),
                                             CGRect(x: 0, y: 0, width: 100, height: 50)],
                      layer: view.layer, keyPath: .bounds)
 

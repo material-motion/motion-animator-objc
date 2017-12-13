@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-// Coerces the following UIKit values to Core Animation values:
+// Coerces the following UIKit values to Core Animation between:
 //
 // - UIBezierPath -> CGPath
 // - UIColor -> CGColor

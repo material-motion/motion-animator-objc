@@ -53,7 +53,7 @@ class AdditiveAnimationTests: XCTestCase {
   }
 
   func testNumericKeyPathsAnimateAdditively() {
-    animator.animate(with: traits, values: [1, 0],
+    animator.animate(with: traits, between: [1, 0],
                      layer: view.layer, keyPath: .cornerRadius)
 
     XCTAssertNotNil(view.layer.animationKeys(),
@@ -73,7 +73,7 @@ class AdditiveAnimationTests: XCTestCase {
   }
 
   func testCGSizeKeyPathsAnimateAdditively() {
-    animator.animate(with: traits, values: [CGSize(width: 0, height: 0),
+    animator.animate(with: traits, between: [CGSize(width: 0, height: 0),
                                             CGSize(width: 1, height: 2)],
                      layer: view.layer, keyPath: .shadowOffset)
 
@@ -94,7 +94,7 @@ class AdditiveAnimationTests: XCTestCase {
   }
 
   func testCGPointKeyPathsAnimateAdditively() {
-    animator.animate(with: traits, values: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 2)],
+    animator.animate(with: traits, between: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 2)],
                      layer: view.layer, keyPath: .position)
 
     XCTAssertNotNil(view.layer.animationKeys(),

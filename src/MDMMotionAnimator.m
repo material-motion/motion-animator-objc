@@ -41,14 +41,14 @@
 }
 
 - (void)animateWithTraits:(MDMAnimationTraits *)traits
-                   values:(NSArray *)values
+                  between:(NSArray *)values
                     layer:(CALayer *)layer
                   keyPath:(MDMAnimatableKeyPath)keyPath {
-  [self animateWithTraits:traits values:values layer:layer keyPath:keyPath completion:nil];
+  [self animateWithTraits:traits between:values layer:layer keyPath:keyPath completion:nil];
 }
 
 - (void)animateWithTraits:(MDMAnimationTraits *)traits
-                   values:(NSArray *)values
+                  between:(NSArray *)values
                     layer:(CALayer *)layer
                   keyPath:(MDMAnimatableKeyPath)keyPath
                completion:(void(^)(BOOL))completion {
@@ -218,7 +218,7 @@
                withValues:(NSArray *)values
                   keyPath:(MDMAnimatableKeyPath)keyPath {
   MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithMotionTiming:timing];
-  [self animateWithTraits:traits values:values layer:layer keyPath:keyPath];
+  [self animateWithTraits:traits between:values layer:layer keyPath:keyPath];
 }
 
 - (void)animateWithTiming:(MDMMotionTiming)timing
@@ -228,7 +228,7 @@
                completion:(void (^)(void))completion {
   MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithMotionTiming:timing];
   [self animateWithTraits:traits
-                   values:values
+            between:values
                     layer:layer
                   keyPath:keyPath
                completion:^(BOOL didComplete) {

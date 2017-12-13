@@ -65,7 +65,7 @@ class BeginFromCurrentStateTests: XCTestCase {
 
     animator.additive = false
 
-    animator.animate(with: traits, values: [0, 0.5],
+    animator.animate(with: traits, between: [0, 0.5],
                      layer: view.layer, keyPath: .opacity)
 
     XCTAssertNotNil(view.layer.animationKeys(),
@@ -136,7 +136,7 @@ class BeginFromCurrentStateTests: XCTestCase {
   func testExplicitlyAnimatesFromPresentationValue() {
     animator.additive = false
 
-    animator.animate(with: traits, values: [0, 0.5],
+    animator.animate(with: traits, between: [0, 0.5],
                      layer: view.layer, keyPath: .opacity)
     RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))
 
@@ -146,7 +146,7 @@ class BeginFromCurrentStateTests: XCTestCase {
     }
     let initialValue = presentation.opacity
 
-    animator.animate(with: traits, values: [0, 0.2],
+    animator.animate(with: traits, between: [0, 0.2],
                      layer: view.layer, keyPath: .opacity)
 
     XCTAssertNotNil(view.layer.animationKeys(),
@@ -180,7 +180,7 @@ class BeginFromCurrentStateTests: XCTestCase {
   func testImplicitlyAnimatesFromPresentationValue() {
     animator.additive = false
 
-    animator.animate(with: traits, values: [0, 0.5],
+    animator.animate(with: traits, between: [0, 0.5],
                      layer: view.layer, keyPath: .opacity)
 
     RunLoop.main.run(until: .init(timeIntervalSinceNow: 0.01))

@@ -32,6 +32,8 @@
 NS_SWIFT_NAME(MotionAnimator)
 @interface MDMMotionAnimator : NSObject <MDMCoreAnimationTraceable>
 
+#pragma mark - Configuring animation behavior
+
 /**
  The scaling factor to apply to all time-related values.
 
@@ -40,15 +42,6 @@ NS_SWIFT_NAME(MotionAnimator)
  1.0 by default.
  */
 @property(nonatomic, assign) CGFloat timeScaleFactor;
-
-/**
- If enabled, explicitly-provided values will be reversed before animating.
-
- This property does not affect the animateWithTraits:animations: family of methods.
-
- Disabled by default.
- */
-@property(nonatomic, assign) BOOL shouldReverseValues;
 
 /**
  If enabled, all animations will start from their current presentation value.
@@ -69,6 +62,8 @@ NS_SWIFT_NAME(MotionAnimator)
  */
 @property(nonatomic, assign) BOOL additive;
 
+#pragma mark - Explicitly animating between values
+
 /**
  Adds a single animation to the layer with the given traits structure.
 
@@ -84,7 +79,7 @@ NS_SWIFT_NAME(MotionAnimator)
  @param keyPath The key path of the property to be animated.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
-                   values:(nonnull NSArray *)values
+                  between:(nonnull NSArray *)values
                     layer:(nonnull CALayer *)layer
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath;
 
@@ -107,10 +102,21 @@ NS_SWIFT_NAME(MotionAnimator)
  didComplete argument is currently always YES.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
-                   values:(nonnull NSArray *)values
+                  between:(nonnull NSArray *)values
                     layer:(nonnull CALayer *)layer
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath
                completion:(nullable void(^)(BOOL didComplete))completion;
+
+/**
+ If enabled, explicitly-provided values will be reversed before animating.
+
+ This property only affects the animateWithTraits:between:... family of methods.
+
+ Disabled by default.
+ */
+@property(nonatomic, assign) BOOL shouldReverseValues;
+
+#pragma mark - Implicitly animating
 
 /**
  Performs `animations` using the traits provided.
@@ -140,6 +146,8 @@ NS_SWIFT_NAME(MotionAnimator)
                animations:(nonnull void (^)(void))animations
                completion:(nullable void(^)(BOOL didComplete))completion;
 
+#pragma mark - Managing active animations
+
 /**
  Removes every animation added by this animator.
 
@@ -162,7 +170,7 @@ NS_SWIFT_NAME(MotionAnimator)
 @interface MDMMotionAnimator (Legacy)
 
 /**
- To be deprecated. Use animateWithTraits:values:layer:keyPath instead.
+ To be deprecated. Use animateWithTraits:between:layer:keyPath instead.
  */
 - (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(nonnull CALayer *)layer
@@ -170,7 +178,7 @@ NS_SWIFT_NAME(MotionAnimator)
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath;
 
 /**
- To be deprecated. Use animateWithTraits:values:layer:keyPath:completion: instead.
+ To be deprecated. Use animateWithTraits:between:layer:keyPath:completion: instead.
  */
 - (void)animateWithTiming:(MDMMotionTiming)timing
                   toLayer:(nonnull CALayer *)layer

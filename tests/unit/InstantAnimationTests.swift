@@ -57,7 +57,7 @@ class InstantAnimationTests: XCTestCase {
   func testDoesNotGenerateImplicitAnimations() {
     let traits = MDMAnimationTraits(duration: 0)
 
-    animator.animate(with: traits, values: [1, 0.5],
+    animator.animate(with: traits, between: [1, 0.5],
                      layer: view.layer, keyPath: .opacity)
 
     XCTAssertNil(view.layer.animationKeys())
@@ -68,7 +68,7 @@ class InstantAnimationTests: XCTestCase {
     let traits = MDMAnimationTraits(duration: 0)
 
     UIView.animate(withDuration: 0.5) {
-      self.animator.animate(with: traits, values: [1, 0.5],
+      self.animator.animate(with: traits, between: [1, 0.5],
                             layer: self.view.layer, keyPath: .opacity)
     }
 
@@ -79,7 +79,7 @@ class InstantAnimationTests: XCTestCase {
   func testDoesNotGenerateImplicitAnimationsWithNilCurve() {
     let traits = MDMAnimationTraits(delay: 0, duration: 0.5, timingCurve: nil)
 
-    animator.animate(with: traits, values: [1, 0.5],
+    animator.animate(with: traits, between: [1, 0.5],
                      layer: view.layer, keyPath: .opacity)
 
     XCTAssertNil(view.layer.animationKeys())
@@ -90,7 +90,7 @@ class InstantAnimationTests: XCTestCase {
     let traits = MDMAnimationTraits(delay: 0, duration: 0.5, timingCurve: nil)
 
     UIView.animate(withDuration: 0.5) {
-      self.animator.animate(with: traits, values: [1, 0.5],
+      self.animator.animate(with: traits, between: [1, 0.5],
                             layer: self.view.layer, keyPath: .opacity)
     }
 

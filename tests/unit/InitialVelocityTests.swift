@@ -138,12 +138,12 @@ class InitialVelocityTests: XCTestCase {
     let springCurve = MDMSpringTimingCurve(mass: 1, tension: 1, friction: 1,
                                            initialVelocity: velocity)
     let traits = MDMAnimationTraits(delay: 0, duration: 0.7, timingCurve: springCurve)
-    animator.animate(with: traits, values: [from, to],
+    animator.animate(with: traits, between: [from, to],
                      layer: CALayer(), keyPath: .opacity)
-    animator.animate(with: traits, values: [CGPoint(x: from, y: from),
+    animator.animate(with: traits, between: [CGPoint(x: from, y: from),
                                             CGPoint(x: to, y: to)],
                      layer: CALayer(), keyPath: .position)
-    animator.animate(with: traits, values: [CGSize(width: from, height: from),
+    animator.animate(with: traits, between: [CGSize(width: from, height: from),
                                             CGSize(width: to, height: to)],
                      layer: CALayer(), keyPath: .init(rawValue: "bounds.size"))
   }

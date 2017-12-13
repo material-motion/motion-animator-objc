@@ -52,8 +52,8 @@ class AnimationRemovalTests: XCTestCase {
   }
 
   func testAllAdditiveAnimationsGetsRemoved() {
-    animator.animate(with: traits, values: [1, 0], layer: view.layer, keyPath: .cornerRadius)
-    animator.animate(with: traits, values: [0, 0.5], layer: view.layer, keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [1, 0], layer: view.layer, keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [0, 0.5], layer: view.layer, keyPath: .cornerRadius)
 
     XCTAssertEqual(view.layer.animationKeys()!.count, 2)
 
@@ -70,8 +70,8 @@ class AnimationRemovalTests: XCTestCase {
       didComplete = true
     }
 
-    animator.animate(with: traits, values: [1, 0], layer: view.layer, keyPath: .cornerRadius)
-    animator.animate(with: traits, values: [0, 0.5], layer: view.layer, keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [1, 0], layer: view.layer, keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [0, 0.5], layer: view.layer, keyPath: .cornerRadius)
 
     CATransaction.commit()
 

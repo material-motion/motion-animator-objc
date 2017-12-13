@@ -37,7 +37,7 @@ class MotionAnimatorTests: XCTestCase {
     XCTAssertEqual(view.layer.delegate as? UIView, view)
 
     UIView.animate(withDuration: 0.5) {
-      animator.animate(with: traits, values: [0, 1],
+      animator.animate(with: traits, between: [0, 1],
                        layer: view.layer, keyPath: .rotation)
 
       XCTAssertEqual(view.layer.animationKeys()?.count, 1)
@@ -56,7 +56,7 @@ class MotionAnimatorTests: XCTestCase {
     XCTAssertEqual(view.layer.delegate as? UIView, view)
 
     let didComplete = expectation(description: "Did complete")
-    animator.animate(with: traits, values: [0, 1],
+    animator.animate(with: traits, between: [0, 1],
                      layer: view.layer, keyPath: .rotation) { _ in
       didComplete.fulfill()
     }
