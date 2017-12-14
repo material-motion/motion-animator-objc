@@ -154,4 +154,21 @@ class AnimatorBehavioralTests: XCTestCase {
     }
   }
 
+  func testAllKeyPathsImplicitlyAnimateWithHeadlessLayerWithUIKitAPI() {
+    for (keyPath, value) in properties {
+      let layer = CAShapeLayer()
+      window.layer.addSublayer(layer)
+
+      // Connect our layers to the render server.
+      CATransaction.flush()
+
+      MotionAnimator.animate(withDuration: 0.5, animations: {
+        layer.setValue(value, forKeyPath: keyPath.rawValue)
+      })
+
+      XCTAssertNotNil(layer.animationKeys(), "Expected \(keyPath.rawValue) to generate animations")
+
+      layer.removeFromSuperlayer()
+    }
+  }
 }
