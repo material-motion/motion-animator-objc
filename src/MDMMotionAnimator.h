@@ -71,11 +71,14 @@ NS_SWIFT_NAME(MotionAnimator)
  In this case, multiple invocations of this function on the same key path will remove the
  animations added from prior invocations.
 
- @param traits The traits to be used for the animation.
- @param layer The layer to be animated.
- @param values The values to be used in the animation. Must contain exactly two values. Supported
- UIKit types will be coerced to their Core Animation equivalent. Supported UIKit values include
- UIColor and UIBezierPath.
+ @param traits  The traits to be used for the animation.
+
+ @param layer   The layer to be animated.
+
+ @param values  The values to be used in the animation. Must contain exactly two values. Supported
+                UIKit types will be coerced to their Core Animation equivalent. Supported UIKit
+                values include UIColor and UIBezierPath.
+
  @param keyPath The key path of the property to be animated.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
@@ -90,16 +93,20 @@ NS_SWIFT_NAME(MotionAnimator)
  In this case, multiple invocations of this function on the same key path will remove the
  animations added from prior invocations.
 
- @param traits The traits to be used for the animation.
- @param layer The layer to be animated.
- @param values The values to be used in the animation. Must contain exactly two values. Supported
- UIKit types will be coerced to their Core Animation equivalent. Supported UIKit values include
- UIColor and UIBezierPath.
- @param keyPath The key path of the property to be animated.
- @param completion A block object to be executed when the animation ends or is removed from the
- animation hierarchy. If the duration of the animation is 0, this block is executed immediately.
- The block is escaping and will be released once the animations have completed. The provided
- `finished` argument is currently always YES.
+ @param traits      The traits to be used for the animation.
+
+ @param layer       The layer to be animated.
+
+ @param values      The values to be used in the animation. Must contain exactly two values.
+                    Supported UIKit types will be coerced to their Core Animation equivalent.
+
+ @param keyPath     The key path of the property to be animated.
+
+ @param completion  A block object to be executed when the animation ends or is removed from the
+                    animation hierarchy. If the duration of the animation is 0, this block is
+                    executed immediately. The block is escaping and will be released once the
+                    animations have completed. The provided `finished` argument is currently always
+                    YES.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                   between:(nonnull NSArray *)values
@@ -121,10 +128,11 @@ NS_SWIFT_NAME(MotionAnimator)
 /**
  Performs `animations` using the traits provided.
 
- @param traits The traits to be used for the animation.
- @param animations The block to be executed. Any animatable properties changed within this block
- will result in animations being added to the view's layer with the provided traits. The block is
- non-escaping.
+ @param traits      The traits to be used for the animation.
+
+ @param animations  The block to be executed. Any animatable properties changed within this block
+                    will result in animations being added to the view's layer with the provided
+                    traits. The block is non-escaping.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                animations:(nonnull void(^)(void))animations;
@@ -133,14 +141,17 @@ NS_SWIFT_NAME(MotionAnimator)
  Performs `animations` using the traits provided and executes the completion handler once all added
  animations have completed.
 
- @param traits The traits to be used for the animation.
- @param animations The block to be executed. Any animatable properties changed within this block
- will result in animations being added to the view's layer with the provided traits. The block is
- non-escaping.
- @param completion A block object to be executed once the animation sequence ends or it has been
- removed from the animation hierarchy. If the duration of the animation is 0, this block is executed
- immediately. The block is escaping and will be released once the animation sequence has completed.
- The provided `finished` argument is currently always YES.
+ @param traits      The traits to be used for the animation.
+
+ @param animations  The block to be executed. Any animatable properties changed within this block
+                    will result in animations being added to the view's layer with the provided
+                    traits. The block is non-escaping.
+
+ @param completion  A block object to be executed once the animation sequence ends or it has been
+                    removed from the animation hierarchy. If the duration of the animation is 0,
+                    this block is executed immediately. The block is escaping and will be released
+                    once the animation sequence has completed. The provided `finished` argument is
+                    currently always YES.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                animations:(nonnull void (^)(void))animations
