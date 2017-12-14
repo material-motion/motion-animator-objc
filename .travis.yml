@@ -6,6 +6,6 @@ before_install:
   - pod install --repo-update
 script:
   - set -o pipefail
-  - xcodebuild test -workspace MotionAnimator.xcworkspace -scheme MotionAnimatorCatalog -sdk "iphonesimulator10.3" -destination "name=iPhone 6s,OS=10.1" -enableCodeCoverage YES ONLY_ACTIVE_ARCH=YES | xcpretty -c;
+  - xcodebuild test -workspace MotionAnimator.xcworkspace -scheme MotionAnimatorCatalog -sdk "iphonesimulator10.3" -destination "name=iPhone 6s,OS=10.3.1" -enableCodeCoverage YES ONLY_ACTIVE_ARCH=YES | xcpretty -c;
 after_success:
   - bash <(curl -s https://codecov.io/bash)
