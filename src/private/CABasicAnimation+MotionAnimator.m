@@ -17,6 +17,7 @@
 #import "CABasicAnimation+MotionAnimator.h"
 
 #import "CAMediaTimingFunction+MotionAnimator.h"
+#import "MDMAnimatableKeyPaths.h"
 
 #import <UIKit/UIKit.h>
 
@@ -66,7 +67,9 @@ static BOOL IsAnimationKeyPathAlwaysNonAdditive(NSString *keyPath) {
   static NSSet *nonAdditiveKeyPaths = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    nonAdditiveKeyPaths = [NSSet setWithArray:@[@"backgroundColor", @"opacity"]];
+    nonAdditiveKeyPaths = [NSSet setWithArray:@[MDMKeyPathAnchorPoint,
+                                                MDMKeyPathBackgroundColor,
+                                                MDMKeyPathOpacity]];
   });
 
   return [nonAdditiveKeyPaths containsObject:keyPath];

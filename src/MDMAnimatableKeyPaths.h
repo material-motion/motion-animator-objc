@@ -43,6 +43,16 @@ NS_SWIFT_NAME(AnimatableKeyPath)
 typedef NSString * const MDMAnimatableKeyPath CF_TYPED_ENUM;
 
 /**
+ Anchor point.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: anchorPoint
+ Expected value type: CGPoint or NSValue (containing a CGPoint).
+ Additive animation supported: No.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathAnchorPoint NS_SWIFT_NAME(anchorPoint);
+
+/**
  Background color.
 
  Equivalent UIView property: backgroundColor

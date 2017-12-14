@@ -69,6 +69,7 @@ class QuartzCoreBehavioralTests: XCTestCase {
 
   func testWhichPropertiesImplicitlyAnimateButNotAdditively() {
     let properties: [AnimatableKeyPath: Any] = [
+      .anchorPoint: CGPoint(x: 0.2, y: 0.4),
       .borderWidth: 5,
       .borderColor: UIColor.red,
       .bounds: CGRect(x: 0, y: 0, width: 123, height: 456),
