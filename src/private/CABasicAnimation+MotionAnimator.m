@@ -44,6 +44,15 @@ static BOOL IsCGSizeType(id someValue) {
   return NO;
 }
 
+static BOOL IsCGRectType(id someValue) {
+  if ([someValue isKindOfClass:[NSValue class]]) {
+    NSValue *asValue = (NSValue *)someValue;
+    const char *objCType = @encode(CGRect);
+    return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
+  }
+  return NO;
+}
+
 static BOOL IsCATransform3DType(id someValue) {
   if ([someValue isKindOfClass:[NSValue class]]) {
     NSValue *asValue = (NSValue *)someValue;
@@ -262,6 +271,39 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
         biggestDelta = additiveDisplacement.x;
       } else {
         biggestDelta = additiveDisplacement.y;
+      }
+      CGFloat displacement = -biggestDelta;
+      CGFloat absoluteInitialVelocity = springTimingCurve.initialVelocity;
+      if (fabs(displacement) > 0.00001) {
+        springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+      }
+    }
+
+  } else if (IsCGRectType(animation.toValue)) {
+    CGRect from = [animation.fromValue CGRectValue];
+    CGRect to = [animation.toValue CGRectValue];
+    CGRect additiveDisplacement = CGRectMake(from.origin.x - to.origin.x,
+                                             from.origin.y - to.origin.y,
+                                             from.size.width - to.size.width,
+                                             from.size.height - to.size.height);
+
+    if (animation.additive) {
+      animation.fromValue = [NSValue valueWithCGRect:additiveDisplacement];
+      animation.toValue = [NSValue valueWithCGRect:CGRectZero];
+    }
+
+    if (isSpringAnimation) {
+      // Core Animation's velocity system is single dimensional, so we pick the dominant direction
+      // of movement and normalize accordingly.
+      CGFloat biggestDelta = additiveDisplacement.origin.x;
+      if (fabs(additiveDisplacement.origin.y) > fabs(biggestDelta)) {
+        biggestDelta = additiveDisplacement.origin.y;
+      }
+      if (fabs(additiveDisplacement.size.width) > fabs(biggestDelta)) {
+        biggestDelta = additiveDisplacement.size.width;
+      }
+      if (fabs(additiveDisplacement.size.height) > fabs(biggestDelta)) {
+        biggestDelta = additiveDisplacement.size.height;
       }
       CGFloat displacement = -biggestDelta;
       CGFloat absoluteInitialVelocity = springTimingCurve.initialVelocity;
