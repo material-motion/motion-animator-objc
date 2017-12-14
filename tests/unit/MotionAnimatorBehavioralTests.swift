@@ -44,6 +44,8 @@ class AnimatorBehavioralTests: XCTestCase {
 
   private let properties: [AnimatableKeyPath: Any] = [
     .backgroundColor: UIColor.blue,
+    .borderWidth: 5,
+    .borderColor: UIColor.red,
     .bounds: CGRect(x: 0, y: 0, width: 123, height: 456),
     .cornerRadius: 3,
     .height: 100,

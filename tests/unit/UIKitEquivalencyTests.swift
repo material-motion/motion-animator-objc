@@ -57,6 +57,7 @@ class UIKitEquivalencyTests: XCTestCase {
 
   func testMostPropertiesImplicitlyAnimateAdditively() {
     let baselineProperties: [AnimatableKeyPath: Any] = [
+      .borderWidth: 5,
       .cornerRadius: 3,
       .position: CGPoint(x: 50, y: 20),
       .rotation: 42,
@@ -100,6 +101,7 @@ class UIKitEquivalencyTests: XCTestCase {
   func testSomePropertiesImplicitlyAnimateButNotAdditively() {
     let baselineProperties: [AnimatableKeyPath: Any] = [
       .backgroundColor: UIColor.blue,
+      .borderColor: UIColor.red,
       .opacity: 0.5,
     ]
     for (keyPath, value) in baselineProperties {
