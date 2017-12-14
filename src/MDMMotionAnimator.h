@@ -185,10 +185,10 @@ NS_SWIFT_NAME(MotionAnimator)
  @param animations From UIKit's documentation: "A block object containing the changes to commit to
                    the views. This is where you programmatically change any animatable properties of
                    the views in your view hierarchy. This block takes no parameters and has no
-                   return value. This parameter must not be NULL." Supports animating additional
-                   CALayer properties beyond what UIView's similar API supports. See
-                   MDMAnimatableKeyPaths for a full list of implicilty animatable CALayer
-                   properties.
+                   return value. This parameter must not be NULL."
+                   Supports animating additional CALayer properties beyond what UIView's similar API
+                   supports. See MDMAnimatableKeyPaths for a full list of implicilty animatable
+                   CALayer properties.
  */
 + (void)animateWithDuration:(NSTimeInterval)duration
                  animations:(void (^ __nonnull)(void))animations;
@@ -209,16 +209,17 @@ NS_SWIFT_NAME(MotionAnimator)
  @param animations From UIKit's documentation: "A block object containing the changes to commit to
                    the views. This is where you programmatically change any animatable properties of
                    the views in your view hierarchy. This block takes no parameters and has no
-                   return value. This parameter must not be NULL." Supports animating additional
-                   CALayer properties beyond what UIView's similar API supports. See
-                   MDMAnimatableKeyPaths for a full list of implicilty animatable CALayer
-                   properties.
+                   return value. This parameter must not be NULL."
+                   Supports animating additional CALayer properties beyond what UIView's similar API
+                   supports. See MDMAnimatableKeyPaths for a full list of implicilty animatable
+                   CALayer properties.
 
  @param completion From UIKit's documentation: "A block object to be executed when the animation
                    sequence ends. This block has no return value and takes a single Boolean argument
                    that indicates whether or not the animations actually finished before the
-                   completion handler was called." Unlike UIKit's API, if the duration of the
-                   animation is 0, this block is performed immediately. This parameter may be NULL.
+                   completion handler was called."
+                   Unlike UIKit's API, if the duration of the animation is 0, this block is
+                   performed immediately. This parameter may be NULL.
  */
 + (void)animateWithDuration:(NSTimeInterval)duration
                  animations:(void (^ __nonnull)(void))animations
@@ -249,16 +250,17 @@ NS_SWIFT_NAME(MotionAnimator)
  @param animations From UIKit's documentation: "A block object containing the changes to commit to
                    the views. This is where you programmatically change any animatable properties of
                    the views in your view hierarchy. This block takes no parameters and has no
-                   return value. This parameter must not be NULL." Supports animating additional
-                   CALayer properties beyond what UIView's similar API supports. See
-                   MDMAnimatableKeyPaths for a full list of implicilty animatable CALayer
-                   properties.
+                   return value. This parameter must not be NULL."
+                   Supports animating additional CALayer properties beyond what UIView's similar API
+                   supports. See MDMAnimatableKeyPaths for a full list of implicilty animatable
+                   CALayer properties.
 
  @param completion From UIKit's documentation: "A block object to be executed when the animation
                    sequence ends. This block has no return value and takes a single Boolean argument
                    that indicates whether or not the animations actually finished before the
-                   completion handler was called." Unlike UIKit's API, if the duration of the
-                   animation is 0, this block is performed immediately. This parameter may be NULL.
+                   completion handler was called."
+                   Unlike UIKit's API, if the duration of the animation is 0, this block is
+                   performed immediately. This parameter may be NULL.
  */
 + (void)animateWithDuration:(NSTimeInterval)duration
                       delay:(NSTimeInterval)delay
@@ -299,17 +301,17 @@ NS_SWIFT_NAME(MotionAnimator)
  @param animations   From UIKit's documentation: "A block object containing the changes to commit to
                      the views. This is where you programmatically change any animatable properties
                      of the views in your view hierarchy. This block takes no parameters and has no
-                     return value. This parameter must not be NULL." Supports animating additional
-                     CALayer properties beyond what UIView's similar API supports. See
-                     MDMAnimatableKeyPaths for a full list of implicilty animatable CALayer
-                     properties.
+                     return value. This parameter must not be NULL."
+                     Supports animating additional CALayer properties beyond what UIView's similar
+                     API supports. See MDMAnimatableKeyPaths for a full list of implicilty
+                     animatable CALayer properties.
 
  @param completion   From UIKit's documentation: "A block object to be executed when the animation
                      sequence ends. This block has no return value and takes a single Boolean
                      argument that indicates whether or not the animations actually finished before
-                     the completion handler was called." Unlike UIKit's API, if the duration of the
-                     animation is 0, this block is performed immediately. This parameter may be
-                     NULL.
+                     the completion handler was called."
+                     Unlike UIKit's API, if the duration of the animation is 0, this block is
+                     performed immediately. This parameter may be NULL.
  */
 + (void)animateWithDuration:(NSTimeInterval)duration
                       delay:(NSTimeInterval)delay
