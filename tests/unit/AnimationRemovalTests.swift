@@ -24,7 +24,7 @@ import MotionAnimator
 
 class AnimationRemovalTests: XCTestCase {
   var animator: MotionAnimator!
-  var timing: MotionTiming!
+  var traits: MDMAnimationTraits!
   var view: UIView!
 
   var originalImplementation: IMP?
@@ -32,10 +32,7 @@ class AnimationRemovalTests: XCTestCase {
     super.setUp()
 
     animator = MotionAnimator()
-    timing = MotionTiming(delay: 0,
-                          duration: 1,
-                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
-                          repetition: .init(type: .none, amount: 0, autoreverses: false))
+    traits = MDMAnimationTraits(duration: 1)
 
     let window = UIWindow()
     window.makeKeyAndVisible()
@@ -48,15 +45,15 @@ class AnimationRemovalTests: XCTestCase {
 
   override func tearDown() {
     animator = nil
-    timing = nil
+    traits = nil
     view = nil
 
     super.tearDown()
   }
 
   func testAllAdditiveAnimationsGetsRemoved() {
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .cornerRadius)
-    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [1, 0], layer: view.layer, keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [0, 0.5], layer: view.layer, keyPath: .cornerRadius)
 
     XCTAssertEqual(view.layer.animationKeys()!.count, 2)
 
@@ -73,8 +70,8 @@ class AnimationRemovalTests: XCTestCase {
       didComplete = true
     }
 
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .cornerRadius)
-    animator.animate(with: timing, to: view.layer, withValues: [0, 0.5], keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [1, 0], layer: view.layer, keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [0, 0.5], layer: view.layer, keyPath: .cornerRadius)
 
     CATransaction.commit()
 

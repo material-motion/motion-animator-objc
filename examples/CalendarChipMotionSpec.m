@@ -16,58 +16,84 @@
 
 #import "CalendarChipMotionSpec.h"
 
+static id<MDMTimingCurve> StandardTimingCurve(void) {
+  return [CAMediaTimingFunction functionWithControlPoints:0.4f :0.0f :0.2f :1.0f];
+}
+
+static id<MDMTimingCurve> LinearTimingCurve(void) {
+  return [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+}
+
+@interface CalendarChipExpansionTiming: NSObject <CalendarChipTiming>
+@end
+
+@implementation CalendarChipExpansionTiming
+
+- (MDMAnimationTraits *)chipWidth {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.000 duration:0.285 timingCurve:StandardTimingCurve()];
+}
+
+- (MDMAnimationTraits *)chipHeight {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.015 duration:0.360 timingCurve:StandardTimingCurve()];
+}
+
+- (MDMAnimationTraits *)chipY {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.015 duration:0.360 timingCurve:StandardTimingCurve()];
+}
+
+- (MDMAnimationTraits *)chipContentOpacity {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.000 duration:0.075 timingCurve:LinearTimingCurve()];
+}
+
+- (MDMAnimationTraits *)headerContentOpacity {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.075 duration:0.150 timingCurve:LinearTimingCurve()];
+}
+
+- (MDMAnimationTraits *)navigationBarY {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.015 duration:0.360 timingCurve:StandardTimingCurve()];
+}
+
+@end
+
+@interface CalendarChipCollapseTiming: NSObject <CalendarChipTiming>
+@end
+
+@implementation CalendarChipCollapseTiming
+
+- (MDMAnimationTraits *)chipWidth {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.045 duration:0.330 timingCurve:StandardTimingCurve()];
+}
+
+- (MDMAnimationTraits *)chipHeight {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.000 duration:0.330 timingCurve:StandardTimingCurve()];
+}
+
+- (MDMAnimationTraits *)chipY {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.015 duration:0.330 timingCurve:StandardTimingCurve()];
+}
+
+- (MDMAnimationTraits *)chipContentOpacity {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.150 duration:0.150 timingCurve:LinearTimingCurve()];
+}
+
+- (MDMAnimationTraits *)headerContentOpacity {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.000 duration:0.075 timingCurve:LinearTimingCurve()];
+}
+
+- (MDMAnimationTraits *)navigationBarY {
+  return [[MDMAnimationTraits alloc] initWithDelay:0.045 duration:0.150 timingCurve:StandardTimingCurve()];
+}
+
+@end
+
 @implementation CalendarChipMotionSpec
 
-+ (MDMMotionCurve)eightyForty {
-  return MDMMotionCurveMakeBezier(0.4f, 0.0f, 0.2f, 1.0f);
++ (id<CalendarChipTiming>)expansion {
+  return [[CalendarChipExpansionTiming alloc] init];
 }
 
-+ (CalendarChipTiming)expansion {
-  MDMMotionCurve eightyForty = [self eightyForty];
-  return (CalendarChipTiming){
-    .chipWidth = {
-      .delay = 0.000, .duration = 0.285, .curve = eightyForty,
-    },
-    .chipHeight = {
-      .delay = 0.015, .duration = 0.360, .curve = eightyForty,
-    },
-    .chipY = {
-      .delay = 0.015, .duration = 0.360, .curve = eightyForty,
-    },
-    .chipContentOpacity = {
-      .delay = 0.000, .duration = 0.075, .curve = MDMLinearMotionCurve,
-    },
-    .headerContentOpacity = {
-      .delay = 0.075, .duration = 0.150, .curve = MDMLinearMotionCurve,
-    },
-    .navigationBarY = {
-      .delay = 0.015, .duration = 0.360, .curve = eightyForty,
-    },
-  };
-}
-
-+ (CalendarChipTiming)collapse {
-  MDMMotionCurve eightyForty = [self eightyForty];
-  return (CalendarChipTiming){
-    .chipWidth = {
-      .delay = 0.045, .duration = 0.330, .curve = eightyForty,
-    },
-    .chipHeight = {
-      .delay = 0.000, .duration = 0.330, .curve = eightyForty,
-    },
-    .chipY = {
-      .delay = 0.015, .duration = 0.330, .curve = eightyForty,
-    },
-    .chipContentOpacity = {
-      .delay = 0.150, .duration = 0.150, .curve = MDMLinearMotionCurve,
-    },
-    .headerContentOpacity = {
-      .delay = 0.000, .duration = 0.075, .curve = MDMLinearMotionCurve,
-    },
-    .navigationBarY = {
-      .delay = 0.045, .duration = 0.150, .curve = eightyForty,
-    }
-  };
++ (id<CalendarChipTiming>)collapse {
+  return [[CalendarChipCollapseTiming alloc] init];
 }
 
 @end

@@ -23,7 +23,7 @@ import MotionAnimator
 
 class NonAdditiveAnimationTests: XCTestCase {
   var animator: MotionAnimator!
-  var timing: MotionTiming!
+  var traits: MDMAnimationTraits!
   var view: UIView!
 
   override func setUp() {
@@ -33,10 +33,7 @@ class NonAdditiveAnimationTests: XCTestCase {
 
     animator.additive = false
 
-    timing = MotionTiming(delay: 0,
-                          duration: 1,
-                          curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
-                          repetition: .init(type: .none, amount: 0, autoreverses: false))
+    traits = MDMAnimationTraits(duration: 1)
 
     let window = UIWindow()
     window.makeKeyAndVisible()
@@ -49,14 +46,14 @@ class NonAdditiveAnimationTests: XCTestCase {
 
   override func tearDown() {
     animator = nil
-    timing = nil
+    traits = nil
     view = nil
 
     super.tearDown()
   }
 
   func testNumericKeyPathsDontAnimateAdditively() {
-    animator.animate(with: timing, to: view.layer, withValues: [1, 0], keyPath: .cornerRadius)
+    animator.animate(with: traits, between: [1, 0], layer: view.layer, keyPath: .cornerRadius)
 
     XCTAssertNotNil(view.layer.animationKeys(),
                     "Expected an animation to be added, but none were found.")
@@ -75,9 +72,9 @@ class NonAdditiveAnimationTests: XCTestCase {
   }
 
   func testSizeKeyPathsDontAnimateAdditively() {
-    animator.animate(with: timing, to: view.layer,
-                     withValues: [CGSize(width: 0, height: 0),
-                                  CGSize(width: 1, height: 2)], keyPath: .shadowOffset)
+    animator.animate(with: traits, between: [CGSize(width: 0, height: 0),
+                                            CGSize(width: 1, height: 2)],
+                     layer: view.layer, keyPath: .shadowOffset)
 
     XCTAssertNotNil(view.layer.animationKeys(),
                     "Expected an animation to be added, but none were found.")
@@ -96,9 +93,8 @@ class NonAdditiveAnimationTests: XCTestCase {
   }
 
   func testPositionKeyPathsDontAnimateAdditively() {
-    animator.animate(with: timing, to: view.layer,
-                     withValues: [CGPoint(x: 0, y: 0),
-                                  CGPoint(x: 1, y: 2)], keyPath: .position)
+    animator.animate(with: traits, between: [CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 2)],
+                     layer: view.layer, keyPath: .position)
 
     XCTAssertNotNil(view.layer.animationKeys(),
                     "Expected an animation to be added, but none were found.")
@@ -117,9 +113,9 @@ class NonAdditiveAnimationTests: XCTestCase {
   }
 
   func testRectKeyPathsDontAnimateAdditively() {
-    animator.animate(with: timing, to: view.layer,
-                     withValues: [CGRect(x: 0, y: 0, width: 0, height: 0),
-                                  CGRect(x: 0, y: 0, width: 100, height: 50)], keyPath: .bounds)
+    animator.animate(with: traits, between: [CGRect(x: 0, y: 0, width: 0, height: 0),
+                                            CGRect(x: 0, y: 0, width: 100, height: 50)],
+                     layer: view.layer, keyPath: .bounds)
 
     XCTAssertNotNil(view.layer.animationKeys(),
                     "Expected an animation to be added, but none were found.")

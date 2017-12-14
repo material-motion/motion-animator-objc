@@ -54,7 +54,7 @@
 - (void)addAnimation:(CABasicAnimation *)animation
                 toLayer:(CALayer *)layer
                  forKey:(NSString *)key
-             completion:(void(^)(void))completion {
+             completion:(void(^)(BOOL))completion {
   if (key == nil) {
     key = [NSUUID UUID].UUIDString;
   }
@@ -73,7 +73,7 @@
     [animatedKeyPaths removeObject:keyPathAnimation];
 
     if (completion) {
-      completion();
+      completion(YES);
     }
   }];
 

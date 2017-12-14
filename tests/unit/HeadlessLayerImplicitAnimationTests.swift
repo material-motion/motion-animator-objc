@@ -97,7 +97,7 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
 
   // Verifies the somewhat counter-intuitive fact that CATransaction's animation duration always
   // takes precedence over UIView's animation duration. This means that animating a headless layer
-  // using UIView animation APIs may not result in the expected timings.
+  // using UIView animation APIs may not result in the expected traits.
   func testCATransactionTimingTakesPrecedenceOverUIViewTimingOutside() {
     CATransaction.begin()
     CATransaction.setAnimationDuration(0.2)
@@ -146,18 +146,19 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
   func testAnimatorTimingTakesPrecedenceOverCATransactionTiming() {
     let animator = MotionAnimator()
     animator.additive = false
-    let timing = MotionTiming(delay: 0,
-                              duration: 1,
-                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
 
-    animator.animate(with: timing) {
+    let traits = MDMAnimationTraits(duration: 1)
+
+    CATransaction.begin()
+    CATransaction.setAnimationDuration(0.5)
+    animator.animate(with: traits) {
       self.layer.opacity = 0.5
     }
+    CATransaction.commit()
 
     let animation = layer.animation(forKey: "opacity") as! CABasicAnimation
     XCTAssertEqual(animation.keyPath, "opacity")
-    XCTAssertEqual(animation.duration, timing.duration)
+    XCTAssertEqual(animation.duration, traits.duration)
   }
 
   // MARK: Deprecated tests.
@@ -204,12 +205,9 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
 
     let animator = MotionAnimator()
     animator.additive = false
-    let timing = MotionTiming(delay: 0,
-                              duration: 1,
-                              curve: MotionCurveMakeBezier(p1x: 0, p1y: 0, p2x: 0, p2y: 0),
-                              repetition: .init(type: .none, amount: 0, autoreverses: false))
+    let traits = MDMAnimationTraits(duration: 1)
 
-    animator.animate(with: timing) {
+    animator.animate(with: traits) {
       self.layer.opacity = 0.5
     }
 

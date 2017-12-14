@@ -20,12 +20,12 @@
 
 #import "MotionAnimator.h"
 
-// This example demonstrates how to use a motion timing specification to build a complex
+// This example demonstrates how to use a motion traits specification to build a complex
 // bi-directional animation using the MDMMotionAnimator object. MDMMotionAnimator is designed for
 // building fine-tuned explicit animations. Unlike UIView's implicit animation API, which can be
 // used to cause cascading animations on a variety of properties, MDMMotionAnimator will always add
 // exactly one animation per key path to the layer. This means you don't get as much for "free", but
-// you do gain more control over the timing and motion of the animation.
+// you do gain more control over the traits and motion of the animation.
 
 @implementation CalendarCardExpansionExampleViewController {
   // In a real-world scenario we'd likely create a separate view to manage all of these subviews so
@@ -40,15 +40,15 @@
 - (void)didTap {
   _expanded = !_expanded;
 
-  CalendarChipTiming timing = (_expanded
-                               ? CalendarChipMotionSpec.expansion
-                               : CalendarChipMotionSpec.collapse);
+  id<CalendarChipTiming> traits = (_expanded
+                                   ? CalendarChipMotionSpec.expansion
+                                   : CalendarChipMotionSpec.collapse);
 
   MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
   animator.shouldReverseValues = !_expanded;
   animator.beginFromCurrentState = YES;
 
-  [animator animateWithTiming:timing.navigationBarY animations:^{
+  [animator animateWithTraits:traits.navigationBarY animations:^{
     [self.navigationController setNavigationBarHidden:_expanded animated:YES];
   }];
 
@@ -56,65 +56,67 @@
   CGRect headerFrame = [self frameForHeader];
 
   // Animate the chip itself.
-  [animator animateWithTiming:timing.chipHeight
-                      toLayer:_chipView.layer
-                   withValues:@[ @(chipFrame.size.height), @(headerFrame.size.height) ]
+  [animator animateWithTraits:traits.chipHeight
+                      between:@[ @(chipFrame.size.height), @(headerFrame.size.height) ]
+                        layer:_chipView.layer
                       keyPath:MDMKeyPathHeight];
-  [animator animateWithTiming:timing.chipWidth
-                      toLayer:_chipView.layer
-                   withValues:@[ @(chipFrame.size.width), @(headerFrame.size.width) ]
+  [animator animateWithTraits:traits.chipWidth
+                      between:@[ @(chipFrame.size.width), @(headerFrame.size.width) ]
+                        layer:_chipView.layer
                       keyPath:MDMKeyPathWidth];
-  [animator animateWithTiming:timing.chipWidth
-                      toLayer:_chipView.layer
-                   withValues:@[ @(CGRectGetMidX(chipFrame)), @(CGRectGetMidX(headerFrame)) ]
+  [animator animateWithTraits:traits.chipWidth
+                      between:@[ @(CGRectGetMidX(chipFrame)), @(CGRectGetMidX(headerFrame)) ]
+                        layer:_chipView.layer
                       keyPath:MDMKeyPathX];
-  [animator animateWithTiming:timing.chipY
-                      toLayer:_chipView.layer
-                   withValues:@[ @(CGRectGetMidY(chipFrame)), @(CGRectGetMidY(headerFrame)) ]
+  [animator animateWithTraits:traits.chipY
+                      between:@[ @(CGRectGetMidY(chipFrame)), @(CGRectGetMidY(headerFrame)) ]
+                        layer:_chipView.layer
                       keyPath:MDMKeyPathY];
-  [animator animateWithTiming:timing.chipHeight
-                      toLayer:_chipView.layer
-                   withValues:@[ @([self chipCornerRadius]), @0 ]
+  [animator animateWithTraits:traits.chipHeight
+                      between:@[ @([self chipCornerRadius]), @0 ]
+                        layer:_chipView.layer
                       keyPath:MDMKeyPathCornerRadius];
 
   // Cross-fade the chip's contents.
-  [animator animateWithTiming:timing.chipContentOpacity
-                      toLayer:_collapsedContent.layer
-                   withValues:@[ @1, @0 ]
+  [animator animateWithTraits:traits.chipContentOpacity
+                      between:@[ @1, @0 ]
+                        layer:_collapsedContent.layer
                       keyPath:MDMKeyPathOpacity];
-  [animator animateWithTiming:timing.headerContentOpacity
-                      toLayer:_expandedContent.layer
-                   withValues:@[ @0, @1 ]
+  [animator animateWithTraits:traits.headerContentOpacity
+                      between:@[ @0, @1 ]
+                        layer:_expandedContent.layer
                       keyPath:MDMKeyPathOpacity];
 
   // Keeps the expandec content aligned to the bottom of the card by taking into consideration the
   // extra height.
   CGFloat excessTopMargin = chipFrame.size.height - headerFrame.size.height;
-  [animator animateWithTiming:timing.chipHeight
-                      toLayer:_expandedContent.layer
-                   withValues:@[ @(CGRectGetMidY([self expandedContentFrame]) + excessTopMargin),
+  [animator animateWithTraits:traits.chipHeight
+                      between:@[ @(CGRectGetMidY([self expandedContentFrame]) + excessTopMargin),
                                  @(CGRectGetMidY([self expandedContentFrame])) ]
+                        layer:_expandedContent.layer
                       keyPath:MDMKeyPathY];
 
   // Keeps the collapsed content aligned to its position on screen by taking into consideration the
   // excess left margin.
   CGFloat excessLeftMargin = chipFrame.origin.x - headerFrame.origin.x;
-  [animator animateWithTiming:timing.chipWidth
-                      toLayer:_collapsedContent.layer
-                   withValues:@[ @(CGRectGetMidX([self collapsedContentFrame])),
+  [animator animateWithTraits:traits.chipWidth
+                      between:@[ @(CGRectGetMidX([self collapsedContentFrame])),
                                  @(CGRectGetMidX([self collapsedContentFrame]) + excessLeftMargin) ]
+                        layer:_collapsedContent.layer
                       keyPath:MDMKeyPathX];
 
   // Keeps the shape anchored to the bottom right of the chip.
   CGRect shapeFrameInChip = [self shapeFrameInRect:chipFrame];
   CGRect shapeFrameInHeader = [self shapeFrameInRect:headerFrame];
-  [animator animateWithTiming:timing.chipWidth
-                      toLayer:_shapeView.layer
-                   withValues:@[ @(CGRectGetMidX(shapeFrameInChip)), @(CGRectGetMidX(shapeFrameInHeader)) ]
+  [animator animateWithTraits:traits.chipWidth
+                      between:@[ @(CGRectGetMidX(shapeFrameInChip)),
+                                 @(CGRectGetMidX(shapeFrameInHeader)) ]
+                        layer:_shapeView.layer
                       keyPath:MDMKeyPathX];
-  [animator animateWithTiming:timing.chipHeight
-                      toLayer:_shapeView.layer
-                   withValues:@[ @(CGRectGetMidY(shapeFrameInChip)), @(CGRectGetMidY(shapeFrameInHeader)) ]
+  [animator animateWithTraits:traits.chipHeight
+                      between:@[ @(CGRectGetMidY(shapeFrameInChip)),
+                                 @(CGRectGetMidY(shapeFrameInHeader)) ]
+                        layer:_shapeView.layer
                       keyPath:MDMKeyPathY];
 }
 

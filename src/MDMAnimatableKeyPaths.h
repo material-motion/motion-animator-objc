@@ -181,6 +181,17 @@ FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathStrokeStart NS_SWIFT_NAME(strok
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathStrokeEnd NS_SWIFT_NAME(strokeEnd);
 
 /**
+ Transform.
+
+ Equivalent UIView property: transform (2d only)
+ Equivalent CALayer property: transform (3d)
+ Expected value type: CGAffineTransform, CATransform or NSValue with either transform type.
+                      CGAffineTransform value types will be converted to CATransform.
+ Additive animation supported: Yes.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathTransform NS_SWIFT_NAME(transform);
+
+/**
  Width.
 
  Equivalent UIView property: bounds.size.width

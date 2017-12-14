@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2AA864EDA683CEF5FAA721BE /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DBE814C7B88BAD6337052DB /* Pods_UnitTests.framework */; };
+		660248A41FD1B923004C0147 /* TapToBounceExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660248A31FD1B923004C0147 /* TapToBounceExample.swift */; };
 		660636021FACC24300C3DFB8 /* TimeScaleFactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */; };
 		6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */; };
 		664F59941FCCE27E002EC56D /* UIKitBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */; };
@@ -55,6 +56,7 @@
 		2DBE814C7B88BAD6337052DB /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D808A6F9E944D54276D32F /* Pods_MotionAnimatorCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MotionAnimatorCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52820916F8FAA40E942A7333 /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
+		660248A31FD1B923004C0147 /* TapToBounceExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapToBounceExample.swift; sourceTree = "<group>"; };
 		660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeScaleFactorTests.swift; sourceTree = "<group>"; };
 		6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialVelocityTests.swift; sourceTree = "<group>"; };
 		664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitBehavioralTests.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */,
 				66DD4BF61EEF1C4B00207119 /* CalendarChipMotionSpec.h */,
 				66DD4BF71EEF1C4B00207119 /* CalendarChipMotionSpec.m */,
+				660248A31FD1B923004C0147 /* TapToBounceExample.swift */,
 			);
 			name = examples;
 			path = ../..;
@@ -508,6 +511,7 @@
 				667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */,
 				66DD4BF81EEF1C4B00207119 /* CalendarChipMotionSpec.m in Sources */,
 				66DD4BF51EEF0ECB00207119 /* CalendarCardExpansionExample.m in Sources */,
+				660248A41FD1B923004C0147 /* TapToBounceExample.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,6 +29,7 @@ MDMAnimatableKeyPath MDMKeyPathShadowOpacity = @"shadowOpacity";
 MDMAnimatableKeyPath MDMKeyPathShadowRadius = @"shadowRadius";
 MDMAnimatableKeyPath MDMKeyPathStrokeStart = @"strokeStart";
 MDMAnimatableKeyPath MDMKeyPathStrokeEnd = @"strokeEnd";
+MDMAnimatableKeyPath MDMKeyPathTransform = @"transform";
 MDMAnimatableKeyPath MDMKeyPathWidth = @"bounds.size.width";
 MDMAnimatableKeyPath MDMKeyPathX = @"position.x";
 MDMAnimatableKeyPath MDMKeyPathY = @"position.y";
