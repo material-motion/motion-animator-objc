@@ -63,6 +63,26 @@ FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBackgroundColor NS_SWIFT_NAME(b
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBounds NS_SWIFT_NAME(bounds);
 
 /**
+ Border width.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: borderWidth
+ Expected value type: CGFloat or NSNumber.
+ Additive animation supported: Yes.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBorderWidth NS_SWIFT_NAME(borderWidth);
+
+/**
+ Border color.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: borderColor
+ Expected value type: UIColor or CGColor.
+ Additive animation supported: No.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBorderColor NS_SWIFT_NAME(borderColor);
+
+/**
  Corner radius.
 
  Equivalent UIView property: N/A

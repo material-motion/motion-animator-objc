@@ -18,6 +18,8 @@
 
 MDMAnimatableKeyPath MDMKeyPathBackgroundColor = @"backgroundColor";
 MDMAnimatableKeyPath MDMKeyPathBounds = @"bounds";
+MDMAnimatableKeyPath MDMKeyPathBorderWidth = @"borderWidth";
+MDMAnimatableKeyPath MDMKeyPathBorderColor = @"borderColor";
 MDMAnimatableKeyPath MDMKeyPathCornerRadius = @"cornerRadius";
 MDMAnimatableKeyPath MDMKeyPathHeight = @"bounds.size.height";
 MDMAnimatableKeyPath MDMKeyPathOpacity = @"opacity";

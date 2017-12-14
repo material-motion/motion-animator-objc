@@ -28,6 +28,8 @@ static NSSet<MDMAnimatableKeyPath> *AllAnimatableKeyPaths(void) {
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     animatableKeyPaths = [NSSet setWithArray:@[MDMKeyPathBackgroundColor,
+                                               MDMKeyPathBorderWidth,
+                                               MDMKeyPathBorderColor,
                                                MDMKeyPathBounds,
                                                MDMKeyPathCornerRadius,
                                                MDMKeyPathHeight,

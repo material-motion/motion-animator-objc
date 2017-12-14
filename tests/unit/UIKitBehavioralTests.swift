@@ -138,6 +138,8 @@ class UIKitBehavioralTests: XCTestCase {
 
   func testSomePropertiesDoNotImplicitlyAnimate() {
     let baselineProperties: [AnimatableKeyPath: Any] = [
+      .borderWidth: 5,
+      .borderColor: UIColor.red,
       .cornerRadius: 3,
       .shadowOffset: CGSize(width: 1, height: 1),
       .shadowOpacity: 0.3,
