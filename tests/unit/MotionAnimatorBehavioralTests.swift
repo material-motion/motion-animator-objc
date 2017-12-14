@@ -60,6 +60,7 @@ class AnimatorBehavioralTests: XCTestCase {
     .width: 25,
     .x: 12,
     .y: 23,
+    .z: 3,
   ]
 
   func testAllKeyPathsExplicitlyAnimateWithLayerBackingUIView() {

@@ -144,6 +144,7 @@ class UIKitBehavioralTests: XCTestCase {
       .shadowRadius: 5,
       .strokeStart: 0.2,
       .strokeEnd: 0.5,
+      .z: 3,
     ]
 
     let properties: [AnimatableKeyPath: Any]

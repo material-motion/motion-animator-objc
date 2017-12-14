@@ -69,6 +69,7 @@ class UIKitEquivalencyTests: XCTestCase {
       .transform: CGAffineTransform(scaleX: 1.5, y: 1.5),
       .x: 12,
       .y: 23,
+      .z: 3,
 
       // Should animate additively, but blocked by
       // https://github.com/material-motion/motion-animator-objc/issues/74

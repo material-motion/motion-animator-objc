@@ -43,7 +43,8 @@ static NSSet<MDMAnimatableKeyPath> *AllAnimatableKeyPaths(void) {
                                                MDMKeyPathTransform,
                                                MDMKeyPathWidth,
                                                MDMKeyPathX,
-                                               MDMKeyPathY]];
+                                               MDMKeyPathY,
+                                               MDMKeyPathZ]];
   });
   return animatableKeyPaths;
 }

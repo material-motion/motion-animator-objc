@@ -218,3 +218,13 @@ FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathX NS_SWIFT_NAME(x);
  Additive animation supported: Yes.
  */
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathY NS_SWIFT_NAME(y);
+
+/**
+ Z position.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: zPosition
+ Expected value type: CGFloat or NSNumber.
+ Additive animation supported: Yes.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathZ NS_SWIFT_NAME(z);

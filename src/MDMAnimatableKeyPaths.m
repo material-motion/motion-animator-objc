@@ -33,3 +33,4 @@ MDMAnimatableKeyPath MDMKeyPathTransform = @"transform";
 MDMAnimatableKeyPath MDMKeyPathWidth = @"bounds.size.width";
 MDMAnimatableKeyPath MDMKeyPathX = @"position.x";
 MDMAnimatableKeyPath MDMKeyPathY = @"position.y";
+MDMAnimatableKeyPath MDMKeyPathZ = @"zPosition";
