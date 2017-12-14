@@ -97,6 +97,7 @@ CABasicAnimation *MDMAnimationFromTraits(MDMAnimationTraits *traits, CGFloat tim
     return animation;
   }
 
+  NSCAssert(NO, @"Unsupported animation trait: %@", traits);
   return nil;
 }
 
