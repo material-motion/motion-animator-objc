@@ -43,6 +43,7 @@ class AnimatorBehavioralTests: XCTestCase {
   }
 
   private let properties: [AnimatableKeyPath: Any] = [
+    .anchorPoint: CGPoint(x: 0.2, y: 0.4),
     .backgroundColor: UIColor.blue,
     .borderWidth: 5,
     .borderColor: UIColor.red,
