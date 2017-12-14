@@ -51,7 +51,7 @@ class SpringTimingCurveTests: XCTestCase {
   }
 
   @available(iOS 9.0, *)
-  func testAllAdditiveAnimationsGetsRemoved() {
+  func testGeneratorCanBeUsedAsATimingCurve() {
     traits.timingCurve = MDMSpringTimingCurveGenerator(duration: traits.duration, dampingRatio: 0.5)
 
     animator.animate(with: traits, between: [1, 0], layer: view.layer, keyPath: .cornerRadius)
