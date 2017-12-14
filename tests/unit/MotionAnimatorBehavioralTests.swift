@@ -171,5 +171,4 @@ class AnimatorBehavioralTests: XCTestCase {
       layer.removeFromSuperlayer()
     }
   }
-
 }
