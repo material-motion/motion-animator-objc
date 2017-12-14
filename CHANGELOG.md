@@ -1,3 +1,8 @@
+# #develop#
+
+ TODO: Enumerate changes.
+
+
 # 2.6.0
 
 This minor release increases test coverage, fixes a variety of bugs related to `beginFromCurrentState`, and generally improves the stability and robustness of the underlying implementation.
