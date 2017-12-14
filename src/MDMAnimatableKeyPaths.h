@@ -58,9 +58,7 @@ FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBackgroundColor NS_SWIFT_NAME(b
  Equivalent UIView property: bounds
  Equivalent CALayer property: bounds
  Expected value type: CGRect or NSValue (containing a CGRect).
- Additive animation supported: No.
- TODO( https://github.com/material-motion/motion-animator-objc/issues/74 ):
-      Add support for additively animating CGRect types.
+ Additive animation supported: Yes.
  */
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBounds NS_SWIFT_NAME(bounds);
 
