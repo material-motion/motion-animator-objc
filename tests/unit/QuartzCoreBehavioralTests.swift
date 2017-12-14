@@ -85,6 +85,7 @@ class QuartzCoreBehavioralTests: XCTestCase {
       .width: 25,
       .x: 12,
       .y: 23,
+      .z: 3,
     ]
     for (keyPath, value) in properties {
       rebuildLayer()
