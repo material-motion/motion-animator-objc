@@ -304,10 +304,11 @@ NS_SWIFT_NAME(MotionAnimator)
 
  @param velocity     From UIKit's documentation: "The initial spring velocity. For smooth start to
                      the animation, match this value to the view’s velocity as it was prior to
-                     attachment. A value of 1 corresponds to the total animation distance traversed
-                     in one second. For example, if the total animation distance is 200 points and
-                     you want the start of the animation to match a view velocity of 100 pt/s, use a
-                     value of 0.5."
+                     attachment."
+                     Unlike UIKit's API, the initial velocity value is measured in terms of absolute
+                     units of motion. For example, if animating a position from 0 to 10 with an
+                     initial velocity of 100 points/second, the provided initial velocity value
+                     should be 100.
 
  @param animations   From UIKit's documentation: "A block object containing the changes to commit to
                      the views. This is where you programmatically change any animatable properties
