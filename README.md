@@ -1,4 +1,4 @@
-![Motion Interchange Banner](img/motion-interchange-banner.gif)
+![Motion Animator Banner](img/motion-animator-banner.gif)
 
 > An iOS animator that combines the best aspects of the UIView and CALayer animation APIs.
 
