@@ -245,7 +245,7 @@
   traits.timingCurve =
       [[MDMSpringTimingCurveGenerator alloc] initWithDuration:duration
                                                  dampingRatio:dampingRatio
-                                              initialVelocity:velocity];
+                                              initialVelocity:velocity].springTimingCurve;
   [animator animateWithTraits:traits animations:animations completion:completion];
 }
 
