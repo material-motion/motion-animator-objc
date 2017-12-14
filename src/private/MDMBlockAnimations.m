@@ -37,6 +37,7 @@ static NSSet<MDMAnimatableKeyPath> *AllAnimatableKeyPaths(void) {
                                                MDMKeyPathPosition,
                                                MDMKeyPathRotation,
                                                MDMKeyPathScale,
+                                               MDMKeyPathShadowColor,
                                                MDMKeyPathShadowOffset,
                                                MDMKeyPathShadowOpacity,
                                                MDMKeyPathShadowRadius,
