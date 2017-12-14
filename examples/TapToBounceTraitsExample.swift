@@ -49,9 +49,6 @@ class TapToBounceTraitsExampleViewController: UIViewController {
 
   func didFocus(_ sender: UIButton) {
     let animator = MotionAnimator()
-    animator.addCoreAnimationTracer { (layer, animation) in
-      print(animation.debugDescription)
-    }
     animator.animate(with: traits) {
       sender.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
     }
