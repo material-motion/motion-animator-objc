@@ -78,6 +78,7 @@ class QuartzCoreBehavioralTests: XCTestCase {
       .position: CGPoint(x: 50, y: 20),
       .rotation: 42,
       .scale: 2.5,
+      .shadowColor: UIColor.blue,
       .shadowOffset: CGSize(width: 1, height: 1),
       .shadowOpacity: 0.3,
       .shadowRadius: 5,

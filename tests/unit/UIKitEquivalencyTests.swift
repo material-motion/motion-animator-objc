@@ -103,6 +103,7 @@ class UIKitEquivalencyTests: XCTestCase {
       .backgroundColor: UIColor.blue,
       .borderColor: UIColor.red,
       .opacity: 0.5,
+      .shadowColor: UIColor.blue,
     ]
     for (keyPath, value) in baselineProperties {
       rebuildView()

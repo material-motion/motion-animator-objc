@@ -147,6 +147,16 @@ FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathRotation NS_SWIFT_NAME(rotation
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathScale NS_SWIFT_NAME(scale);
 
 /**
+ Shadow color.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: shadowColor
+ Expected value type: UIColor or CGColor.
+ Additive animation supported: No.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathShadowColor NS_SWIFT_NAME(shadowColor);
+
+/**
  Shadow offset.
 
  Equivalent UIView property: N/A
