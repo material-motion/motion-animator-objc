@@ -16,9 +16,14 @@
 
 // MARK: Catalog by convention
 
-extension TapToBounceExampleViewController {
+extension TapToBounceTraitsExampleViewController {
   class func catalogBreadcrumbs() -> [String] {
-    return ["Tap to bounce"]
+    return ["Tap to bounce (Traits)"]
   }
 }
 
+extension TapToBounceUIKitExampleViewController {
+  class func catalogBreadcrumbs() -> [String] {
+    return ["Tap to bounce (UIKit)"]
+  }
+}
