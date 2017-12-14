@@ -1,95 +1,13 @@
-# Motion Animator
+![Motion Interchange Banner](img/motion-interchange-banner.gif)
 
-> A Motion Animator creates performant, interruptible animations from motion specs.
+> An iOS animator that combines the best aspects of the UIView and CALayer animation APIs.
 
 [![Build Status](https://travis-ci.org/material-motion/motion-animator-objc.svg?branch=develop)](https://travis-ci.org/material-motion/motion-animator-objc)
 [![codecov](https://codecov.io/gh/material-motion/motion-animator-objc/branch/develop/graph/badge.svg)](https://codecov.io/gh/material-motion/motion-animator-objc)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/MotionAnimator.svg)](https://cocoapods.org/pods/MotionAnimator)
 [![Platform](https://img.shields.io/cocoapods/p/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 
----
 
-This library provides APIs that turn [Motion Interchange](https://github.com/material-motion/motion-interchange-objc)
-**motion specifications** into animations.
-
----
-
-#### What is a motion specification?
-
-A **motion specification** defines the delay, duration, and acceleration of animations in a simple
-data format that can live separate from your animation logic.
-
-For example, let's say we wanted to describe the motion for this animation:
-
-<img src="assets/chip.gif" />
-
-We might create a specification like so:
-
-```objc
-struct CalendarChipTiming {
-  MDMMotionTiming chipWidth;
-  MDMMotionTiming chipHeight;
-  MDMMotionTiming chipY;
-
-  MDMMotionTiming chipContentOpacity;
-  MDMMotionTiming headerContentOpacity;
-
-  MDMMotionTiming navigationBarY;
-};
-typedef struct CalendarChipTiming CalendarChipTiming;
-
-struct CalendarChipMotionSpec {
-  CalendarChipTiming expansion;
-  CalendarChipTiming collapse;
-};
-typedef struct CalendarChipMotionSpec CalendarChipMotionSpec;
-
-FOUNDATION_EXTERN struct CalendarChipMotionSpec CalendarChipSpec;
-```
-
-With our implementation of the spec looking like so:
-
-```objc
-struct CalendarChipMotionSpec CalendarChipSpec = {
-  .expansion = {
-    .chipWidth = {
-      .delay = 0.000, .duration = 0.285, .curve = MDMEightyForty,
-    },
-    .chipHeight = {
-      .delay = 0.015, .duration = 0.360, .curve = MDMEightyForty,
-    },
-    ...
-  },
-  .collapse = {
-    .chipWidth = {
-      .delay = 0.045, .duration = 0.330, .curve = MDMEightyForty,
-    },
-    .chipHeight = {
-      .delay = 0.000, .duration = 0.330, .curve = MDMEightyForty,
-    },
-    ...
-  },
-};
-```
-
-Our spec defines two different transition states: expansion and collapse. At runtime, we determine
-which of these two specs we need and then use the timings to animate our views with an instance of
-`MDMMotionAnimator`:
-
-```objc
-CalendarChipTiming timing = _expanded ? CalendarChipSpec.expansion : CalendarChipSpec.collapse;
-
-MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
-animator.shouldReverseValues = !_expanded;
-
-[animator animateWithTiming:timing.chipHeight
-                    toLayer:chipView.layer
-                 withValues:@[ @(chipFrame.size.height), @(headerFrame.size.height) ]
-                    keyPath:MDMKeyPathHeight];
-...
-```
-
-A working implementation of this example can be seen in the included example app.
 
 ## Example apps/unit tests
 
