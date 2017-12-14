@@ -81,20 +81,29 @@ CABasicAnimation *MDMAnimationFromTraits(MDMAnimationTraits *traits, CGFloat tim
     return animation;
   }
 
-  if ([traits.timingCurve isKindOfClass:[MDMSpringTimingCurve class]]) {
-    MDMSpringTimingCurve *springTiming = (MDMSpringTimingCurve *)traits.timingCurve;
-
+  CABasicAnimation *(^animationFromSpring)(MDMSpringTimingCurve *) =
+      ^(MDMSpringTimingCurve *springTiming) {
 #pragma clang diagnostic push
-    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
-    // linking against the public API on iOS 9+.
+        // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+        // linking against the public API on iOS 9+.
 #pragma clang diagnostic ignored "-Wpartial-availability"
-    CASpringAnimation *animation = [CASpringAnimation animation];
+        CASpringAnimation *animation = [CASpringAnimation animation];
 #pragma clang diagnostic pop
-    animation.mass = springTiming.mass;
-    animation.stiffness = springTiming.tension;
-    animation.damping = springTiming.friction;
-    animation.duration = traits.duration;
-    return animation;
+        animation.mass = springTiming.mass;
+        animation.stiffness = springTiming.tension;
+        animation.damping = springTiming.friction;
+        animation.duration = traits.duration;
+        return animation;
+      };
+
+  if ([traits.timingCurve isKindOfClass:[MDMSpringTimingCurveGenerator class]]) {
+    MDMSpringTimingCurveGenerator *springTimingGenerator =
+        (MDMSpringTimingCurveGenerator *)traits.timingCurve;
+    return animationFromSpring(springTimingGenerator.springTimingCurve);
+  }
+
+  if ([traits.timingCurve isKindOfClass:[MDMSpringTimingCurve class]]) {
+    return animationFromSpring((MDMSpringTimingCurve *)traits.timingCurve);
   }
 
   NSCAssert(NO, @"Unsupported animation trait: %@", traits);

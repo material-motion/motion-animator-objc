@@ -25,6 +25,7 @@
 		667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A3F531DEE273000CB3A99 /* TableOfContents.swift */; };
 		6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668726491EF04B4C00113675 /* MotionAnimatorTests.swift */; };
 		668819FA1FE2EB36003A9420 /* UIKitEquivalencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668819F91FE2EB36003A9420 /* UIKitEquivalencyTests.swift */; };
+		668819F81FE2E5C6003A9420 /* SpringTimingCurveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668819F71FE2E5C6003A9420 /* SpringTimingCurveTests.swift */; };
 		669B6CA91FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */; };
 		66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */; };
 		66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */; };
@@ -80,6 +81,7 @@
 		667A3F531DEE273000CB3A99 /* TableOfContents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContents.swift; sourceTree = "<group>"; };
 		668726491EF04B4C00113675 /* MotionAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorTests.swift; sourceTree = "<group>"; };
 		668819F91FE2EB36003A9420 /* UIKitEquivalencyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitEquivalencyTests.swift; sourceTree = "<group>"; };
+		668819F71FE2E5C6003A9420 /* SpringTimingCurveTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringTimingCurveTests.swift; sourceTree = "<group>"; };
 		669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorBehavioralTests.swift; sourceTree = "<group>"; };
 		66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationRemovalTests.swift; sourceTree = "<group>"; };
 		66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitAnimationTests.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */,
 				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
 				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
+				668819F71FE2E5C6003A9420 /* SpringTimingCurveTests.swift */,
 				664F59991FCE6661002EC56D /* NonAdditiveAnimatorTests.swift */,
 				664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */,
 				660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */,
@@ -522,6 +525,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				668819F81FE2E5C6003A9420 /* SpringTimingCurveTests.swift in Sources */,
 				6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */,
 				66EF6F281FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift in Sources */,
 				664F599A1FCE6661002EC56D /* NonAdditiveAnimatorTests.swift in Sources */,
