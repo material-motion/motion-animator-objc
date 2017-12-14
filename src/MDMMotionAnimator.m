@@ -197,6 +197,58 @@
   [_registrar removeAllAnimations];
 }
 
+#pragma mark - UIKit equivalency
+
++ (void)animateWithDuration:(NSTimeInterval)duration
+                 animations:(void (^ __nonnull)(void))animations {
+  [self animateWithDuration:duration animations:animations completion:nil];
+}
+
++ (void)animateWithDuration:(NSTimeInterval)duration
+                 animations:(void (^)(void))animations
+                 completion:(void (^)(BOOL))completion {
+  [self animateWithDuration:duration
+                      delay:UIViewAnimationOptionCurveEaseInOut
+                    options:0
+                 animations:animations
+                 completion:completion];
+}
+
++ (void)animateWithDuration:(NSTimeInterval)duration
+                      delay:(NSTimeInterval)delay
+                    options:(UIViewAnimationOptions)options
+                 animations:(void (^ __nonnull)(void))animations
+                 completion:(void (^ __nullable)(BOOL finished))completion {
+  MDMMotionAnimator *animator = [[[self class] alloc] init];
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithDuration:duration];
+  traits.delay = delay;
+  if ((options & UIViewAnimationOptionCurveEaseIn) == UIViewAnimationOptionCurveEaseIn) {
+    traits.timingCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+  } else if ((options & UIViewAnimationOptionCurveEaseOut) == UIViewAnimationOptionCurveEaseOut) {
+    traits.timingCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+  } else if ((options & UIViewAnimationOptionCurveLinear) == UIViewAnimationOptionCurveLinear) {
+    traits.timingCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+  }
+  [animator animateWithTraits:traits animations:animations completion:completion];
+}
+
++ (void)animateWithDuration:(NSTimeInterval)duration
+                      delay:(NSTimeInterval)delay
+     usingSpringWithDamping:(CGFloat)dampingRatio
+      initialSpringVelocity:(CGFloat)velocity
+                    options:(UIViewAnimationOptions)options
+                 animations:(void (^)(void))animations
+                 completion:(void (^)(BOOL))completion {
+  MDMMotionAnimator *animator = [[[self class] alloc] init];
+  MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithDuration:duration];
+  traits.delay = delay;
+  traits.timingCurve =
+      [[MDMSpringTimingCurveGenerator alloc] initWithDuration:duration
+                                                 dampingRatio:dampingRatio
+                                              initialVelocity:velocity];
+  [animator animateWithTraits:traits animations:animations completion:completion];
+}
+
 #pragma mark - Legacy
 
 - (void)animateWithTiming:(MDMMotionTiming)timing animations:(void (^)(void))animations {
