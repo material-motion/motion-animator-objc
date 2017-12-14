@@ -17,7 +17,8 @@
 import UIKit
 import MotionAnimator
 
-class TapToBounceExampleViewController: UIViewController {
+// This demo shows how to use animation traits to define the timings for an animation.
+class TapToBounceTraitsExampleViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
