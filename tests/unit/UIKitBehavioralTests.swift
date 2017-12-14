@@ -72,7 +72,15 @@ class UIKitBehavioralTests: XCTestCase {
 
   func testSomePropertiesImplicitlyAnimateAdditively() {
     let baselineProperties: [AnimatableKeyPath: Any] = [
+      .bounds: CGRect(x: 0, y: 0, width: 123, height: 456),
       .height: 100,
+      .position: CGPoint(x: 50, y: 20),
+      .rotation: 42,
+      .scale: 2.5,
+      .transform: CGAffineTransform(scaleX: 1.5, y: 1.5),
+      .width: 25,
+      .x: 12,
+      .y: 23,
     ]
     let properties: [AnimatableKeyPath: Any]
     if #available(iOS 11.0, *) {
