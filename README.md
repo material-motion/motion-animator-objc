@@ -418,6 +418,219 @@ UIView.animate(withDuration: 0.8, animations: {
   Generates an animation with duration of 0.25. This isn't a typo: standalone layers read from the current CATransaction rather than UIView's parameters when implicitly animating, even when the change happens within a UIView animation block.
 </details>
 
+### What properties can be explicitly animated?
+
+For a full list of animatable CALayer properties, see the [Apple documentation](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/AnimatableProperties/AnimatableProperties.html).
+
+MotionAnimator's explicit APIs can be used to animate any property that is animatable by Core Animation.
+
+### What properties can be implicitly animated?
+
+UIKit and Core Animation have different rules about when and how a property can be implicitly animated.
+
+UIView properties generate implicit animations **only** when they are changed within an `animateWithDuration:` animation block.
+
+CALayer properties generate implicit animations **only** when they are changed under either of the following conditions:
+
+1. if the CALayer is backing a UIView, the CALayer property is a supported implicitly animatable property (this is not documented anywhere), and the property is changed within an `animateWithDuration:` block, or
+2. if: the CALayer is **not** backing a UIView (an "unhosted layer"), the layer has been around for at least one CATransaction flush — either by invoking `CATransaction.flush()` or by letting the run loop pump at least once — and the property is changed at all.
+
+This behavior can be somewhat difficult to reason through, most notably when trying to animate CALayer properties using the UIView `animateWithDuration:` APIs. For example, CALayer's cornerRadius was not animatable using `animateWithDuration:` up until iOS 11, and many other CALayer properties are still not implicitly animatable.
+
+```swift
+// This doesn't work until iOS 11.
+UIView.animate(withDuration: 0.8, animations: {
+  view.layer.borderWidth = 10
+}, completion: nil)
+
+// This works all the way back to iOS 8.
+MotionAnimator.animate(withDuration: 0.8, animations: {
+  view.layer.borderWidth = 10
+}, completion: nil)
+```
+
+The MotionAnimator provides a more consistent implicit animation API with a well-defined set of supported properties.
+
+### In general, when will changing a property cause an implicit animation?
+
+The following charts describe when changing a property on a given object will cause an implicit animation to be generated.
+
+#### UIView
+
+```swift
+let view = UIView()
+
+// inside animation block
+UIView.animate(withDuration: 0.8, animations: {
+  view.alpha = 0.5 // Will generate an animation with a duration of 0.8
+})
+
+// outside animation block
+view.alpha = 0.5 // Will not animate
+
+// inside MotionAnimator animation block
+MotionAnimator.animate(withDuration: 0.8, animations: {
+  view.alpha = 0.5 // Will generate an animation with a duration of 0.8
+})
+```
+
+| UIVIew key path        | inside animation block | outside animation block | inside MotionAnimator animation block |
+|:-----------------------|:-----------------------|:------------------------|:--------------------------------------|
+| `alpha`                | ✓                      |                         | ✓                                     |
+| `backgroundColor`      | ✓                      |                         | ✓                                     |
+| `bounds`               | ✓                      |                         | ✓                                     |
+| `bounds.size.height`   | ✓                      |                         | ✓                                     |
+| `bounds.size.width`    | ✓                      |                         | ✓                                     |
+| `center`               | ✓                      |                         | ✓                                     |
+| `center.x`             | ✓                      |                         | ✓                                     |
+| `center.y`             | ✓                      |                         | ✓                                     |
+| `transform`            | ✓                      |                         | ✓                                     |
+| `transform.rotation.z` | ✓                      |                         | ✓                                     |
+| `transform.scale`      | ✓                      |                         | ✓                                     |
+
+#### Backing CALayer
+
+Every UIView has a backing CALayer.
+
+```swift
+let view = UIView()
+
+// inside animation block
+UIView.animate(withDuration: 0.8, animations: {
+  view.layer.opacity = 0.5 // Will generate an animation with a duration of 0.8
+})
+
+// outside animation block
+view.layer.opacity = 0.5 // Will not animate
+
+// inside MotionAnimator animation block
+MotionAnimator.animate(withDuration: 0.8, animations: {
+  view.layer.opacity = 0.5 // Will generate an animation with a duration of 0.8
+})
+```
+
+| CALayer key path               | inside animation block | outside animation block | inside MotionAnimator animation block |
+|:-------------------------------|:-----------------------|:------------------------|:--------------------------------------|
+| `anchorPoint`                  | ✓ (starting in iOS 11) |                         | ✓                                     |
+| `backgroundColor`              |                        |                         | ✓                                     |
+| `bounds`                       | ✓                      |                         | ✓                                     |
+| `borderWidth`                  |                        |                         | ✓                                     |
+| `borderColor`                  |                        |                         | ✓                                     |
+| `cornerRadius`                 | ✓ (starting in iOS 11) |                         | ✓                                     |
+| `bounds.size.height`           | ✓                      |                         | ✓                                     |
+| `opacity`                      | ✓                      |                         | ✓                                     |
+| `position`                     | ✓                      |                         | ✓                                     |
+| `transform.rotation.z`         | ✓                      |                         | ✓                                     |
+| `transform.scale`              | ✓                      |                         | ✓                                     |
+| `shadowColor`                  |                        |                         | ✓                                     |
+| `shadowOffset`                 |                        |                         | ✓                                     |
+| `shadowOpacity`                |                        |                         | ✓                                     |
+| `shadowRadius`                 |                        |                         | ✓                                     |
+| `strokeStart`                  |                        |                         | ✓                                     |
+| `strokeEnd`                    |                        |                         | ✓                                     |
+| `transform`                    | ✓                      |                         | ✓                                     |
+| `bounds.size.width`            | ✓                      |                         | ✓                                     |
+| `position.x`                   | ✓                      |                         | ✓                                     |
+| `position.y`                   | ✓                      |                         | ✓                                     |
+| `zPosition`                    |                        |                         | ✓                                     |
+
+#### Unflushed, unhosted CALayer
+
+CALayers are unflushed until the next `CATransaction.flush()` invocation, which can happen either directly or at the end of the current run loop.
+
+```swift
+let layer = CALayer()
+
+// inside animation block
+UIView.animate(withDuration: 0.8, animations: {
+  layer.opacity = 0.5 // Will not animate
+})
+
+// outside animation block
+layer.opacity = 0.5 // Will not animate
+
+// inside MotionAnimator animation block
+MotionAnimator.animate(withDuration: 0.8, animations: {
+  layer.opacity = 0.5 // Will generate an animation with a duration of 0.8
+})
+```
+
+| CALayer key path               | inside animation block | outside animation block | inside MotionAnimator animation block |
+|:-------------------------------|:-----------------------|:------------------------|:--------------------------------------|
+| `anchorPoint`                  |                        |                         | ✓                                     |
+| `backgroundColor`              |                        |                         | ✓                                     |
+| `bounds`                       |                        |                         | ✓                                     |
+| `borderWidth`                  |                        |                         | ✓                                     |
+| `borderColor`                  |                        |                         | ✓                                     |
+| `cornerRadius`                 |                        |                         | ✓                                     |
+| `bounds.size.height`           |                        |                         | ✓                                     |
+| `opacity`                      |                        |                         | ✓                                     |
+| `position`                     |                        |                         | ✓                                     |
+| `transform.rotation.z`         |                        |                         | ✓                                     |
+| `transform.scale`              |                        |                         | ✓                                     |
+| `shadowColor`                  |                        |                         | ✓                                     |
+| `shadowOffset`                 |                        |                         | ✓                                     |
+| `shadowOpacity`                |                        |                         | ✓                                     |
+| `shadowRadius`                 |                        |                         | ✓                                     |
+| `strokeStart`                  |                        |                         | ✓                                     |
+| `strokeEnd`                    |                        |                         | ✓                                     |
+| `transform`                    |                        |                         | ✓                                     |
+| `bounds.size.width`            |                        |                         | ✓                                     |
+| `position.x`                   |                        |                         | ✓                                     |
+| `position.y`                   |                        |                         | ✓                                     |
+| `zPosition`                    |                        |                         | ✓                                     |
+
+#### Flushed, unhosted CALayer
+
+```swift
+let layer = CALayer()
+
+// It's usually unnecessary to flush the transaction, unless you want to be able to implicitly
+// animate it without using a MotionAnimator.
+CATransaction.flush()
+
+// inside animation block
+UIView.animate(withDuration: 0.8, animations: {
+  // Will generate an animation with a duration of 0.25 because it uses the CATransaction duration
+  // rather than the UIKit duration.
+  layer.opacity = 0.5
+})
+
+// outside animation block
+// Will generate an animation with a duration of 0.25
+layer.opacity = 0.5
+
+// inside MotionAnimator animation block
+MotionAnimator.animate(withDuration: 0.8, animations: {
+  layer.opacity = 0.5 // Will generate an animation with a duration of 0.8
+})
+```
+
+| CALayer key path               | inside animation block | outside animation block | inside MotionAnimator animation block |
+|:-------------------------------|:-----------------------|:------------------------|:--------------------------------------|
+| `anchorPoint`                  | ✓                      | ✓                       | ✓                                     |
+| `backgroundColor`              |                        |                         | ✓                                     |
+| `bounds`                       | ✓                      | ✓                       | ✓                                     |
+| `borderWidth`                  | ✓                      | ✓                       | ✓                                     |
+| `borderColor`                  | ✓                      | ✓                       | ✓                                     |
+| `cornerRadius`                 | ✓                      | ✓                       | ✓                                     |
+| `bounds.size.height`           | ✓                      | ✓                       | ✓                                     |
+| `opacity`                      | ✓                      | ✓                       | ✓                                     |
+| `position`                     | ✓                      | ✓                       | ✓                                     |
+| `transform.rotation.z`         | ✓                      | ✓                       | ✓                                     |
+| `transform.scale`              | ✓                      | ✓                       | ✓                                     |
+| `shadowColor`                  | ✓                      | ✓                       | ✓                                     |
+| `shadowOffset`                 | ✓                      | ✓                       | ✓                                     |
+| `shadowOpacity`                | ✓                      | ✓                       | ✓                                     |
+| `shadowRadius`                 | ✓                      | ✓                       | ✓                                     |
+| `strokeStart`                  | ✓                      | ✓                       | ✓                                     |
+| `strokeEnd`                    | ✓                      | ✓                       | ✓                                     |
+| `transform`                    | ✓                      | ✓                       | ✓                                     |
+| `bounds.size.width`            | ✓                      | ✓                       | ✓                                     |
+| `position.x`                   | ✓                      | ✓                       | ✓                                     |
+| `position.y`                   | ✓                      | ✓                       | ✓                                     |
+| `zPosition`                    | ✓                      | ✓                       | ✓                                     |
+
 ## Example apps/unit tests
 
 Check out a local copy of the repo to access the Catalog application by running the following
@@ -454,153 +667,6 @@ Import the framework:
     @import MotionAnimator;
 
 You will now have access to all of the APIs.
-
-## Guides
-
-- [How to make a spec from existing animations](#how-to-make-a-spec-from-existing-animations)
-- [How to animate explicit layer properties](#how-to-animate-explicit-layer-properties)
-- [How to animate like UIView](#how-to-animate-like-UIView)
-- [How to animate a transition](#how-to-animate-a-transition)
-- [How to animate an interruptible transition](#how-to-animate-an-interruptible-transition)
-
-### How to make a spec from existing animations
-
-A *motion spec* is a complete representation of the motion curves that meant to be applied during an
-animation. Your motion spec might consist of a single `MDMMotionTiming` instance, or it might be a
-nested structure of `MDMMotionTiming` instances, each representing motion for a different part of a
-larger animation. In either case, your magic motion constants now have a place to live.
-
-Consider a simple example of animating a view on and off-screen. Without a spec, our code might look
-like so:
-
-```objc
-CGPoint before = dismissing ? onscreen : offscreen;
-CGPoint after = dismissing ? offscreen : onscreen;
-view.center = before;
-[UIView animateWithDuration:0.5 animations:^{
-  view.center = after;
-}];
-```
-
-What if we want to change this animation to use a spring curve instead of a cubic bezier? To do so
-we'll need to change our code to use a new API:
-
-```objc
-CGPoint before = dismissing ? onscreen : offscreen;
-CGPoint after = dismissing ? offscreen : onscreen;
-view.center = before;
-[UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:0 animations:^{
-  view.center = after;
-} completion:nil];
-```
-
-Now let's say we wrote the same code with a motion spec and animator:
-
-```objc
-MDMMotionTiming motionSpec = {
-  .duration = 0.5, .curve = MDMMotionCurveMakeSpring(1, 100, 1),
-};
-
-MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
-animator.shouldReverseValues = dismissing;
-view.center = offscreen;
-[_animator animateWithTiming:kMotionSpec animations:^{
-  view.center = onscreen;
-}];
-```
-
-Now if we want to change our motion back to an easing curve, we only have to change the spec:
-
-```objc
-MDMMotionTiming motionSpec = {
-  .duration = 0.5, .curve = MDMMotionCurveMakeBezier(0.4f, 0.0f, 0.2f, 1.0f),
-};
-```
-
-The animator code stays the same. It's now possible to modify the motion parameters at runtime
-without affecting any of the animation logic.
-
-This pattern is useful for building transitions and animations. To learn more through examples,
-see the following implementations:
-
-**Material Components Activity Indicator**
-
-- [Motion spec declaration](https://github.com/material-components/material-components-ios/blob/develop/components/ActivityIndicator/src/private/MDCActivityIndicatorMotionSpec.h)
-- [Motion spec definition](https://github.com/material-components/material-components-ios/blob/develop/components/ActivityIndicator/src/private/MDCActivityIndicatorMotionSpec.m)
-- [Motion spec usage](https://github.com/material-components/material-components-ios/blob/develop/components/ActivityIndicator/src/MDCActivityIndicator.m#L461)
-
-**Material Components Progress View**
-
-- [Motion spec declaration](https://github.com/material-components/material-components-ios/blob/develop/components/ProgressView/src/private/MDCProgressView%2BMotionSpec.h#L21)
-- [Motion spec definition](https://github.com/material-components/material-components-ios/blob/develop/components/ProgressView/src/private/MDCProgressView%2BMotionSpec.m#L19)
-- [Motion spec usage](https://github.com/material-components/material-components-ios/blob/develop/components/ProgressView/src/MDCProgressView.m#L155)
-
-**Material Components Masked Transition**
-
-- [Motion spec declaration](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/private/MDCMaskedTransitionMotionSpec.h#L20)
-- [Motion spec definition](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/private/MDCMaskedTransitionMotionSpec.m#L23)
-- [Motion spec usage](https://github.com/material-components/material-components-ios/blob/develop/components/MaskedTransition/src/MDCMaskedTransition.m#L183)
-
-### How to animate explicit layer properties
-
-`MDMMotionAnimator` provides an explicit API for adding animations to animatable CALayer key paths.
-This API is similar to creating a `CABasicAnimation` and adding it to the layer.
-
-```objc
-[animator animateWithTiming:timing.chipHeight
-                    toLayer:chipView.layer
-                 withValues:@[ @(chipFrame.size.height), @(headerFrame.size.height) ]
-                    keyPath:MDMKeyPathHeight];
-```
-
-### How to animate like UIView
-
-`MDMMotionAnimator` provides an API that is similar to UIView's `animateWithDuration:`. Use this API
-when you want to apply the same timing to a block of animations:
-
-```objc
-chipView.frame = chipFrame;
-[animator animateWithTiming:timing.chipHeight animations:^{
-  chipView.frame = headerFrame;
-}];
-// chipView.layer's position and bounds will now be animated with timing.chipHeight's timing.
-```
-
-### How to animate a transition
-
-Start by creating an `MDMMotionAnimator` instance.
-
-```objc
-MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
-```
-
-When we describe our transition we'll describe it as though we're moving forward and take advantage
-of the `shouldReverseValues` property on our animator to handle the reverse direction.
-
-```objc
-animator.shouldReverseValues = isTransitionReversed;
-```
-
-To animate a property on a view, we invoke the `animate` method. We must provide a timing, values,
-and a key path:
-
-```objc
-[animator animateWithTiming:timing
-                    toLayer:view.layer
-                 withValues:@[ @(collapsedHeight), @(expandedHeight) ]
-                    keyPath:MDMKeyPathHeight];
-```
-
-### How to animate an interruptible transition
-
-`MDMMotionAnimator` is configured by default to generate interruptible animations using Core
-Animation's additive animation APIs. You can simply re-execute the `animate` calls when your
-transition's direction changes and the animator will add new animations for the updated direction.
-
-## Helpful literature
-
-- [Additive animations: animateWithDuration in iOS 8](http://iosoteric.com/additive-animations-animatewithduration-in-ios-8/)
-- [WWDC 2014 video on additive animations](https://developer.apple.com/videos/play/wwdc2014/236/)
 
 ## Contributing
 
