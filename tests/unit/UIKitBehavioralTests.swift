@@ -113,11 +113,19 @@ class UIKitBehavioralTests: XCTestCase {
 
   func testSomePropertiesImplicitlyAnimateButNotAdditively() {
     let baselineProperties: [AnimatableKeyPath: Any] = [
-      .anchorPoint: CGPoint(x: 0.2, y: 0.4),
       .backgroundColor: UIColor.blue,
       .opacity: 0.5,
     ]
-    for (keyPath, value) in baselineProperties {
+    let properties: [AnimatableKeyPath: Any]
+    if #available(iOS 11.0, *) {
+      // Anchor point became implicitly animatable in iOS 11.
+      var baselineWithCornerRadiusProperties = baselineProperties
+      baselineWithCornerRadiusProperties[.anchorPoint] = CGPoint(x: 0.2, y: 0.4)
+      properties = baselineWithCornerRadiusProperties
+    } else {
+      properties = baselineProperties
+    }
+    for (keyPath, value) in properties {
       rebuildView()
 
       UIView.animate(withDuration: 0.01) {
@@ -139,6 +147,7 @@ class UIKitBehavioralTests: XCTestCase {
 
   func testSomePropertiesDoNotImplicitlyAnimate() {
     let baselineProperties: [AnimatableKeyPath: Any] = [
+      .anchorPoint: CGPoint(x: 0.2, y: 0.4),
       .borderWidth: 5,
       .borderColor: UIColor.red,
       .cornerRadius: 3,
@@ -155,6 +164,7 @@ class UIKitBehavioralTests: XCTestCase {
     if #available(iOS 11.0, *) {
       // Corner radius became implicitly animatable in iOS 11.
       var baselineWithOutCornerRadius = baselineProperties
+      baselineWithOutCornerRadius.removeValue(forKey: .anchorPoint)
       baselineWithOutCornerRadius.removeValue(forKey: .cornerRadius)
       properties = baselineWithOutCornerRadius
 
