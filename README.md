@@ -101,13 +101,16 @@ animator.animate(with: traits, animations: {
 The MotionAnimator can also be used to replace explicit Core Animation code with additive explicit animations:
 
 ```swift
+let from = 0
+let to = 10
 // Animating expicitly with Core Animation APIs
 let animation = CABasicAnimation(keyPath: "cornerRadius")
-animation.fromValue = 0
-animation.toValue = 10
+animation.fromValue = (from - to)
+animation.toValue = 0
+animation.isAdditive = true
 animation.duration = 1.0
-// Note: this animation won't be additive unless we configure it accordingly.
 view.layer.add(animation, forKey: animation.keyPath)
+view.layer.cornerRadius = to
 
 // Equivalent implicit MotionAnimator API. cornerRadius will be animated additively by default.
 view.layer.cornerRadius = 0
