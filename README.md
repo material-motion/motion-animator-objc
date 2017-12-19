@@ -8,38 +8,37 @@
 [![Platform](https://img.shields.io/cocoapods/p/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 
 <table>
-  <tr><td>Implicit and explicit additive animations.</td></tr>
-  <tr><td>Parameterized motion with the <a href="https://github.com/material-motion/motion-interchange-objc">Interchange</a>.</td></tr>
-  <tr><td>Provide velocity to animations directly from gesture recognizers.</td></tr>
-  <tr><td>Maximize frame rates by relying more on Core Animation.</td></tr>
-  <tr><td>Animatable properties are Swift enum types.</td></tr>
-  <tr><td>Consistent model layer value expectations.</td></tr>
+  <tr><td>🎉</td><td>Implicit and explicit additive animations.</td></tr>
+  <tr><td>🎉</td><td>Parameterized motion with the <a href="https://github.com/material-motion/motion-interchange-objc">Interchange</a>.</td></tr>
+  <tr><td>🎉</td><td>Provide velocity to animations directly from gesture recognizers.</td></tr>
+  <tr><td>🎉</td><td>Maximize frame rates by relying more on Core Animation.</td></tr>
+  <tr><td>🎉</td><td>Animatable properties are Swift enum types.</td></tr>
+  <tr><td>🎉</td><td>Consistent model layer value expectations.</td></tr>
 </table>
 
 The following properties can be implicitly animated using the MotionAnimator on iOS 8 and up:
 
 <table>
-  <thead><td>CAlayer</td><td>UIView</td></thead>
-  <tr><td><tt>anchorPoint</tt></td></tr>
-  <tr><td><tt>backgroundColor</tt></td><td><tt>backgroundColor</tt></td></tr>
-  <tr><td><tt>bounds</tt></td><td><tt>bounds</tt></td></tr>
-  <tr><td><tt>borderWidth</tt></td></tr>
-  <tr><td><tt>borderColor</tt></td></tr>
-  <tr><td><tt>cornerRadius</tt></td></tr>
-  <tr><td><tt>height</tt></td><td><tt>height</tt></td></tr>
-  <tr><td><tt>opacity</tt></td><td><tt>alpha</tt></td></tr>
-  <tr><td><tt>position</tt></td><td><tt>center</tt></td></tr>
-  <tr><td><tt>rotation</tt></td><td><tt>rotation</tt></td></tr>
-  <tr><td><tt>scale</tt></td><td><tt>scale</tt></td></tr>
-  <tr><td><tt>shadowColor</tt></td></tr>
-  <tr><td><tt>shadowOffset</tt></td></tr>
-  <tr><td><tt>shadowOpacity</tt></td></tr>
-  <tr><td><tt>shadowRadius</tt></td></tr>
-  <tr><td><tt>transform</tt></td><td><tt>transform</tt></td></tr>
-  <tr><td><tt>width</tt></td><td><tt>width</tt></td></tr>
-  <tr><td><tt>x</tt></td><td><tt>x</tt></td></tr>
-  <tr><td><tt>y</tt></td><td><tt>y</tt></tr>
-  <tr><td><tt>z</tt></td></td></tr>
+  <tr><td>CALayer <tt>anchorPoint</tt></td></tr>
+  <tr><td>CALayer <tt>backgroundColor</tt></td><td>UIView <tt>backgroundColor</tt></td></tr>
+  <tr><td>CALayer <tt>bounds</tt></td><td>UIView <tt>bounds</tt></td></tr>
+  <tr><td>CALayer <tt>borderWidth</tt></td></tr>
+  <tr><td>CALayer <tt>borderColor</tt></td></tr>
+  <tr><td>CALayer <tt>cornerRadius</tt></td></tr>
+  <tr><td>CALayer <tt>height</tt></td><td>UIView <tt>height</tt></td></tr>
+  <tr><td>CALayer <tt>opacity</tt></td><td>UIView <tt>alpha</tt></td></tr>
+  <tr><td>CALayer <tt>position</tt></td><td>UIView <tt>center</tt></td></tr>
+  <tr><td>CALayer <tt>rotation</tt></td><td>UIView <tt>rotation</tt></td></tr>
+  <tr><td>CALayer <tt>scale</tt></td><td>UIView <tt>scale</tt></td></tr>
+  <tr><td>CALayer <tt>shadowColor</tt></td></tr>
+  <tr><td>CALayer <tt>shadowOffset</tt></td></tr>
+  <tr><td>CALayer <tt>shadowOpacity</tt></td></tr>
+  <tr><td>CALayer <tt>shadowRadius</tt></td></tr>
+  <tr><td>CALayer <tt>transform</tt></td><td>UIView <tt>transform</tt></td></tr>
+  <tr><td>CALayer <tt>width</tt></td><td>UIView <tt>width</tt></td></tr>
+  <tr><td>CALayer <tt>x</tt></td><td>UIView <tt>x</tt></td></tr>
+  <tr><td>CALayer <tt>y</tt></td><td>UIView <tt>y</tt></tr>
+  <tr><td>CALayer <tt>z</tt></td></td></tr>
   <tr><td>CAShapeLayer <tt>strokeStart</tt></td></tr>
   <tr><td>CAShapeLayer <tt>strokeEnd</tt></td></tr>
 </table>
