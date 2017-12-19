@@ -141,8 +141,9 @@ UIView.animate(withDuration: 1.0,
                initialSpringVelocity: gestureYVelocity / displacement,
                options: [],
                animations: {
-  view.layer.position = CGPoint(x: view.position.x, y: destinationY)
-}, completion: nil)
+                 view.layer.position = CGPoint(x: view.position.x, y: destinationY)
+               },
+               completion: nil)
 
 // Equivalent MotionAnimator API
 let animator = MotionAnimator()
