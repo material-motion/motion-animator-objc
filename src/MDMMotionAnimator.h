@@ -71,11 +71,14 @@ NS_SWIFT_NAME(MotionAnimator)
  In this case, multiple invocations of this function on the same key path will remove the
  animations added from prior invocations.
 
- @param traits The traits to be used for the animation.
- @param layer The layer to be animated.
- @param values The values to be used in the animation. Must contain exactly two values. Supported
- UIKit types will be coerced to their Core Animation equivalent. Supported UIKit values include
- UIColor and UIBezierPath.
+ @param traits  The traits to be used for the animation.
+
+ @param layer   The layer to be animated.
+
+ @param values  The values to be used in the animation. Must contain exactly two values. Supported
+                UIKit types will be coerced to their Core Animation equivalent. Supported UIKit
+                values include UIColor and UIBezierPath.
+
  @param keyPath The key path of the property to be animated.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
@@ -90,22 +93,26 @@ NS_SWIFT_NAME(MotionAnimator)
  In this case, multiple invocations of this function on the same key path will remove the
  animations added from prior invocations.
 
- @param traits The traits to be used for the animation.
- @param layer The layer to be animated.
- @param values The values to be used in the animation. Must contain exactly two values. Supported
- UIKit types will be coerced to their Core Animation equivalent. Supported UIKit values include
- UIColor and UIBezierPath.
- @param keyPath The key path of the property to be animated.
- @param completion A block object to be executed when the animation ends or is removed from the
- animation hierarchy. If the duration of the animation is 0, this block is executed immediately.
- The block is escaping and will be released once the animations have completed. The provided
- didComplete argument is currently always YES.
+ @param traits      The traits to be used for the animation.
+
+ @param layer       The layer to be animated.
+
+ @param values      The values to be used in the animation. Must contain exactly two values.
+                    Supported UIKit types will be coerced to their Core Animation equivalent.
+
+ @param keyPath     The key path of the property to be animated.
+
+ @param completion  A block object to be executed when the animation ends or is removed from the
+                    animation hierarchy. If the duration of the animation is 0, this block is
+                    executed immediately. The block is escaping and will be released once the
+                    animations have completed. The provided `finished` argument is currently always
+                    YES.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                   between:(nonnull NSArray *)values
                     layer:(nonnull CALayer *)layer
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath
-               completion:(nullable void(^)(BOOL didComplete))completion;
+               completion:(nullable void(^)(BOOL finished))completion;
 
 /**
  If enabled, explicitly-provided values will be reversed before animating.
@@ -121,10 +128,11 @@ NS_SWIFT_NAME(MotionAnimator)
 /**
  Performs `animations` using the traits provided.
 
- @param traits The traits to be used for the animation.
- @param animations The block to be executed. Any animatable properties changed within this block
- will result in animations being added to the view's layer with the provided traits. The block is
- non-escaping.
+ @param traits      The traits to be used for the animation.
+
+ @param animations  The block to be executed. Any animatable properties changed within this block
+                    will result in animations being added to the view's layer with the provided
+                    traits. The block is non-escaping.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                animations:(nonnull void(^)(void))animations;
@@ -133,18 +141,21 @@ NS_SWIFT_NAME(MotionAnimator)
  Performs `animations` using the traits provided and executes the completion handler once all added
  animations have completed.
 
- @param traits The traits to be used for the animation.
- @param animations The block to be executed. Any animatable properties changed within this block
- will result in animations being added to the view's layer with the provided traits. The block is
- non-escaping.
- @param completion A block object to be executed once the animation sequence ends or it has been
- removed from the animation hierarchy. If the duration of the animation is 0, this block is executed
- immediately. The block is escaping and will be released once the animation sequence has completed. The provided
- didComplete argument is currently always YES.
+ @param traits      The traits to be used for the animation.
+
+ @param animations  The block to be executed. Any animatable properties changed within this block
+                    will result in animations being added to the view's layer with the provided
+                    traits. The block is non-escaping.
+
+ @param completion  A block object to be executed once the animation sequence ends or it has been
+                    removed from the animation hierarchy. If the duration of the animation is 0,
+                    this block is executed immediately. The block is escaping and will be released
+                    once the animation sequence has completed. The provided `finished` argument is
+                    currently always YES.
  */
 - (void)animateWithTraits:(nonnull MDMAnimationTraits *)traits
                animations:(nonnull void (^)(void))animations
-               completion:(nullable void(^)(BOOL didComplete))completion;
+               completion:(nullable void(^)(BOOL finished))completion;
 
 #pragma mark - Managing active animations
 
@@ -164,6 +175,163 @@ NS_SWIFT_NAME(MotionAnimator)
  in-flight animations are stopped at their current on-screen position.
  */
 - (void)stopAllAnimations;
+
+@end
+
+@interface MDMMotionAnimator (UIKitEquivalency)
+
+/**
+ Similar to the UIKit method of the same name with some intentional differences in behavior.
+
+ This API does not disable user interaction during animations, unlike the default behavior of
+ UIView's similar API.
+
+ Like the UIKit API, this method performs the specified animations immediately using the
+ UIViewAnimationOptionCurveEaseInOut animation option.
+ 
+ @param duration   From UIKit's documentation: "The total duration of the animations, measured in
+                   seconds. If you specify a negative value or 0, the changes are made without
+                   animating them."
+
+ @param animations From UIKit's documentation: "A block object containing the changes to commit to
+                   the views. This is where you programmatically change any animatable properties of
+                   the views in your view hierarchy. This block takes no parameters and has no
+                   return value. This parameter must not be NULL."
+                   Supports animating additional CALayer properties beyond what UIView's similar API
+                   supports. See MDMAnimatableKeyPaths for a full list of implicilty animatable
+                   CALayer properties.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration
+                 animations:(void (^ __nonnull)(void))animations;
+
+/**
+ Similar to the UIKit method of the same name with some intentional differences in behavior.
+
+ This API does not disable user interaction during animations, unlike the default behavior of
+ UIView's similar API.
+
+ Like the UIKit API, this method performs the specified animations immediately using the
+ UIViewAnimationOptionCurveEaseInOut animation option.
+
+ @param duration   From UIKit's documentation: "The total duration of the animations, measured in
+                   seconds. If you specify a negative value or 0, the changes are made without
+                   animating them."
+
+ @param animations From UIKit's documentation: "A block object containing the changes to commit to
+                   the views. This is where you programmatically change any animatable properties of
+                   the views in your view hierarchy. This block takes no parameters and has no
+                   return value. This parameter must not be NULL."
+                   Supports animating additional CALayer properties beyond what UIView's similar API
+                   supports. See MDMAnimatableKeyPaths for a full list of implicilty animatable
+                   CALayer properties.
+
+ @param completion From UIKit's documentation: "A block object to be executed when the animation
+                   sequence ends. This block has no return value and takes a single Boolean argument
+                   that indicates whether or not the animations actually finished before the
+                   completion handler was called."
+                   Unlike UIKit's API, if the duration of the animation is 0, this block is
+                   performed immediately. This parameter may be NULL.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration
+                 animations:(void (^ __nonnull)(void))animations
+                 completion:(void (^ __nullable)(BOOL finished))completion;
+
+/**
+ Similar to the UIKit method of the same name with some intentional differences in behavior.
+
+ This API does not disable user interaction during animations, unlike the default behavior of
+ UIView's similar API.
+
+ Like the UIKit API, this method performs the specified animations immediately.
+
+ The only options that are presently supported are the UIViewAnimationOptionCurve flags.
+
+ @param duration   From UIKit's documentation: "The total duration of the animations, measured in
+                   seconds. If you specify a negative value or 0, the changes are made without
+                   animating them."
+
+ @param delay      From UIKit's documentation: "The amount of time (measured in seconds) to wait
+                   before beginning the animations. Specify a value of 0 to begin the animations
+                   immediately."
+
+ @param options    From UIKit's documentation: "A mask of options indicating how you want to perform
+                   the animations. For a list of valid constants, see UIViewAnimationOptions." Only
+                   the UIViewAnimationOptionCurve flags are supported presently.
+
+ @param animations From UIKit's documentation: "A block object containing the changes to commit to
+                   the views. This is where you programmatically change any animatable properties of
+                   the views in your view hierarchy. This block takes no parameters and has no
+                   return value. This parameter must not be NULL."
+                   Supports animating additional CALayer properties beyond what UIView's similar API
+                   supports. See MDMAnimatableKeyPaths for a full list of implicilty animatable
+                   CALayer properties.
+
+ @param completion From UIKit's documentation: "A block object to be executed when the animation
+                   sequence ends. This block has no return value and takes a single Boolean argument
+                   that indicates whether or not the animations actually finished before the
+                   completion handler was called."
+                   Unlike UIKit's API, if the duration of the animation is 0, this block is
+                   performed immediately. This parameter may be NULL.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration
+                      delay:(NSTimeInterval)delay
+                    options:(UIViewAnimationOptions)options
+                 animations:(void (^ __nonnull)(void))animations
+                 completion:(void (^ __nullable)(BOOL finished))completion;
+
+/**
+ Similar to the UIKit method of the same name with some intentional differences in behavior.
+
+ This API does not disable user interaction during animations, unlike the default behavior of
+ UIView's similar API.
+
+ Like the UIKit API, this method performs the specified animations immediately.
+
+ @param duration     From UIKit's documentation: "The total duration of the animations, measured in
+                     seconds. If you specify a negative value or 0, the changes are made without
+                     animating them."
+
+ @param delay        From UIKit's documentation: "The amount of time (measured in seconds) to wait
+                     before beginning the animations. Specify a value of 0 to begin the animations
+                     immediately."
+
+ @param options      Ignored.
+
+ @param dampingRatio From UIKit's documentation: "The damping ratio for the spring animation as it
+                     approaches its quiescent state. To smoothly decelerate the animation without
+                     oscillation, use a value of 1. Employ a damping ratio closer to zero to
+                     increase oscillation."
+
+ @param velocity     From UIKit's documentation: "The initial spring velocity. For smooth start to
+                     the animation, match this value to the view’s velocity as it was prior to
+                     attachment."
+                     Unlike UIKit's API, the initial velocity value is measured in terms of absolute
+                     units of motion. For example, if animating a position from 0 to 10 with an
+                     initial velocity of 100 points/second, the provided initial velocity value
+                     should be 100.
+
+ @param animations   From UIKit's documentation: "A block object containing the changes to commit to
+                     the views. This is where you programmatically change any animatable properties
+                     of the views in your view hierarchy. This block takes no parameters and has no
+                     return value. This parameter must not be NULL."
+                     Supports animating additional CALayer properties beyond what UIView's similar
+                     API supports. See MDMAnimatableKeyPaths for a full list of implicilty
+                     animatable CALayer properties.
+
+ @param completion   From UIKit's documentation: "A block object to be executed when the animation
+                     sequence ends. This block has no return value and takes a single Boolean
+                     argument that indicates whether or not the animations actually finished before
+                     the completion handler was called."
+                     Unlike UIKit's API, if the duration of the animation is 0, this block is
+                     performed immediately. This parameter may be NULL.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration
+                      delay:(NSTimeInterval)delay
+     usingSpringWithDamping:(CGFloat)dampingRatio
+      initialSpringVelocity:(CGFloat)velocity
+                    options:(UIViewAnimationOptions)options
+                 animations:(void (^ __nonnull)(void))animations
+                 completion:(void (^ __nullable)(BOOL finished))completion;
 
 @end
 

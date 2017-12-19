@@ -43,6 +43,16 @@ NS_SWIFT_NAME(AnimatableKeyPath)
 typedef NSString * const MDMAnimatableKeyPath CF_TYPED_ENUM;
 
 /**
+ Anchor point.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: anchorPoint
+ Expected value type: CGPoint or NSValue (containing a CGPoint).
+ Additive animation supported: No.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathAnchorPoint NS_SWIFT_NAME(anchorPoint);
+
+/**
  Background color.
 
  Equivalent UIView property: backgroundColor
@@ -58,11 +68,29 @@ FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBackgroundColor NS_SWIFT_NAME(b
  Equivalent UIView property: bounds
  Equivalent CALayer property: bounds
  Expected value type: CGRect or NSValue (containing a CGRect).
- Additive animation supported: No.
- TODO( https://github.com/material-motion/motion-animator-objc/issues/74 ):
-      Add support for additively animating CGRect types.
+ Additive animation supported: Yes.
  */
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBounds NS_SWIFT_NAME(bounds);
+
+/**
+ Border width.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: borderWidth
+ Expected value type: CGFloat or NSNumber.
+ Additive animation supported: Yes.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBorderWidth NS_SWIFT_NAME(borderWidth);
+
+/**
+ Border color.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: borderColor
+ Expected value type: UIColor or CGColor.
+ Additive animation supported: No.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathBorderColor NS_SWIFT_NAME(borderColor);
 
 /**
  Corner radius.
@@ -127,6 +155,16 @@ FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathRotation NS_SWIFT_NAME(rotation
  Additive animation supported: Yes.
  */
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathScale NS_SWIFT_NAME(scale);
+
+/**
+ Shadow color.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: shadowColor
+ Expected value type: UIColor or CGColor.
+ Additive animation supported: No.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathShadowColor NS_SWIFT_NAME(shadowColor);
 
 /**
  Shadow offset.
@@ -220,3 +258,13 @@ FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathX NS_SWIFT_NAME(x);
  Additive animation supported: Yes.
  */
 FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathY NS_SWIFT_NAME(y);
+
+/**
+ Z position.
+
+ Equivalent UIView property: N/A
+ Equivalent CALayer property: zPosition
+ Expected value type: CGFloat or NSNumber.
+ Additive animation supported: Yes.
+ */
+FOUNDATION_EXPORT MDMAnimatableKeyPath MDMKeyPathZ NS_SWIFT_NAME(z);

@@ -17,7 +17,9 @@
 import UIKit
 import MotionAnimator
 
-class TapToBounceExampleViewController: UIViewController {
+// This demo shows how to the MotionAnimator UIKit-ish APIs for animating properties and is provided
+// as a contrast to the TapToBounceTraits example.
+class TapToBounceUIKitExampleViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -28,6 +30,10 @@ class TapToBounceExampleViewController: UIViewController {
     circle.bounds = CGRect(x: 0, y: 0, width: 128, height: 128)
     circle.center = view.center
     circle.layer.cornerRadius = circle.bounds.width / 2
+    circle.layer.borderColor = UIColor(red: (CGFloat)(0x88) / 255.0,
+                                       green: (CGFloat)(0xEF) / 255.0,
+                                       blue: (CGFloat)(0xAA) / 255.0,
+                                       alpha: 1).cgColor
     circle.backgroundColor = UIColor(red: (CGFloat)(0xEF) / 255.0,
                                      green: (CGFloat)(0x88) / 255.0,
                                      blue: (CGFloat)(0xAA) / 255.0,
@@ -40,24 +46,31 @@ class TapToBounceExampleViewController: UIViewController {
                      for: [.touchUpInside, .touchUpOutside, .touchDragExit])
   }
 
-  let traits = MDMAnimationTraits(delay: 0,
-                                  duration: 0.5,
-                                  timingCurve: MDMSpringTimingCurve(mass: 1,
-                                                                    tension: 100,
-                                                                    friction: 10))
-
   func didFocus(_ sender: UIButton) {
-    let animator = MotionAnimator()
-    animator.animate(with: traits) {
+    MotionAnimator.animate(withDuration: 0.8,
+                           delay: 0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0,
+                           options: [],
+                           animations: {
       sender.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
-    }
+
+      // This would normally not be animatable with the UIView animation APIs, but it is animatable
+      // with the motion animator.
+      sender.layer.borderWidth = 10
+    }, completion: nil)
   }
 
   func didUnfocus(_ sender: UIButton) {
-    let animator = MotionAnimator()
-    animator.animate(with: traits) {
+    MotionAnimator.animate(withDuration: 0.8,
+                           delay: 0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0,
+                           options: [],
+                           animations: {
       sender.transform = .identity
-    }
+      sender.layer.borderWidth = 0
+    }, completion: nil)
   }
 }
 

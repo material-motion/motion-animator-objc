@@ -43,7 +43,10 @@ class AnimatorBehavioralTests: XCTestCase {
   }
 
   private let properties: [AnimatableKeyPath: Any] = [
+    .anchorPoint: CGPoint(x: 0.2, y: 0.4),
     .backgroundColor: UIColor.blue,
+    .borderWidth: 5,
+    .borderColor: UIColor.red,
     .bounds: CGRect(x: 0, y: 0, width: 123, height: 456),
     .cornerRadius: 3,
     .height: 100,
@@ -51,6 +54,7 @@ class AnimatorBehavioralTests: XCTestCase {
     .position: CGPoint(x: 50, y: 20),
     .rotation: 42,
     .scale: 2.5,
+    .shadowColor: UIColor.blue,
     .shadowOffset: CGSize(width: 1, height: 1),
     .shadowOpacity: 0.3,
     .shadowRadius: 5,
@@ -60,6 +64,7 @@ class AnimatorBehavioralTests: XCTestCase {
     .width: 25,
     .x: 12,
     .y: 23,
+    .z: 3,
   ]
 
   func testAllKeyPathsExplicitlyAnimateWithLayerBackingUIView() {
@@ -154,4 +159,21 @@ class AnimatorBehavioralTests: XCTestCase {
     }
   }
 
+  func testAllKeyPathsImplicitlyAnimateWithHeadlessLayerWithUIKitAPI() {
+    for (keyPath, value) in properties {
+      let layer = CAShapeLayer()
+      window.layer.addSublayer(layer)
+
+      // Connect our layers to the render server.
+      CATransaction.flush()
+
+      MotionAnimator.animate(withDuration: 0.5, animations: {
+        layer.setValue(value, forKeyPath: keyPath.rawValue)
+      })
+
+      XCTAssertNotNil(layer.animationKeys(), "Expected \(keyPath.rawValue) to generate animations")
+
+      layer.removeFromSuperlayer()
+    }
+  }
 }

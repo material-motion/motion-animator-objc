@@ -17,6 +17,7 @@
 #import "CABasicAnimation+MotionAnimator.h"
 
 #import "CAMediaTimingFunction+MotionAnimator.h"
+#import "MDMAnimatableKeyPaths.h"
 
 #import <UIKit/UIKit.h>
 
@@ -44,6 +45,15 @@ static BOOL IsCGSizeType(id someValue) {
   return NO;
 }
 
+static BOOL IsCGRectType(id someValue) {
+  if ([someValue isKindOfClass:[NSValue class]]) {
+    NSValue *asValue = (NSValue *)someValue;
+    const char *objCType = @encode(CGRect);
+    return strncmp(asValue.objCType, objCType, strlen(objCType)) == 0;
+  }
+  return NO;
+}
+
 static BOOL IsCATransform3DType(id someValue) {
   if ([someValue isKindOfClass:[NSValue class]]) {
     NSValue *asValue = (NSValue *)someValue;
@@ -57,7 +67,9 @@ static BOOL IsAnimationKeyPathAlwaysNonAdditive(NSString *keyPath) {
   static NSSet *nonAdditiveKeyPaths = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    nonAdditiveKeyPaths = [NSSet setWithArray:@[@"backgroundColor", @"opacity"]];
+    nonAdditiveKeyPaths = [NSSet setWithArray:@[MDMKeyPathAnchorPoint,
+                                                MDMKeyPathBackgroundColor,
+                                                MDMKeyPathOpacity]];
   });
 
   return [nonAdditiveKeyPaths containsObject:keyPath];
@@ -81,22 +93,32 @@ CABasicAnimation *MDMAnimationFromTraits(MDMAnimationTraits *traits, CGFloat tim
     return animation;
   }
 
-  if ([traits.timingCurve isKindOfClass:[MDMSpringTimingCurve class]]) {
-    MDMSpringTimingCurve *springTiming = (MDMSpringTimingCurve *)traits.timingCurve;
-
+  CABasicAnimation *(^animationFromSpring)(MDMSpringTimingCurve *) =
+      ^(MDMSpringTimingCurve *springTiming) {
 #pragma clang diagnostic push
-    // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
-    // linking against the public API on iOS 9+.
+        // CASpringAnimation is a private API on iOS 8 - we're able to make use of it because we're
+        // linking against the public API on iOS 9+.
 #pragma clang diagnostic ignored "-Wpartial-availability"
-    CASpringAnimation *animation = [CASpringAnimation animation];
+        CASpringAnimation *animation = [CASpringAnimation animation];
 #pragma clang diagnostic pop
-    animation.mass = springTiming.mass;
-    animation.stiffness = springTiming.tension;
-    animation.damping = springTiming.friction;
-    animation.duration = traits.duration;
-    return animation;
+        animation.mass = springTiming.mass;
+        animation.stiffness = springTiming.tension;
+        animation.damping = springTiming.friction;
+        animation.duration = traits.duration;
+        return animation;
+      };
+
+  if ([traits.timingCurve isKindOfClass:[MDMSpringTimingCurveGenerator class]]) {
+    MDMSpringTimingCurveGenerator *springTimingGenerator =
+        (MDMSpringTimingCurveGenerator *)traits.timingCurve;
+    return animationFromSpring(springTimingGenerator.springTimingCurve);
   }
 
+  if ([traits.timingCurve isKindOfClass:[MDMSpringTimingCurve class]]) {
+    return animationFromSpring((MDMSpringTimingCurve *)traits.timingCurve);
+  }
+
+  NSCAssert(NO, @"Unsupported animation trait: %@", traits);
   return nil;
 }
 
@@ -252,6 +274,39 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
         biggestDelta = additiveDisplacement.x;
       } else {
         biggestDelta = additiveDisplacement.y;
+      }
+      CGFloat displacement = -biggestDelta;
+      CGFloat absoluteInitialVelocity = springTimingCurve.initialVelocity;
+      if (fabs(displacement) > 0.00001) {
+        springAnimation.initialVelocity = absoluteInitialVelocity / displacement;
+      }
+    }
+
+  } else if (IsCGRectType(animation.toValue)) {
+    CGRect from = [animation.fromValue CGRectValue];
+    CGRect to = [animation.toValue CGRectValue];
+    CGRect additiveDisplacement = CGRectMake(from.origin.x - to.origin.x,
+                                             from.origin.y - to.origin.y,
+                                             from.size.width - to.size.width,
+                                             from.size.height - to.size.height);
+
+    if (animation.additive) {
+      animation.fromValue = [NSValue valueWithCGRect:additiveDisplacement];
+      animation.toValue = [NSValue valueWithCGRect:CGRectZero];
+    }
+
+    if (isSpringAnimation) {
+      // Core Animation's velocity system is single dimensional, so we pick the dominant direction
+      // of movement and normalize accordingly.
+      CGFloat biggestDelta = additiveDisplacement.origin.x;
+      if (fabs(additiveDisplacement.origin.y) > fabs(biggestDelta)) {
+        biggestDelta = additiveDisplacement.origin.y;
+      }
+      if (fabs(additiveDisplacement.size.width) > fabs(biggestDelta)) {
+        biggestDelta = additiveDisplacement.size.width;
+      }
+      if (fabs(additiveDisplacement.size.height) > fabs(biggestDelta)) {
+        biggestDelta = additiveDisplacement.size.height;
       }
       CGFloat displacement = -biggestDelta;
       CGFloat absoluteInitialVelocity = springTimingCurve.initialVelocity;

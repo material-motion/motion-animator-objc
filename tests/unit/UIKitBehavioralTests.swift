@@ -61,6 +61,7 @@ class UIKitBehavioralTests: XCTestCase {
     let oldSuperview = view.superview!
     view.removeFromSuperview()
     view = ShapeLayerBackedView() // Need to animate a view's layer to get implicit animations.
+    view.layer.anchorPoint = .zero
     oldSuperview.addSubview(view)
 
     // Connect our layers to the render server.
@@ -115,7 +116,16 @@ class UIKitBehavioralTests: XCTestCase {
       .backgroundColor: UIColor.blue,
       .opacity: 0.5,
     ]
-    for (keyPath, value) in baselineProperties {
+    let properties: [AnimatableKeyPath: Any]
+    if #available(iOS 11.0, *) {
+      // Anchor point became implicitly animatable in iOS 11.
+      var baselineWithCornerRadiusProperties = baselineProperties
+      baselineWithCornerRadiusProperties[.anchorPoint] = CGPoint(x: 0.2, y: 0.4)
+      properties = baselineWithCornerRadiusProperties
+    } else {
+      properties = baselineProperties
+    }
+    for (keyPath, value) in properties {
       rebuildView()
 
       UIView.animate(withDuration: 0.01) {
@@ -137,18 +147,24 @@ class UIKitBehavioralTests: XCTestCase {
 
   func testSomePropertiesDoNotImplicitlyAnimate() {
     let baselineProperties: [AnimatableKeyPath: Any] = [
+      .anchorPoint: CGPoint(x: 0.2, y: 0.4),
+      .borderWidth: 5,
+      .borderColor: UIColor.red,
       .cornerRadius: 3,
+      .shadowColor: UIColor.blue,
       .shadowOffset: CGSize(width: 1, height: 1),
       .shadowOpacity: 0.3,
       .shadowRadius: 5,
       .strokeStart: 0.2,
       .strokeEnd: 0.5,
+      .z: 3,
     ]
 
     let properties: [AnimatableKeyPath: Any]
     if #available(iOS 11.0, *) {
       // Corner radius became implicitly animatable in iOS 11.
       var baselineWithOutCornerRadius = baselineProperties
+      baselineWithOutCornerRadius.removeValue(forKey: .anchorPoint)
       baselineWithOutCornerRadius.removeValue(forKey: .cornerRadius)
       properties = baselineWithOutCornerRadius
 
@@ -180,6 +196,7 @@ class UIKitBehavioralTests: XCTestCase {
       .position: CGPoint(x: 50, y: 20),
       .rotation: 42,
       .scale: 2.5,
+      .shadowColor: UIColor.blue,
       .shadowOffset: CGSize(width: 1, height: 1),
       .shadowOpacity: 0.3,
       .shadowRadius: 5,

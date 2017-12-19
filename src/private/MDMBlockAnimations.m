@@ -27,7 +27,10 @@ static NSSet<MDMAnimatableKeyPath> *AllAnimatableKeyPaths(void) {
   static NSSet *animatableKeyPaths = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    animatableKeyPaths = [NSSet setWithArray:@[MDMKeyPathBackgroundColor,
+    animatableKeyPaths = [NSSet setWithArray:@[MDMKeyPathAnchorPoint,
+                                               MDMKeyPathBackgroundColor,
+                                               MDMKeyPathBorderWidth,
+                                               MDMKeyPathBorderColor,
                                                MDMKeyPathBounds,
                                                MDMKeyPathCornerRadius,
                                                MDMKeyPathHeight,
@@ -35,6 +38,7 @@ static NSSet<MDMAnimatableKeyPath> *AllAnimatableKeyPaths(void) {
                                                MDMKeyPathPosition,
                                                MDMKeyPathRotation,
                                                MDMKeyPathScale,
+                                               MDMKeyPathShadowColor,
                                                MDMKeyPathShadowOffset,
                                                MDMKeyPathShadowOpacity,
                                                MDMKeyPathShadowRadius,
@@ -43,7 +47,8 @@ static NSSet<MDMAnimatableKeyPath> *AllAnimatableKeyPaths(void) {
                                                MDMKeyPathTransform,
                                                MDMKeyPathWidth,
                                                MDMKeyPathX,
-                                               MDMKeyPathY]];
+                                               MDMKeyPathY,
+                                               MDMKeyPathZ]];
   });
   return animatableKeyPaths;
 }

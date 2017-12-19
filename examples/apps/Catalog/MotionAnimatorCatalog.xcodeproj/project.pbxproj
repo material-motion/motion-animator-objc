@@ -8,9 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2AA864EDA683CEF5FAA721BE /* Pods_UnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DBE814C7B88BAD6337052DB /* Pods_UnitTests.framework */; };
-		660248A41FD1B923004C0147 /* TapToBounceExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660248A31FD1B923004C0147 /* TapToBounceExample.swift */; };
 		660636021FACC24300C3DFB8 /* TimeScaleFactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */; };
 		6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */; };
+		6635BDB61FE3233500CDCB69 /* TapToBounceTraitsExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6635BDB41FE3233500CDCB69 /* TapToBounceTraitsExample.swift */; };
+		6635BDB71FE3233500CDCB69 /* TapToBounceUIKitExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6635BDB51FE3233500CDCB69 /* TapToBounceUIKitExample.swift */; };
 		664F59941FCCE27E002EC56D /* UIKitBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */; };
 		664F59961FCDB2E6002EC56D /* QuartzCoreBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */; };
 		664F59981FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */; };
@@ -24,6 +25,8 @@
 		667A3F4C1DEE269400CB3A99 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 667A3F4A1DEE269400CB3A99 /* LaunchScreen.storyboard */; };
 		667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667A3F531DEE273000CB3A99 /* TableOfContents.swift */; };
 		6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668726491EF04B4C00113675 /* MotionAnimatorTests.swift */; };
+		668819F81FE2E5C6003A9420 /* SpringTimingCurveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668819F71FE2E5C6003A9420 /* SpringTimingCurveTests.swift */; };
+		668819FA1FE2EB36003A9420 /* UIKitEquivalencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 668819F91FE2EB36003A9420 /* UIKitEquivalencyTests.swift */; };
 		669B6CA91FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */; };
 		66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */; };
 		66BF5A8F1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */; };
@@ -56,9 +59,10 @@
 		2DBE814C7B88BAD6337052DB /* Pods_UnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50D808A6F9E944D54276D32F /* Pods_MotionAnimatorCatalog.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MotionAnimatorCatalog.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52820916F8FAA40E942A7333 /* Pods-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnitTests.release.xcconfig"; path = "../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
-		660248A31FD1B923004C0147 /* TapToBounceExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapToBounceExample.swift; sourceTree = "<group>"; };
 		660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeScaleFactorTests.swift; sourceTree = "<group>"; };
 		6625876B1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialVelocityTests.swift; sourceTree = "<group>"; };
+		6635BDB41FE3233500CDCB69 /* TapToBounceTraitsExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapToBounceTraitsExample.swift; sourceTree = "<group>"; };
+		6635BDB51FE3233500CDCB69 /* TapToBounceUIKitExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TapToBounceUIKitExample.swift; sourceTree = "<group>"; };
 		664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitBehavioralTests.swift; sourceTree = "<group>"; };
 		664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuartzCoreBehavioralTests.swift; sourceTree = "<group>"; };
 		664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeginFromCurrentStateTests.swift; sourceTree = "<group>"; };
@@ -78,6 +82,8 @@
 		667A3F4D1DEE269400CB3A99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		667A3F531DEE273000CB3A99 /* TableOfContents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContents.swift; sourceTree = "<group>"; };
 		668726491EF04B4C00113675 /* MotionAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorTests.swift; sourceTree = "<group>"; };
+		668819F71FE2E5C6003A9420 /* SpringTimingCurveTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringTimingCurveTests.swift; sourceTree = "<group>"; };
+		668819F91FE2EB36003A9420 /* UIKitEquivalencyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitEquivalencyTests.swift; sourceTree = "<group>"; };
 		669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAnimatorBehavioralTests.swift; sourceTree = "<group>"; };
 		66A6A6671FBA158000DE54CB /* AnimationRemovalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationRemovalTests.swift; sourceTree = "<group>"; };
 		66BF5A8E1FB0E4CB00E864F6 /* ImplicitAnimationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImplicitAnimationTests.swift; sourceTree = "<group>"; };
@@ -173,7 +179,8 @@
 				66DD4BF41EEF0ECB00207119 /* CalendarCardExpansionExample.m */,
 				66DD4BF61EEF1C4B00207119 /* CalendarChipMotionSpec.h */,
 				66DD4BF71EEF1C4B00207119 /* CalendarChipMotionSpec.m */,
-				660248A31FD1B923004C0147 /* TapToBounceExample.swift */,
+				6635BDB41FE3233500CDCB69 /* TapToBounceTraitsExample.swift */,
+				6635BDB51FE3233500CDCB69 /* TapToBounceUIKitExample.swift */,
 			);
 			name = examples;
 			path = ../..;
@@ -239,10 +246,12 @@
 				669B6CA81FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift */,
 				66FD99F91EE9FBBE00C53A82 /* MotionAnimatorTests.m */,
 				668726491EF04B4C00113675 /* MotionAnimatorTests.swift */,
+				668819F71FE2E5C6003A9420 /* SpringTimingCurveTests.swift */,
 				664F59991FCE6661002EC56D /* NonAdditiveAnimatorTests.swift */,
 				664F59951FCDB2E5002EC56D /* QuartzCoreBehavioralTests.swift */,
 				660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */,
 				664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */,
+				668819F91FE2EB36003A9420 /* UIKitEquivalencyTests.swift */,
 			);
 			path = unit;
 			sourceTree = "<group>";
@@ -508,10 +517,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				666FAA841D384A6B000363DA /* AppDelegate.swift in Sources */,
+				6635BDB71FE3233500CDCB69 /* TapToBounceUIKitExample.swift in Sources */,
 				667A3F541DEE273000CB3A99 /* TableOfContents.swift in Sources */,
+				6635BDB61FE3233500CDCB69 /* TapToBounceTraitsExample.swift in Sources */,
 				66DD4BF81EEF1C4B00207119 /* CalendarChipMotionSpec.m in Sources */,
 				66DD4BF51EEF0ECB00207119 /* CalendarCardExpansionExample.m in Sources */,
-				660248A41FD1B923004C0147 /* TapToBounceExample.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +529,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				668819F81FE2E5C6003A9420 /* SpringTimingCurveTests.swift in Sources */,
 				6625876C1FB4DB9C00BC7DF1 /* InitialVelocityTests.swift in Sources */,
 				66EF6F281FC33C4800C83A63 /* HeadlessLayerImplicitAnimationTests.swift in Sources */,
 				664F599A1FCE6661002EC56D /* NonAdditiveAnimatorTests.swift in Sources */,
@@ -533,6 +544,7 @@
 				664F59981FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift in Sources */,
 				66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */,
 				669B6CA91FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift in Sources */,
+				668819FA1FE2EB36003A9420 /* UIKitEquivalencyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
