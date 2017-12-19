@@ -415,7 +415,7 @@ UIView.animate(withDuration: 0.8, animations: {
 
 <details>
   <summary>Click to see the answer</summary>
-  Generates an animation with duration of 0.25.
+  Generates an animation with duration of 0.25. This isn't a typo: standalone layers read from the current CATransaction rather than UIView's parameters when implicitly animating, even when the change happens within a UIView animation block.
 </details>
 
 ## Example apps/unit tests
