@@ -257,6 +257,24 @@ if gesture.state == .began {
 animator.removeAllAnimations()
 ```
 
+## Main thread animations vs Core Animation
+
+Animation systems on iOS can be split into two general categories: main thread-based and Core Animation.
+
+**Main thread**-based animation systems include UIDynamics, Facebook's [POP](https://github.com/facebook/pop), or anything driven by a CADisplayLink. These animation systems share CPU time with your app's main thread, meaning they're sharing resources with UIKit, text rendering, and any other main-thread bound processes. This also means the animations are subject to *main thread jank*, in other words: dropped frames of animation or "stuttering".
+
+**Core Animation** makes use of the *render server*, an operating system-wide process for animations on iOS. This independence from an app's process allows the render server to avoid main thread jank altogether.
+
+The primary benefit of main thread animations over Core Animation is that Core Animation's list of animatable properties is small and unchangeable, while main thread animations can animate anything in your application. A good example of this is using POP to animate a "time" property, and to map that time to the hands of a clock. This type of behavior cannot be implemented in Core Animation without moving code out of the render server and in to the main thread.
+
+When evaluating whether to use a main thread-based animation system or not, check first whether the same animations can be performed in Core Animation instead. If they can, you may be able to offload the animations from your app's main thread by using Core Animation.
+
+MotionAnimator is a purely Core Animation-based animator. If you are looking for main thread solutions then check out the following technologies:
+
+- [UIDynamics](https://developer.apple.com/documentation/uikit/animation_and_haptics/uikit_dynamics)
+- [POP](https://github.com/facebook/pop)
+- [CADisplayLink](https://developer.apple.com/documentation/quartzcore/cadisplaylink)
+
 ## Example apps/unit tests
 
 Check out a local copy of the repo to access the Catalog application by running the following
