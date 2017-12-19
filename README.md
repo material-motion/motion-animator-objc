@@ -267,6 +267,8 @@ Animation systems on iOS can be split into two general categories: main thread-b
 
 The primary benefit of main thread animations over Core Animation is that Core Animation's list of animatable properties is small and unchangeable, while main thread animations can animate anything in your application. A good example of this is using POP to animate a "time" property, and to map that time to the hands of a clock. This type of behavior cannot be implemented in Core Animation without moving code out of the render server and in to the main thread.
 
+The primary benefit of Core Animation over main thread animations, on the other hand, is that your animations will be much less likely to drop frames simply because your app is busy on its main thread.
+
 When evaluating whether to use a main thread-based animation system or not, check first whether the same animations can be performed in Core Animation instead. If they can, you may be able to offload the animations from your app's main thread by using Core Animation.
 
 MotionAnimator is a purely Core Animation-based animator. If you are looking for main thread solutions then check out the following technologies:
