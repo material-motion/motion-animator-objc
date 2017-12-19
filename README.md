@@ -277,6 +277,147 @@ MotionAnimator is a purely Core Animation-based animator. If you are looking for
 - [POP](https://github.com/facebook/pop)
 - [CADisplayLink](https://developer.apple.com/documentation/quartzcore/cadisplaylink)
 
+# Core Animation: a deep dive
+
+> Recommended reading:
+>
+> - [Building Animation Driven Interfaces](http://asciiwwdc.com/2010/sessions/123)
+> - [Core Animation in Practice, Part 1](http://asciiwwdc.com/2010/sessions/424)
+> - [Core Animation in Practice, Part 2](http://asciiwwdc.com/2010/sessions/425)
+> - [Building Interruptible and Responsive Interactions](http://asciiwwdc.com/2014/sessions/236)
+> - [Advanced Graphics and Animations for iOS Apps](http://asciiwwdc.com/2014/sessions/419)
+> - [Advances in UIKit Animations and Transitions](http://asciiwwdc.com/2016/sessions/216)
+> - [Animating Layer Content](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/CreatingBasicAnimations/CreatingBasicAnimations.html)
+> - [Advanced Animation Tricks](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/AdvancedAnimationTricks/AdvancedAnimationTricks.html)
+> - [Additive animations: animateWithDuration in iOS 8](http://iosoteric.com/additive-animations-animatewithduration-in-ios-8/)
+
+There are two primary ways to animate with Core Animation on iOS:
+
+1. **implicitly**, with the UIView `animateWithDuration:` APIs, or by setting properties on unhosted CALayer instances, and
+2. **explicitly**, with the CALayer `addAnimation:forKey:` APIs.
+
+A subset of UIView's and CALayer's public APIs is animatable by Core Animation. Of these animatable properties, some are implicitly animatable while some are not. Whether a property is animatable or not depends on the context within which it's being animated, and whether an animation is additive or not depends on which animation API is being used. With this matrix of conditions it's understandable that it can sometimes be difficult to know how to effectively make use of Core Animation.
+
+The following quiz helps illustrate that the UIKit and Core Animation APIs can often lead to unintuitive behavior. Try to guess which of the following snippets will generate an animation and, if they do, what the generated animation's duration will be:
+
+> Imagine that each code snippet is a standalone unit test (because [they are](tests/unit/HeadlessLayerImplicitAnimationTests.swift)!).
+
+```swift
+let view = UIView()
+UIView.animate(withDuration: 0.8, animations: {
+  view.alpha = 0.5
+})
+```
+
+<details>
+  <summary>Click to see the answer</summary>
+  Generates an animation with duration of 0.8.
+</details>
+
+---
+
+```swift
+let view = UIView()
+UIView.animate(withDuration: 0.8, animations: {
+  view.layer.opacity = 0.5
+})
+```
+
+<details>
+  <summary>Click to see the answer</summary>
+  Generates an animation with duration of 0.8.
+</details>
+
+---
+
+```swift
+let view = UIView()
+UIView.animate(withDuration: 0.8, animations: {
+  view.layer.cornerRadius = 3
+})
+```
+
+<details>
+  <summary>Click to see the answer</summary>
+  On iOS 11 and up, generates an animation with duration of 0.8. Older operating systems will not generate an animation.
+</details>
+
+---
+
+```swift
+let view = UIView()
+view.alpha = 0.5
+```
+
+<details>
+  <summary>Click to see the answer</summary>
+  Does not generate an animation.
+</details>
+
+---
+
+```swift
+let view = UIView()
+view.layer.opacity = 0.5
+```
+
+<details>
+  <summary>Click to see the answer</summary>
+  Does not generate an animation.
+</details>
+
+---
+
+```swift
+let layer = CALayer()
+layer.opacity = 0.5
+```
+
+<details>
+  <summary>Click to see the answer</summary>
+  Does not generate an animation.
+</details>
+
+---
+
+```swift
+let view = UIView()
+window.addSubview(view)
+let layer = CALayer()
+view.layer.addSublayer(layer)
+
+// Pump the run loop once.
+RunLoop.main.run(mode: .defaultRunLoopMode, before: .distantFuture)
+
+layer.opacity = 0.5
+```
+
+<details>
+  <summary>Click to see the answer</summary>
+  Generates an animation with duration of 0.25.
+</details>
+
+---
+
+```swift
+let view = UIView()
+window.addSubview(view)
+let layer = CALayer()
+view.layer.addSublayer(layer)
+
+// Pump the run loop once.
+RunLoop.main.run(mode: .defaultRunLoopMode, before: .distantFuture)
+
+UIView.animate(withDuration: 0.8, animations: {
+  layer.opacity = 0.5
+})
+```
+
+<details>
+  <summary>Click to see the answer</summary>
+  Generates an animation with duration of 0.25.
+</details>
+
 ## Example apps/unit tests
 
 Check out a local copy of the repo to access the Catalog application by running the following
