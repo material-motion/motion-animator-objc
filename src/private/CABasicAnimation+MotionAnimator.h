@@ -14,11 +14,15 @@
  limitations under the License.
  */
 
-#import "MotionInterchange.h"
-
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
+
+#ifdef IS_BAZEL_BUILD
+#import "MotionInterchange.h"
+#else
+#import <MotionInterchange/MotionInterchange.h>
+#endif
 
 // Returns a basic animation configured with the provided traits and scale factor.
 FOUNDATION_EXPORT
