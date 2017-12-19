@@ -160,6 +160,103 @@ animator.animate(with: traits,
                  keyPath: .y)
 ```
 
+## API snippets
+
+### Implicit animations
+
+```swift
+MotionAnimator.animate(withDuration: <#T##TimeInterval#>) {
+  <#code#>
+}
+```
+
+```swift
+MotionAnimator.animate(withDuration: <#T##TimeInterval#>,
+                       delay: <#T##TimeInterval#>,
+                       options: <#T##UIViewAnimationOptions#>,
+                       animations: {
+  <#code#>
+})
+```
+
+### Explicit animations
+
+```swift
+let traits = MDMAnimationTraits(delay: <#T##TimeInterval#>,
+                                duration: <#T##TimeInterval#>,
+                                animationCurve: <#T##UIViewAnimationCurve#>)
+let animator = MotionAnimator()
+animator.animate(with: <#T##MDMAnimationTraits#>,
+                 between: [<#T##[From (Any)]#>, <#T##[To (Any)]#>],
+                 layer: <#T##CALayer#>,
+                 keyPath: <#T##AnimatableKeyPath#>)
+```
+
+### Animating transitions
+
+```swift
+let animator = MotionAnimator()
+animator.shouldReverseValues = transition.direction == .backwards
+
+let traits = MDMAnimationTraits(delay: <#T##TimeInterval#>,
+                                duration: <#T##TimeInterval#>,
+                                animationCurve: <#T##UIViewAnimationCurve#>)
+animator.animate(with: <#T##MDMAnimationTraits#>,
+                 between: [<#T##[From (Any)]#>, <#T##[To (Any)]#>],
+                 layer: <#T##CALayer#>,
+                 keyPath: <#T##AnimatableKeyPath#>)
+```
+
+### Creating motion specifications
+
+```swift
+class MotionSpec {
+  static let chipWidth = MDMAnimationTraits(delay: 0.000, duration: 0.350)
+  static let chipHeight = MDMAnimationTraits(delay: 0.000, duration: 0.500)
+}
+
+let animator = MotionAnimator()
+animator.shouldReverseValues = transition.direction == .backwards
+
+animator.animate(with: MotionSpec.chipWidth,
+                 between: [<#T##[From (Any)]#>, <#T##[To (Any)]#>],
+                 layer: <#T##CALayer#>,
+                 keyPath: <#T##AnimatableKeyPath#>)
+animator.animate(with: MotionSpec.chipHeight,
+                 between: [<#T##[From (Any)]#>, <#T##[To (Any)]#>],
+                 layer: <#T##CALayer#>,
+                 keyPath: <#T##AnimatableKeyPath#>)
+```
+
+### Animating from the current state
+
+```swift
+// Will animate any non-additive animations from their current presentation layer value
+animator.beginFromCurrentState = true
+```
+
+### Debugging animations
+
+```swift
+animator.addCoreAnimationTracer { layer, animation in
+  print(animation.debugDescription)
+}
+```
+
+### Stopping animations in reaction to a gesture recognizer
+
+```swift
+if gesture.state == .began {
+  animator.stopAllAnimations()
+}
+```
+
+### Removing all animations
+
+```swift
+animator.removeAllAnimations()
+```
+
 ## Example apps/unit tests
 
 Check out a local copy of the repo to access the Catalog application by running the following
