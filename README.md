@@ -293,7 +293,7 @@ MotionAnimator is a purely Core Animation-based animator. If you are looking for
 
 There are two primary ways to animate with Core Animation on iOS:
 
-1. **implicitly**, with the UIView `animateWithDuration:` APIs, or by setting properties on unhosted CALayer instances, and
+1. **implicitly**, with the UIView `animateWithDuration:` APIs, or by setting properties on standalone CALayer instances (those that are **not** backing a UIView), and
 2. **explicitly**, with the CALayer `addAnimation:forKey:` APIs.
 
 A subset of UIView's and CALayer's public APIs is animatable by Core Animation. Of these animatable properties, some are implicitly animatable while some are not. Whether a property is animatable or not depends on the context within which it's being animated, and whether an animation is additive or not depends on which animation API is being used. With this matrix of conditions it's understandable that it can sometimes be difficult to know how to effectively make use of Core Animation.
