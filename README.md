@@ -7,7 +7,45 @@
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/MotionAnimator.svg)](https://cocoapods.org/pods/MotionAnimator)
 [![Platform](https://img.shields.io/cocoapods/p/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 
+<table>
+  <tr><td>🎉</td><td>Implicit and explicit additive animations.</td></tr>
+  <tr><td>🎉</td><td>Parameterized motion with the <a href="https://github.com/material-motion/motion-interchange-objc">Interchange</a>.</td></tr>
+  <tr><td>🎉</td><td>Provide velocity to animations directly from gesture recognizers.</td></tr>
+  <tr><td>🎉</td><td>Maximize frame rates by relying more on Core Animation.</td></tr>
+  <tr><td>🎉</td><td>Animatable properties are Swift enum types.</td></tr>
+  <tr><td>🎉</td><td>Consistent model layer value expectations.</td></tr>
+</table>
 
+The following properties can be implicitly animated using the MotionAnimator on iOS 8 and up:
+
+<table>
+  <tr><td>CALayer <tt>anchorPoint</tt></td></tr>
+  <tr><td>CALayer <tt>backgroundColor</tt></td><td>UIView <tt>backgroundColor</tt></td></tr>
+  <tr><td>CALayer <tt>bounds</tt></td><td>UIView <tt>bounds</tt></td></tr>
+  <tr><td>CALayer <tt>borderWidth</tt></td></tr>
+  <tr><td>CALayer <tt>borderColor</tt></td></tr>
+  <tr><td>CALayer <tt>cornerRadius</tt></td></tr>
+  <tr><td>CALayer <tt>height</tt></td><td>UIView <tt>height</tt></td></tr>
+  <tr><td>CALayer <tt>opacity</tt></td><td>UIView <tt>alpha</tt></td></tr>
+  <tr><td>CALayer <tt>position</tt></td><td>UIView <tt>center</tt></td></tr>
+  <tr><td>CALayer <tt>rotation</tt></td><td>UIView <tt>rotation</tt></td></tr>
+  <tr><td>CALayer <tt>scale</tt></td><td>UIView <tt>scale</tt></td></tr>
+  <tr><td>CALayer <tt>shadowColor</tt></td></tr>
+  <tr><td>CALayer <tt>shadowOffset</tt></td></tr>
+  <tr><td>CALayer <tt>shadowOpacity</tt></td></tr>
+  <tr><td>CALayer <tt>shadowRadius</tt></td></tr>
+  <tr><td>CALayer <tt>transform</tt></td><td>UIView <tt>transform</tt></td></tr>
+  <tr><td>CALayer <tt>width</tt></td><td>UIView <tt>width</tt></td></tr>
+  <tr><td>CALayer <tt>x</tt></td><td>UIView <tt>x</tt></td></tr>
+  <tr><td>CALayer <tt>y</tt></td><td>UIView <tt>y</tt></tr>
+  <tr><td>CALayer <tt>z</tt></td></td></tr>
+  <tr><td>CAShapeLayer <tt>strokeStart</tt></td></tr>
+  <tr><td>CAShapeLayer <tt>strokeEnd</tt></td></tr>
+</table>
+
+Note: any animatable property can also be animated with MotionAnimator's explicit animation APIs, even if it's not listed in the table above.
+
+> Is a property missing from this list? [We welcome pull requests](https://github.com/material-motion/motion-animator-objc/edit/develop/src/MDMAnimatableKeyPaths.h)!
 
 ## Example apps/unit tests
 
