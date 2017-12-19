@@ -269,7 +269,7 @@ The primary benefit of main thread animations over Core Animation is that Core A
 
 The primary benefit of Core Animation over main thread animations, on the other hand, is that your animations will be much less likely to drop frames simply because your app is busy on its main thread.
 
-When evaluating whether to use a main thread-based animation system or not, check first whether the same animations can be performed in Core Animation instead. If they can, you may be able to offload the animations from your app's main thread by using Core Animation.
+When evaluating whether to use a main thread-based animation system or not, check first whether the same animations can be performed in Core Animation instead. If they can, you may be able to offload the animations from your app's main thread by using Core Animation, saving you valuable processing time for other main thread-bound operations.
 
 MotionAnimator is a purely Core Animation-based animator. If you are looking for main thread solutions then check out the following technologies:
 
