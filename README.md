@@ -7,12 +7,14 @@
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/MotionAnimator.svg)](https://cocoapods.org/pods/MotionAnimator)
 [![Platform](https://img.shields.io/cocoapods/p/MotionAnimator.svg)](http://cocoadocs.org/docsets/MotionAnimator)
 
-- Implicit and explicit additive animations.
-- Parameterized motion with the <a href="https://github.com/material-motion/motion-interchange-objc">Interchange</a>.
-- Provide velocity to animations directly from gesture recognizers.
-- Maximize frame rates by relying more on Core Animation.
-- Animatable properties are Swift enum types.
-- Consistent model layer value expectations.
+<table>
+  <tr><td>Implicit and explicit additive animations.</td></tr>
+  <tr><td>Parameterized motion with the <a href="https://github.com/material-motion/motion-interchange-objc">Interchange</a>.</td></tr>
+  <tr><td>Provide velocity to animations directly from gesture recognizers.</td></tr>
+  <tr><td>Maximize frame rates by relying more on Core Animation.</td></tr>
+  <tr><td>Animatable properties are Swift enum types.</td></tr>
+  <tr><td>Consistent model layer value expectations.</td></tr>
+</table>
 
 The following properties can be implicitly animated using the MotionAnimator on iOS 8 and up:
 
