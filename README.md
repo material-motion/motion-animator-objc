@@ -130,7 +130,7 @@ Springs on iOS require an initial velocity that's normalized by the displacement
 
 ```swift
 // Common variables
-let gestureYVelocity = ...
+let gestureYVelocity = gestureRecognizer.velocity(in: someContainerView).y
 let destinationY = 75
 
 // Animating springs implicitly with UIView APIs
