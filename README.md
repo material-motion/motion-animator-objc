@@ -47,6 +47,119 @@ Note: any animatable property can also be animated with MotionAnimator's explici
 
 > Is a property missing from this list? [We welcome pull requests](https://github.com/material-motion/motion-animator-objc/edit/develop/src/MDMAnimatableKeyPaths.h)!
 
+## MotionAnimator: a drop-in replacement
+
+UIView's implicit animation APIs are also available on the MotionAnimator:
+
+```swift
+// Animating implicitly with UIView APIs
+UIView.animate(withDuration: 1.0, animations: {
+  view.alpha = 0.5
+})
+
+// Equivalent MotionAnimator API
+MotionAnimator.animate(withDuration: 1.0, animations: {
+  view.alpha = 0.5
+})
+```
+
+But the MotionAnimator allows you to animate more properties — and on more iOS versions:
+
+```swift
+UIView.animate(withDuration: 1.0, animations: {
+  view.layer.cornerRadius = 10 // Only works on iOS 11 and up
+})
+
+MotionAnimator.animate(withDuration: 1.0, animations: {
+  view.layer.cornerRadius = 10 // Works on iOS 8 and up
+})
+```
+
+MotionAnimator makes use of the [MotionInterchange](https://github.com/material-motion/motion-interchange-objc), a standardized format for representing animation traits. This makes it possible to tweak the traits of an animation without rewriting the code that ultimately creates the animation, useful for building tweaking tools and making motion "stylesheets".
+
+```swift
+// Want to change a trait of your animation? You'll need to use a different function altogether
+// to do so:
+UIView.animate(withDuration: 1.0, animations: {
+  view.alpha = 0.5
+})
+UIView.animate(withDuration: 1.0, delay: 0.5, options: [], animations: {
+  view.alpha = 0.5
+}, completion: nil)
+
+// But with the MotionInterchange, you can create and manipulate the traits of an animation
+// separately from its execution.
+let traits = MDMAnimationTraits(duration: 1.0)
+traits.delay = 0.5
+
+let animator = MotionAnimator()
+animator.animate(with: traits, animations: {
+  view.alpha = 0.5
+})
+```
+
+The MotionAnimator can also be used to replace explicit Core Animation code with additive explicit animations:
+
+```swift
+let from = 0
+let to = 10
+// Animating expicitly with Core Animation APIs
+let animation = CABasicAnimation(keyPath: "cornerRadius")
+animation.fromValue = (from - to)
+animation.toValue = 0
+animation.isAdditive = true
+animation.duration = 1.0
+view.layer.add(animation, forKey: animation.keyPath)
+view.layer.cornerRadius = to
+
+// Equivalent implicit MotionAnimator API. cornerRadius will be animated additively by default.
+view.layer.cornerRadius = 0
+MotionAnimator.animate(withDuration: 1, animations: {
+  view.layer.cornerRadius = 10
+})
+
+// Equivalent explicit MotionAnimator API
+// Note that this API will also set the final animation value to the layer's model layer, similar
+// to how implicit animations work, and unlike the explicit pure Core Animation implementation
+// above.
+let animator = MotionAnimator()
+animator.animate(with: MDMAnimationTraits(duration: 1.0),
+                 between: [0, 10],
+                 layer: view.layer,
+                 keyPath: .cornerRadius)
+```
+
+Springs on iOS require an initial velocity that's normalized by the displacement of the animation. MotionAnimator calculates this for you so that you can directly provide gesture recognizer velocity values:
+
+```swift
+// Common variables
+let gestureYVelocity = gestureRecognizer.velocity(in: someContainerView).y
+let destinationY = 75
+
+// Animating springs implicitly with UIView APIs
+let displacement = destinationY - view.position.y
+UIView.animate(withDuration: 1.0,
+               delay: 0,
+               usingSpringWithDamping: 1.0,
+               initialSpringVelocity: gestureYVelocity / displacement,
+               options: [],
+               animations: {
+                 view.layer.position = CGPoint(x: view.position.x, y: destinationY)
+               },
+               completion: nil)
+
+// Equivalent MotionAnimator API
+let animator = MotionAnimator()
+let traits = MDMAnimationTraits(duration: 1.0)
+traits.timingCurve = MDMSpringTimingCurveGenerator(duration: traits.duration,
+                                                   dampingRatio: 1.0,
+                                                   initialVelocity: gestureYVelocity)
+animator.animate(with: traits,
+                 between: [view.layer.position.y, destinationY],
+                 layer: view.layer,
+                 keyPath: .y)
+```
+
 ## Example apps/unit tests
 
 Check out a local copy of the repo to access the Catalog application by running the following
