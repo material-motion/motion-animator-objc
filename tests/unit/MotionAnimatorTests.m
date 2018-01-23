@@ -166,4 +166,47 @@
   XCTAssertTrue(didAddAnimation);
 }
 
+#pragma mark - Legacy API
+
+- (void)testAnimationWithTimingNilCompletion {
+  // Given
+  MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
+
+  CALayer *layer = [[CALayer alloc] init];
+  MDMMotionTiming timing = (MDMMotionTiming) {
+    .duration = 0.250, .curve = MDMMotionCurveMakeBezier(0.42f, 0.00f, 0.58f, 1.00f)
+  };
+
+  // When
+  [animator animateWithTiming:timing
+                   animations:^{
+                     layer.opacity = 0.7;
+                   }
+                   completion:nil];
+
+  // Then
+  XCTAssertEqualWithAccuracy(layer.opacity, 0.7, 0.0001);
+}
+
+- (void)testAnimationWithTimingToLayerWithValuesKeyPathNilCompletion {
+  // Given
+  MDMMotionAnimator *animator = [[MDMMotionAnimator alloc] init];
+
+  CALayer *layer = [[CALayer alloc] init];
+  CALayer *anotherLayer = [[CALayer alloc] init];
+  MDMMotionTiming timing = (MDMMotionTiming) {
+    .duration = 0.250, .curve = MDMMotionCurveMakeBezier(0.42f, 0.00f, 0.58f, 1.00f)
+  };
+
+  // When
+  [animator animateWithTiming:timing
+                       toLayer:anotherLayer
+                    withValues:@[@(0), @(1)]
+                      keyPath:@"opacity"
+                   completion:nil];
+
+  // Then
+  XCTAssertEqualWithAccuracy(layer.opacity, 1, 0.0001);
+}
+
 @end
