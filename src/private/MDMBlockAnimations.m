@@ -124,7 +124,7 @@ static id<CAAction> ActionForKey(CALayer *layer, SEL _cmd, NSString *event) {
   // animations, we queue up the modified actions and then add them all at the end of our
   // MDMAnimateImplicitly invocation.
   [context addActionForLayer:layer keyPath:event];
-  return [NSNull null];
+  return nil;
 }
 
 NSArray<MDMImplicitAction *> *MDMAnimateImplicitly(void (^work)(void)) {
