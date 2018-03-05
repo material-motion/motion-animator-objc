@@ -23,13 +23,13 @@ import MotionAnimator
 
 class UIKitEquivalencyTests: XCTestCase {
   var view: UIView!
+  var window: UIWindow!
 
   var originalImplementation: IMP?
   override func setUp() {
     super.setUp()
 
-    let window = UIWindow()
-    window.makeKeyAndVisible()
+    window = getTestHarnessKeyWindow()
     view = ShapeLayerBackedView()
     window.addSubview(view)
 
@@ -38,16 +38,16 @@ class UIKitEquivalencyTests: XCTestCase {
 
   override func tearDown() {
     view = nil
+    window = nil
 
     super.tearDown()
   }
 
   private func rebuildView() {
-    let oldSuperview = view.superview!
     view.removeFromSuperview()
     view = ShapeLayerBackedView() // Need to animate a view's layer to get implicit animations.
-    view.layer.anchorPoint = .zero // Needed to ensure that animating the width/height don't also
-    oldSuperview.addSubview(view)
+    view.layer.anchorPoint = .zero
+    window.addSubview(view)
 
     // Connect our layers to the render server.
     CATransaction.flush()

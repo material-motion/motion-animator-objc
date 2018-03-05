@@ -29,8 +29,7 @@ class MotionAnimatorTests: XCTestCase {
     animator.additive = false
     let traits = MDMAnimationTraits(duration: 1)
 
-    let window = UIWindow()
-    window.makeKeyAndVisible()
+    let window = getTestHarnessKeyWindow()
     let view = UIView() // Need to animate a view's layer to get implicit animations.
     window.addSubview(view)
 

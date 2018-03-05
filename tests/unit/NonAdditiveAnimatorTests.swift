@@ -35,8 +35,7 @@ class NonAdditiveAnimationTests: XCTestCase {
 
     traits = MDMAnimationTraits(duration: 1)
 
-    let window = UIWindow()
-    window.makeKeyAndVisible()
+    let window = getTestHarnessKeyWindow()
     view = UIView() // Need to animate a view's layer to get implicit animations.
     window.addSubview(view)
 

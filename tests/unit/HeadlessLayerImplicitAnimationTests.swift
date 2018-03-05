@@ -33,8 +33,7 @@ class HeadlessLayerImplicitAnimationTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    window = UIWindow()
-    window.makeKeyAndVisible()
+    window = getTestHarnessKeyWindow()
 
     layer = CALayer()
 
