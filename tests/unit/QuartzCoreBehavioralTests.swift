@@ -29,8 +29,7 @@ class QuartzCoreBehavioralTests: XCTestCase {
   override func setUp() {
     super.setUp()
 
-    window = UIWindow()
-    window.makeKeyAndVisible()
+    window = getTestHarnessKeyWindow()
   }
 
   override func tearDown() {

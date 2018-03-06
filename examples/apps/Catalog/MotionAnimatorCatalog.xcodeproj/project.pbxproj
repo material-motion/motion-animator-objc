@@ -17,6 +17,7 @@
 		664F59981FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */; };
 		664F599A1FCE6661002EC56D /* NonAdditiveAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F59991FCE6661002EC56D /* NonAdditiveAnimatorTests.swift */; };
 		664F599C1FCE67DB002EC56D /* AdditiveAnimatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664F599B1FCE67DB002EC56D /* AdditiveAnimatorTests.swift */; };
+		666696D0204E0B78008D9B67 /* WindowManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666696CF204E0B78008D9B67 /* WindowManagement.swift */; };
 		666FAA841D384A6B000363DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666FAA831D384A6B000363DA /* AppDelegate.swift */; };
 		666FAA8B1D384A6B000363DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8A1D384A6B000363DA /* Assets.xcassets */; };
 		666FAA8E1D384A6B000363DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 666FAA8C1D384A6B000363DA /* LaunchScreen.storyboard */; };
@@ -68,6 +69,7 @@
 		664F59971FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeginFromCurrentStateTests.swift; sourceTree = "<group>"; };
 		664F59991FCE6661002EC56D /* NonAdditiveAnimatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonAdditiveAnimatorTests.swift; sourceTree = "<group>"; };
 		664F599B1FCE67DB002EC56D /* AdditiveAnimatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdditiveAnimatorTests.swift; sourceTree = "<group>"; };
+		666696CF204E0B78008D9B67 /* WindowManagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManagement.swift; sourceTree = "<group>"; };
 		666FAA801D384A6B000363DA /* MotionAnimatorCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MotionAnimatorCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		666FAA831D384A6B000363DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Catalog/AppDelegate.swift; sourceTree = "<group>"; };
 		666FAA8A1D384A6B000363DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				660636011FACC24300C3DFB8 /* TimeScaleFactorTests.swift */,
 				664F59931FCCE27E002EC56D /* UIKitBehavioralTests.swift */,
 				668819F91FE2EB36003A9420 /* UIKitEquivalencyTests.swift */,
+				666696CF204E0B78008D9B67 /* WindowManagement.swift */,
 			);
 			path = unit;
 			sourceTree = "<group>";
@@ -542,6 +545,7 @@
 				66A6A6681FBA158000DE54CB /* AnimationRemovalTests.swift in Sources */,
 				6687264A1EF04B4C00113675 /* MotionAnimatorTests.swift in Sources */,
 				664F59981FCE5CE2002EC56D /* BeginFromCurrentStateTests.swift in Sources */,
+				666696D0204E0B78008D9B67 /* WindowManagement.swift in Sources */,
 				66FD99FA1EE9FBBE00C53A82 /* MotionAnimatorTests.m in Sources */,
 				669B6CA91FD0547100B80B76 /* MotionAnimatorBehavioralTests.swift in Sources */,
 				668819FA1FE2EB36003A9420 /* UIKitEquivalencyTests.swift in Sources */,
