@@ -1,3 +1,30 @@
+# 2.8.1
+
+This patch release resolves some runtime crashes, improves the stability of our unit tests, and features an improved README.md.
+
+## Bug fixes
+
+Fixed unrecognized selector crashes on iOS 8 devices.
+
+Fixed crashes in Legacy API when providing nil completion blocks.
+
+## Source changes
+
+* [Ensure that zero duration test is testing with zero duration. (#115)](https://github.com/material-motion/motion-animator-objc/commit/66842d1c8fd865c39e0955b3a25becb775023818) (featherless)
+* [Reduce flakiness in UIKitBehavioralTests. (#113)](https://github.com/material-motion/motion-animator-objc/commit/b45a6c4a20db5529a11fb5c9c64b52a916a15fa7) (featherless)
+* [Return `nil` CAAction when swapping implementation (#109)](https://github.com/material-motion/motion-animator-objc/commit/53255ab590908cc18841e3eed4af440e52132376) (Robert Moore)
+* [Fix crash in Legacy API for nil completion blocks (#110)](https://github.com/material-motion/motion-animator-objc/commit/fd9710d220bb48a64ac008a399be74d04f6ab8b7) (Robert Moore)
+
+## Non-source changes
+
+* [Iterating on the readme. (#102)](https://github.com/material-motion/motion-animator-objc/commit/97d7bcd7d8549398e9ac176a15ab028b898781a6) (featherless)
+* [Update .travis.yml (#114)](https://github.com/material-motion/motion-animator-objc/commit/891f25c08e6e7ae5105867a97bfe6823f09e55fd) (featherless)
+* [Add core animation quiz to the readme. (#108)](https://github.com/material-motion/motion-animator-objc/commit/05ad80b7074eadb3131543292b11f18837d91e6b) (featherless)
+* [Add readme section on main thread animations vs Core Animation. (#107)](https://github.com/material-motion/motion-animator-objc/commit/ccd350d1fbdb8a95b6922bf99680d10183a91f90) (featherless)
+* [Add API snippets section. (#106)](https://github.com/material-motion/motion-animator-objc/commit/823e0ffa286a6918aaf67b3a6070dab16cfa775d) (featherless)
+* [Add drop in replacement APIs section to the readme (#105)](https://github.com/material-motion/motion-animator-objc/commit/d53f753a976b1d067d226ed9bfd1893875d4ab8d) (featherless)
+* [Add a feature table to the readme. (#104)](https://github.com/material-motion/motion-animator-objc/commit/0632c668e26347208d60c464e683774cd9dab5b7) (featherless)
+
 # 2.8.0
 
 This minor release introduces support for animating more key paths and support for drop-in UIView animation API replacements.

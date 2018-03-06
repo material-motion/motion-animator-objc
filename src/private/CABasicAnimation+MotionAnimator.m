@@ -138,7 +138,8 @@ void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits * tra
   // linking against the public API on iOS 9+.
 #pragma clang diagnostic ignored "-Wpartial-availability"
   BOOL isSpringAnimation = ([animation isKindOfClass:[CASpringAnimation class]]
-                            && [traits.timingCurve isKindOfClass:[MDMSpringTimingCurve class]]);
+                            && [traits.timingCurve isKindOfClass:[MDMSpringTimingCurve class]]
+                            && [animation respondsToSelector:@selector(setInitialVelocity:)]);
   MDMSpringTimingCurve *springTimingCurve = (MDMSpringTimingCurve *)traits.timingCurve;
   CASpringAnimation *springAnimation = (CASpringAnimation *)animation;
 #pragma clang diagnostic pop

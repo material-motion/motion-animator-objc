@@ -261,7 +261,9 @@
                completion:(void (^)(void))completion {
   MDMAnimationTraits *traits = [[MDMAnimationTraits alloc] initWithMotionTiming:timing];
   [self animateWithTraits:traits animations:animations completion:^(BOOL didComplete) {
-    completion();
+    if (completion) {
+      completion();
+    }
   }];
 }
 
@@ -284,8 +286,10 @@
                     layer:layer
                   keyPath:keyPath
                completion:^(BOOL didComplete) {
-    completion();
-  }];
+                 if (completion) {
+                   completion();
+                 }
+               }];
 }
 
 #pragma mark - Private

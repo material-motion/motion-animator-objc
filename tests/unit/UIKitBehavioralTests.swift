@@ -38,31 +38,28 @@ class ShapeLayerBackedView: UIView {
 
 class UIKitBehavioralTests: XCTestCase {
   var view: UIView!
+  var window: UIWindow!
 
-  var originalImplementation: IMP?
   override func setUp() {
     super.setUp()
 
-    let window = UIWindow()
-    window.makeKeyAndVisible()
-    view = ShapeLayerBackedView()
-    window.addSubview(view)
+    window = getTestHarnessKeyWindow()
 
     rebuildView()
   }
 
   override func tearDown() {
     view = nil
+    window = nil
 
     super.tearDown()
   }
 
   private func rebuildView() {
-    let oldSuperview = view.superview!
-    view.removeFromSuperview()
+    window.subviews.forEach { $0.removeFromSuperview() }
     view = ShapeLayerBackedView() // Need to animate a view's layer to get implicit animations.
     view.layer.anchorPoint = .zero
-    oldSuperview.addSubview(view)
+    window.addSubview(view)
 
     // Connect our layers to the render server.
     CATransaction.flush()
