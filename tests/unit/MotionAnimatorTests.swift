@@ -45,7 +45,7 @@ class MotionAnimatorTests: XCTestCase {
 
   func testCompletionCallbackIsExecutedWithZeroDuration() {
     let animator = MotionAnimator()
-    let traits = MDMAnimationTraits(duration: 1)
+    let traits = MDMAnimationTraits(duration: 0)
 
     let window = UIWindow()
     window.makeKeyAndVisible()
