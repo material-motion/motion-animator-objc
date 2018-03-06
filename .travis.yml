@@ -10,11 +10,33 @@ env:
 matrix:
   include:
     - osx_image: xcode9.2
-      env: COVERAGE=code_coverage SDK="iphonesimulator11.0" DESTINATION="name=iPhone 6s,OS=11.0"
+      env: COVERAGE=code_coverage SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=11.2"
     - osx_image: xcode9.2
-      env: SDK="iphonesimulator10.0" DESTINATION="name=iPhone 6s,OS=10.0"
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=11.1"
     - osx_image: xcode9.2
-      env: SDK="iphonesimulator9.0" DESTINATION="name=iPhone 6s,OS=9.0"
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=11.0"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=10.3"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=10.2"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=10.1"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=10.0"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=9.3"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=9.2"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=9.1"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=9.0"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=8.4"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=8.3"
+    - osx_image: xcode9.2
+      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=8.2"
     - osx_image: xcode8.3
       env: SDK="iphonesimulator8.1" DESTINATION="name=iPhone 6s,OS=8.1"
 before_install:
