@@ -78,6 +78,9 @@ class ImplicitAnimationTests: XCTestCase {
     }
 
     XCTAssertEqual(addedAnimations.count, 1)
+    guard addedAnimations.count == 1 else {
+      return
+    }
     let animation = addedAnimations.first as! CABasicAnimation
     XCTAssertEqual(animation.keyPath, AnimatableKeyPath.opacity.rawValue)
     XCTAssertEqual(animation.fromValue as! CGFloat, 1)
@@ -102,6 +105,9 @@ class ImplicitAnimationTests: XCTestCase {
     }
 
     XCTAssertEqual(addedAnimations.count, 2)
+    guard addedAnimations.count == 2 else {
+      return
+    }
 
     do {
       let animation = addedAnimations.first as! CABasicAnimation
@@ -147,6 +153,9 @@ class ImplicitAnimationTests: XCTestCase {
     }
 
     XCTAssertEqual(addedAnimations.count, 2)
+    guard addedAnimations.count == 2 else {
+      return
+    }
 
     do {
       let animation = addedAnimations
@@ -218,7 +227,10 @@ class ImplicitAnimationTests: XCTestCase {
       self.view.layer.opacity = 0.5
     }
 
-    XCTAssertEqual(view.layer.animationKeys()!, ["opacity"])
+    XCTAssertNotNil(view.layer.animationKeys)
+    if let animationKeys = view.layer.animationKeys() {
+      XCTAssertEqual(animationKeys, ["opacity"])
+    }
   }
 
   func testDurationOfZeroRunsAnimationsBlockButGeneratesNoAnimations() {
