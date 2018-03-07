@@ -48,9 +48,7 @@
   animator.shouldReverseValues = !_expanded;
   animator.beginFromCurrentState = YES;
 
-  [animator animateWithTraits:traits.navigationBarY animations:^{
-    [self.navigationController setNavigationBarHidden:_expanded animated:YES];
-  }];
+  [self.navigationController setNavigationBarHidden:_expanded animated:YES];
 
   CGRect chipFrame = [self frameForChip];
   CGRect headerFrame = [self frameForHeader];
