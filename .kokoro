@@ -21,52 +21,69 @@ set -e
 set -x
 
 KOKORO_RUNNER_VERSION="v4.*"
+BAZEL_VERSION="0.20.0"
 
-POSITIONAL=()
-while [[ $# -gt 0 ]]; do
-  key="$1"
+# xcode-select's the provided xcode version.
+# Usage example:
+#     select_xcode 9.2.0
+select_xcode() {
+  desired_version="$1"
+  if [ -z "$desired_version" ]; then
+    return # No Xcode version to select.
+  fi
 
-  case $key in
-  -v|--verbose)
-    VERBOSE_OUTPUT="1"
-    shift
-    ;;
-  *)
-    POSITIONAL+=("$1")
-    shift
-    ;;
-  esac
-done
-set -- "${POSITIONAL[@]}" # restore positional parameters
+  xcodes=$(ls /Applications/ | grep "Xcode")
+  for xcode_path in $xcodes; do
+    xcode_version=$(cat /Applications/$xcode_path/Contents/version.plist \
+      | grep "CFBundleShortVersionString" -A1 \
+      | grep string \
+      | cut -d'>' -f2 \
+      | cut -d'<' -f1)
+    xcode_version_as_number="$(version_as_number $xcode_version)"
 
-if [ -n "$KOKORO_BUILD_NUMBER" ]; then
-  # Always enable verbose output on kokoro runs.
-  VERBOSE_OUTPUT=1
-fi
+    if [ "$xcode_version_as_number" -ne "$(version_as_number $desired_version)" ]; then
+      continue
+    fi
 
-if [ -n "$VERBOSE_OUTPUT" ]; then
-  # Display commands to stderr.
-  set -x
-  verbosity_args="-v"
-fi
+    sudo xcode-select --switch /Applications/$xcode_path/Contents/Developer
+    xcodebuild -version
 
-if [ ! -d .kokoro-ios-runner ]; then
-  git clone https://github.com/material-foundation/kokoro-ios-runner.git .kokoro-ios-runner
-fi
+    # Resolves the following crash when switching Xcode versions:
+    # "Failed to locate a valid instance of CoreSimulatorService in the bootstrap"
+    launchctl remove com.apple.CoreSimulator.CoreSimulatorService || true
 
-pushd .kokoro-ios-runner
-git fetch > /dev/null
-# https://stackoverflow.com/questions/21394536/how-to-simulate-sort-v-on-mac-osx
-TAG=$(git tag --sort=v:refname -l "$KOKORO_RUNNER_VERSION" | tail -n1)
-git checkout "$TAG" > /dev/null
-popd
+    break
+  done
+}
 
-if [ -n "$KOKORO_BUILD_NUMBER" ]; then
-  bazel version
-  use_bazel.sh latest
-  bazel version
-fi
+run_bazel() {
+  echo "Running bazel builds..."
 
-./.kokoro-ios-runner/bazel.sh test //:UnitTests --min-xcode-version 8.1.0 $verbosity_args
+  if [ -n "$KOKORO_BUILD_NUMBER" ]; then
+    bazel version
+    use_bazel.sh "$BAZEL_VERSION"
+    bazel version
+
+    select_xcode "$XCODE_VERSION"
+
+    # Move into our cloned repo
+    cd github/repo
+  fi
+
+  # Run against whichever Xcode is currently selected.
+  selected_xcode_developer_path=$(xcode-select -p)
+  selected_xcode_contents_path=$(dirname "$selected_xcode_developer_path")
+
+  xcode_version=$(cat "$selected_xcode_contents_path/version.plist" \
+    | grep "CFBundleShortVersionString" -A1 \
+    | grep string \
+    | cut -d'>' -f2 \
+    | cut -d'<' -f1)
+
+  bazel clean
+  bazel test //... --xcode_version $xcode_version --ios_minimum_os=8.0 --ios_multi_cpus=i386,x86_64
+}
+
+run_bazel
 
 echo "Success!"
