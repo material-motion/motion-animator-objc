@@ -20,7 +20,6 @@ set -e
 # Display commands to stderr.
 set -x
 
-KOKORO_RUNNER_VERSION="v4.*"
 BAZEL_VERSION="0.20.0"
 
 # xcode-select's the provided xcode version.
