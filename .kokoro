@@ -20,53 +20,44 @@ set -e
 # Display commands to stderr.
 set -x
 
-KOKORO_RUNNER_VERSION="v4.*"
+BAZEL_VERSION="0.20.0"
+IOS_MINIMUM_OS="8.0"
+IOS_CPUS="i386,x86_64"
 
-POSITIONAL=()
-while [[ $# -gt 0 ]]; do
-  key="$1"
+get_xcode_version_from_path() {
+  path="$1"
+  cat "$path/version.plist" \
+    | grep "CFBundleShortVersionString" -A1 \
+    | grep string \
+    | cut -d'>' -f2 \
+    | cut -d'<' -f1
+}
 
-  case $key in
-  -v|--verbose)
-    VERBOSE_OUTPUT="1"
-    shift
-    ;;
-  *)
-    POSITIONAL+=("$1")
-    shift
-    ;;
-  esac
-done
-set -- "${POSITIONAL[@]}" # restore positional parameters
+run_bazel() {
+  echo "Running bazel builds..."
 
-if [ -n "$KOKORO_BUILD_NUMBER" ]; then
-  # Always enable verbose output on kokoro runs.
-  VERBOSE_OUTPUT=1
-fi
+  if [ -n "$KOKORO_BUILD_NUMBER" ]; then
+    bazel version
+    use_bazel.sh "$BAZEL_VERSION"
+    bazel version
 
-if [ -n "$VERBOSE_OUTPUT" ]; then
-  # Display commands to stderr.
-  set -x
-  verbosity_args="-v"
-fi
+    # Move into our cloned repo
+    cd github/repo
+  fi
 
-if [ ! -d .kokoro-ios-runner ]; then
-  git clone https://github.com/material-foundation/kokoro-ios-runner.git .kokoro-ios-runner
-fi
+  # Run against whichever Xcode is currently selected.
+  selected_xcode_developer_path=$(xcode-select -p)
+  selected_xcode_contents_path=$(dirname "$selected_xcode_developer_path")
 
-pushd .kokoro-ios-runner
-git fetch > /dev/null
-# https://stackoverflow.com/questions/21394536/how-to-simulate-sort-v-on-mac-osx
-TAG=$(git tag --sort=v:refname -l "$KOKORO_RUNNER_VERSION" | tail -n1)
-git checkout "$TAG" > /dev/null
-popd
+  xcode_version=$(get_xcode_version_from_path "$selected_xcode_contents_path")
 
-if [ -n "$KOKORO_BUILD_NUMBER" ]; then
-  bazel version
-  use_bazel.sh latest
-  bazel version
-fi
+  bazel clean
+  bazel test //... \
+    --xcode_version "$xcode_version" \
+    --ios_minimum_os="$IOS_MINIMUM_OS" \
+    --ios_multi_cpus="$IOS_CPUS"
+}
 
-./.kokoro-ios-runner/bazel.sh test //:UnitTests --min-xcode-version 8.1.0 $verbosity_args
+run_bazel
 
 echo "Success!"
