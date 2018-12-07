@@ -21,6 +21,17 @@ set -e
 set -x
 
 BAZEL_VERSION="0.20.0"
+IOS_MINIMUM_OS="8.0"
+IOS_CPUS="i386,x86_64"
+
+get_xcode_version_from_path() {
+  path="$1"
+  cat "$path/version.plist" \
+    | grep "CFBundleShortVersionString" -A1 \
+    | grep string \
+    | cut -d'>' -f2 \
+    | cut -d'<' -f1
+}
 
 run_bazel() {
   echo "Running bazel builds..."
@@ -38,14 +49,13 @@ run_bazel() {
   selected_xcode_developer_path=$(xcode-select -p)
   selected_xcode_contents_path=$(dirname "$selected_xcode_developer_path")
 
-  xcode_version=$(cat "$selected_xcode_contents_path/version.plist" \
-    | grep "CFBundleShortVersionString" -A1 \
-    | grep string \
-    | cut -d'>' -f2 \
-    | cut -d'<' -f1)
+  xcode_version=$(get_xcode_version_from_path "$selected_xcode_contents_path")
 
   bazel clean
-  bazel test //... --xcode_version $xcode_version --ios_minimum_os=8.0 --ios_multi_cpus=i386,x86_64
+  bazel test //... \
+    --xcode_version "$xcode_version" \
+    --ios_minimum_os="$IOS_MINIMUM_OS" \
+    --ios_multi_cpus="$IOS_CPUS"
 }
 
 run_bazel
