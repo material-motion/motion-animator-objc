@@ -22,39 +22,6 @@ set -x
 
 BAZEL_VERSION="0.20.0"
 
-# xcode-select's the provided xcode version.
-# Usage example:
-#     select_xcode 9.2.0
-select_xcode() {
-  desired_version="$1"
-  if [ -z "$desired_version" ]; then
-    return # No Xcode version to select.
-  fi
-
-  xcodes=$(ls /Applications/ | grep "Xcode")
-  for xcode_path in $xcodes; do
-    xcode_version=$(cat /Applications/$xcode_path/Contents/version.plist \
-      | grep "CFBundleShortVersionString" -A1 \
-      | grep string \
-      | cut -d'>' -f2 \
-      | cut -d'<' -f1)
-    xcode_version_as_number="$(version_as_number $xcode_version)"
-
-    if [ "$xcode_version_as_number" -ne "$(version_as_number $desired_version)" ]; then
-      continue
-    fi
-
-    sudo xcode-select --switch /Applications/$xcode_path/Contents/Developer
-    xcodebuild -version
-
-    # Resolves the following crash when switching Xcode versions:
-    # "Failed to locate a valid instance of CoreSimulatorService in the bootstrap"
-    launchctl remove com.apple.CoreSimulator.CoreSimulatorService || true
-
-    break
-  done
-}
-
 run_bazel() {
   echo "Running bazel builds..."
 
@@ -62,8 +29,6 @@ run_bazel() {
     bazel version
     use_bazel.sh "$BAZEL_VERSION"
     bazel version
-
-    select_xcode "$XCODE_VERSION"
 
     # Move into our cloned repo
     cd github/repo
