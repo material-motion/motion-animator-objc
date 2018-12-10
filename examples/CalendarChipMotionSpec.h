@@ -26,8 +26,6 @@
 @property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *chipContentOpacity;
 @property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *headerContentOpacity;
 
-@property(nonatomic, strong, nonnull, readonly) MDMAnimationTraits *navigationBarY;
-
 @end
 
 @interface CalendarChipMotionSpec: NSObject

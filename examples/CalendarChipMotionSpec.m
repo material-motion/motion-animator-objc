@@ -80,10 +80,6 @@ static id<MDMTimingCurve> LinearTimingCurve(void) {
   return [[MDMAnimationTraits alloc] initWithDelay:0.000 duration:0.075 timingCurve:LinearTimingCurve()];
 }
 
-- (MDMAnimationTraits *)navigationBarY {
-  return [[MDMAnimationTraits alloc] initWithDelay:0.045 duration:0.150 timingCurve:StandardTimingCurve()];
-}
-
 @end
 
 @implementation CalendarChipMotionSpec

@@ -240,10 +240,12 @@ class BeginFromCurrentStateTests: XCTestCase {
 
     XCTAssertEqual(addedAnimations.count, 2)
 
-    let animation = addedAnimations.last as! CABasicAnimation
-    XCTAssertFalse(animation.isAdditive)
-    XCTAssertEqual(animation.keyPath, AnimatableKeyPath.opacity.rawValue)
-    XCTAssertEqual(animation.fromValue as! Float, initialValue)
-    XCTAssertEqualWithAccuracy(animation.toValue as! CGFloat, 1.0, accuracy: 0.0001)
+    if addedAnimations.count == 2 {
+      let animation = addedAnimations.last as! CABasicAnimation
+      XCTAssertFalse(animation.isAdditive)
+      XCTAssertEqual(animation.keyPath, AnimatableKeyPath.opacity.rawValue)
+      XCTAssertEqual(animation.fromValue as! Float, initialValue)
+      XCTAssertEqualWithAccuracy(animation.toValue as! CGFloat, 1.0, accuracy: 0.0001)
+    }
   }
 }
