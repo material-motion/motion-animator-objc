@@ -1,3 +1,23 @@
+# 3.0.0
+
+This major release upgrades the bazel dependencies and workspace. This change is breaking for anyone
+using bazel to build this library. In order to use this library with bazel, you will also need to
+upgrade your workspace versions to match the ones now used in this library's `WORKSPACE` file.
+
+## Source changes
+
+* [Make tests more robust to crashing failures. (#118)](https://github.com/material-motion/motion-animator-objc/commit/d2f5971a554d2e63b74a3ad7d36cd9b7ed7823ca) (featherless)
+
+## Non-source changes
+
+* [Automatic changelog preparation for release.](https://github.com/material-motion/motion-animator-objc/commit/2f7d3af5fd9cf6bdcb88e0b955e7ceb903dc9b22) (Jeff Verkoeyen)
+* [Update bazel workspace to latest versions. (#120)](https://github.com/material-motion/motion-animator-objc/commit/e28f79e51bbfa7a41d7c9941e7a0ba7beaaa05ff) (featherless)
+* [Don't animate system views with the animator. (#119)](https://github.com/material-motion/motion-animator-objc/commit/c8057832a9f961585978d59a7ea03e8f641d8ae6) (featherless)
+* [Update .travis.yml](https://github.com/material-motion/motion-animator-objc/commit/e839e817c80aa8df34faacf7fe95d6fb1d508643) (featherless)
+* [Update .kokoro](https://github.com/material-motion/motion-animator-objc/commit/4eed01c25d7fd84fe9e48f147f195987ebbf26e9) (featherless)
+* [Update .kokoro](https://github.com/material-motion/motion-animator-objc/commit/55dd1b14f243418bf4d4fe4ea0eb0a6bcfbb88de) (featherless)
+* [Update bazel workspace and version to latest. (#117)](https://github.com/material-motion/motion-animator-objc/commit/b8261f30f3437c75e8bc1b9f25c074304acc43b5) (featherless)
+
 # 2.8.1
 
 This patch release resolves some runtime crashes, improves the stability of our unit tests, and features an improved README.md.
