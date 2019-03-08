@@ -21,7 +21,7 @@ set -e
 set -x
 
 BAZEL_VERSION="0.20.0"
-IOS_MINIMUM_OS="8.0"
+IOS_MINIMUM_OS="9.0"
 IOS_CPUS="i386,x86_64"
 
 get_xcode_version_from_path() {
