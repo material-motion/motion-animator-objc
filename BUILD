@@ -77,7 +77,7 @@ ios_ui_test(
       ":UnitTestsSwiftLib"
     ],
     test_host = "@build_bazel_rules_apple//apple/testing/default_host/ios",
-    minimum_os_version = "8.0",
+    minimum_os_version = "9.0",
     timeout = "short",
     visibility = ["//visibility:private"],
 )
