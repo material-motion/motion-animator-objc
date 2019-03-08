@@ -1,6 +1,6 @@
 ![Motion Animator Banner](img/motion-animator-banner.gif)
 
-> An animator for iOS 8+ that combines the best aspects of modern UIView and CALayer animation APIs.
+> An animator for iOS 9+ that combines the best aspects of modern UIView and CALayer animation APIs.
 
 [![Build Status](https://travis-ci.org/material-motion/motion-animator-objc.svg?branch=develop)](https://travis-ci.org/material-motion/motion-animator-objc)
 [![codecov](https://codecov.io/gh/material-motion/motion-animator-objc/branch/develop/graph/badge.svg)](https://codecov.io/gh/material-motion/motion-animator-objc)
