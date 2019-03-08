@@ -408,7 +408,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-UnitTests/Pods-UnitTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/MotionAnimator/MotionAnimator.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
 			);
@@ -419,7 +419,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../../../Pods/Target Support Files/Pods-UnitTests/Pods-UnitTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UnitTests/Pods-UnitTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5A3F2ED10BF3C472BA1601C5 /* [CP] Check Pods Manifest.lock */ = {
@@ -446,7 +446,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../../../Pods/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CatalogByConvention/CatalogByConvention.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionAnimator/MotionAnimator.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
@@ -459,7 +459,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../../../Pods/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MotionAnimatorCatalog/Pods-MotionAnimatorCatalog-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C56294D2A9A4F3CE12368EA2 /* [CP] Check Pods Manifest.lock */ = {
