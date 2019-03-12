@@ -1,6 +1,6 @@
 PODS:
   - CatalogByConvention (2.5.1)
-  - MotionAnimator (3.0.0):
+  - MotionAnimator (4.0.0):
     - MotionInterchange (~> 2.0)
   - MotionInterchange (2.0.0)
 
@@ -19,7 +19,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   CatalogByConvention: 2b58a9b64e5b1049abb5d3f8e764a551bbe843a7
-  MotionAnimator: 09a4de79182ef05a2476b304271e1ef6a5a3b022
+  MotionAnimator: 7a3344cec448abe03021682a85cc120cc12d7de1
   MotionInterchange: 5b7325142e4af884278bab7adcd264976a8c0593
 
 PODFILE CHECKSUM: 3537bf01c11174928ac008c20fec4738722e96f3
