@@ -50,7 +50,7 @@ git_repository(
 git_repository(
     name = "motion_interchange_objc",
     remote = "https://github.com/material-motion/motion-interchange-objc.git",
-    commit = "v2.0.0",
+    commit = "v3.0.0",
 )
 
 http_file(
