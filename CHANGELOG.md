@@ -1,7 +1,15 @@
-# #develop#
+# 4.0.0
 
- TODO: Enumerate changes.
+This major release drops official support for iOS 8 and fixes a static analyzer warning.
 
+## Source changes
+
+* [Resolve a static analyzer warning. (#124)](https://github.com/material-motion/motion-animator-objc/commit/0dce7f8c521e321cb904e9fbe3dc5880e623d6d8) (featherless)
+
+## Non-source changes
+
+* [Ran pod install with latest cocoapods. (#123)](https://github.com/material-motion/motion-animator-objc/commit/953f7505cc85d66dcd88c4c306765d22ea73c230) (featherless)
+* [Drop support for iOS 8 (#122)](https://github.com/material-motion/motion-animator-objc/commit/ecb75418b8d86cc34041a675c89abc12ad4e509a) (featherless)
 
 # 3.0.0
 
