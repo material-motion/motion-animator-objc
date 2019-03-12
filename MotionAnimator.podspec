@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "MotionAnimator"
   s.summary      = "A Motion Animator creates performant, interruptible animations from motion specs."
-  s.version      = "3.0.0"
+  s.version      = "4.0.0"
   s.authors      = "The Material Motion Authors"
   s.license      = "Apache 2.0"
   s.homepage     = "https://github.com/material-motion/motion-animator-objc"
@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
   s.public_header_files = "src/*.h"
   s.source_files = "src/*.{h,m,mm}", "src/private/*.{h,m,mm}"
 
-  s.dependency "MotionInterchange", "~> 2.0"
+  s.dependency "MotionInterchange", "~> 3.0"
 end
