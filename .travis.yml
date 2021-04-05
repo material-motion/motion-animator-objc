@@ -11,8 +11,6 @@ matrix:
       env: COVERAGE=code_coverage SDK="iphonesimulator11.4" DESTINATION="name=iPhone 6s,OS=11.4"
     - osx_image: xcode12.2
       env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=10.3.1"
-    - osx_image: xcode12.2
-      env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=10.3.1"
 before_install:
   - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
   - pod install --repo-update
