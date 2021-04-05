@@ -264,9 +264,8 @@ class UIKitBehavioralTests: XCTestCase {
       return
     }
 
-    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
-                               "Expected the animation to start from \(initialValue), "
-                                + "but it did not.")
+    XCTAssertEqual(fromValue, initialValue, accuracy: 0.0001,
+                   "Expected the animation to start from \(initialValue), but it did not.")
   }
 
   func testBeginFromCurrentStateAnimatesOpacityNonAdditivelyFromItsPresentationLayerState() {
@@ -278,7 +277,7 @@ class UIKitBehavioralTests: XCTestCase {
 
     let initialValue = self.view.layer.presentation()!.opacity
 
-    UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { 
+    UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: {
       self.view.alpha = 0.2
     }, completion: nil)
 
@@ -304,9 +303,8 @@ class UIKitBehavioralTests: XCTestCase {
       return
     }
 
-    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
-                               "Expected the animation to start from \(initialValue), "
-                                + "but it did not.")
+    XCTAssertEqual(fromValue, initialValue, accuracy: 0.0001,
+                   "Expected the animation to start from \(initialValue), but it did not.")
   }
 
   func testDefaultsAnimatesPositionAdditivelyFromItsModelLayerState() {
@@ -346,9 +344,8 @@ class UIKitBehavioralTests: XCTestCase {
       return
     }
 
-    XCTAssertEqualWithAccuracy(fromValue.x, displacement, accuracy: 0.0001,
-                               "Expected the animation to have a delta of \(displacement), "
-                                + "but it did not.")
+    XCTAssertEqual(fromValue.x, displacement, accuracy: 0.0001,
+                   "Expected the animation to have a delta of \(displacement), but it did not.")
   }
 
   func testBeginFromCurrentStateAnimatesPositionAdditivelyFromItsModelLayerState() {
@@ -388,9 +385,8 @@ class UIKitBehavioralTests: XCTestCase {
       return
     }
 
-    XCTAssertEqualWithAccuracy(fromValue.x, displacement, accuracy: 0.0001,
-                               "Expected the animation to have a delta of \(displacement), "
-                                + "but it did not.")
+    XCTAssertEqual(fromValue.x, displacement, accuracy: 0.0001,
+                   "Expected the animation to have a delta of \(displacement), but it did not.")
   }
 
 }
