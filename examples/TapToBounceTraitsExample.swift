@@ -51,7 +51,7 @@ class TapToBounceTraitsExampleViewController: UIViewController {
                                                                     tension: 100,
                                                                     friction: 10))
 
-  func didFocus(_ sender: UIButton) {
+  @objc func didFocus(_ sender: UIButton) {
     let animator = MotionAnimator()
     animator.animate(with: traits) {
       sender.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
@@ -62,7 +62,7 @@ class TapToBounceTraitsExampleViewController: UIViewController {
     }
   }
 
-  func didUnfocus(_ sender: UIButton) {
+  @objc func didUnfocus(_ sender: UIButton) {
     let animator = MotionAnimator()
     animator.animate(with: traits) {
       sender.transform = .identity
