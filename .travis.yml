@@ -12,7 +12,7 @@ matrix:
     - osx_image: xcode12.2
       env: SDK="iphonesimulator11.2" DESTINATION="name=iPhone 6s,OS=10.3.1"
 before_install:
-  - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
+  - gem install cocoapods --no-document --no-ri --quiet
   - pod install --repo-update
 script:
   - set -o pipefail
