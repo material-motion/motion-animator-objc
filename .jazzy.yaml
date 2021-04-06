@@ -1,5 +1,5 @@
 module: MotionAnimator
-module_version: 4.0.1
+module_version: 5.0.0
 sdk: iphonesimulator
 umbrella_header: src/MotionAnimator.h
 objc: true
