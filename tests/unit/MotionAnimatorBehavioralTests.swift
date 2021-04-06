@@ -59,7 +59,9 @@ class AnimatorBehavioralTests: XCTestCase {
     .shadowRadius: 5,
     .strokeStart: 0.2,
     .strokeEnd: 0.5,
-    .transform: CGAffineTransform(scaleX: 1.5, y: 1.5),
+    // Note: prior to iOS 14 this used to work as a CGAffineTransform. iOS 14 now only accepts
+    // CATransform3D instances when using KVO.
+    .transform: CATransform3DMakeScale(1.5, 1.5, 1.5),
     .width: 25,
     .x: 12,
     .y: 23,

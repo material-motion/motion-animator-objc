@@ -74,7 +74,9 @@ class UIKitBehavioralTests: XCTestCase {
       .position: CGPoint(x: 50, y: 20),
       .rotation: 42,
       .scale: 2.5,
-      .transform: CGAffineTransform(scaleX: 1.5, y: 1.5),
+      // Note: prior to iOS 14 this used to work as a CGAffineTransform. iOS 14 now only accepts
+      // CATransform3D instances when using KVO.
+      .transform: CATransform3DMakeScale(1.5, 1.5, 1.5),
       .width: 25,
       .x: 12,
       .y: 23,
@@ -158,12 +160,20 @@ class UIKitBehavioralTests: XCTestCase {
     ]
 
     let properties: [AnimatableKeyPath: Any]
-    if #available(iOS 11.0, *) {
+    if #available(iOS 13, *) {
+      // Shadow opacity became implicitly animatable in iOS 13.
+      var baselineWithModernSupport = baselineProperties
+      baselineWithModernSupport.removeValue(forKey: .shadowOpacity)
+      baselineWithModernSupport.removeValue(forKey: .anchorPoint)
+      baselineWithModernSupport.removeValue(forKey: .cornerRadius)
+      properties = baselineWithModernSupport
+
+    } else if #available(iOS 11.0, *) {
       // Corner radius became implicitly animatable in iOS 11.
-      var baselineWithOutCornerRadius = baselineProperties
-      baselineWithOutCornerRadius.removeValue(forKey: .anchorPoint)
-      baselineWithOutCornerRadius.removeValue(forKey: .cornerRadius)
-      properties = baselineWithOutCornerRadius
+      var baselineWithModernSupport = baselineProperties
+      baselineWithModernSupport.removeValue(forKey: .anchorPoint)
+      baselineWithModernSupport.removeValue(forKey: .cornerRadius)
+      properties = baselineWithModernSupport
 
     } else {
       properties = baselineProperties
@@ -264,9 +274,8 @@ class UIKitBehavioralTests: XCTestCase {
       return
     }
 
-    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
-                               "Expected the animation to start from \(initialValue), "
-                                + "but it did not.")
+    XCTAssertEqual(fromValue, initialValue, accuracy: 0.0001,
+                   "Expected the animation to start from \(initialValue), but it did not.")
   }
 
   func testBeginFromCurrentStateAnimatesOpacityNonAdditivelyFromItsPresentationLayerState() {
@@ -278,7 +287,7 @@ class UIKitBehavioralTests: XCTestCase {
 
     let initialValue = self.view.layer.presentation()!.opacity
 
-    UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: { 
+    UIView.animate(withDuration: 0.1, delay: 0, options: .beginFromCurrentState, animations: {
       self.view.alpha = 0.2
     }, completion: nil)
 
@@ -304,9 +313,8 @@ class UIKitBehavioralTests: XCTestCase {
       return
     }
 
-    XCTAssertEqualWithAccuracy(fromValue, initialValue, accuracy: 0.0001,
-                               "Expected the animation to start from \(initialValue), "
-                                + "but it did not.")
+    XCTAssertEqual(fromValue, initialValue, accuracy: 0.0001,
+                   "Expected the animation to start from \(initialValue), but it did not.")
   }
 
   func testDefaultsAnimatesPositionAdditivelyFromItsModelLayerState() {
@@ -346,9 +354,8 @@ class UIKitBehavioralTests: XCTestCase {
       return
     }
 
-    XCTAssertEqualWithAccuracy(fromValue.x, displacement, accuracy: 0.0001,
-                               "Expected the animation to have a delta of \(displacement), "
-                                + "but it did not.")
+    XCTAssertEqual(fromValue.x, displacement, accuracy: 0.0001,
+                   "Expected the animation to have a delta of \(displacement), but it did not.")
   }
 
   func testBeginFromCurrentStateAnimatesPositionAdditivelyFromItsModelLayerState() {
@@ -388,9 +395,8 @@ class UIKitBehavioralTests: XCTestCase {
       return
     }
 
-    XCTAssertEqualWithAccuracy(fromValue.x, displacement, accuracy: 0.0001,
-                               "Expected the animation to have a delta of \(displacement), "
-                                + "but it did not.")
+    XCTAssertEqual(fromValue.x, displacement, accuracy: 0.0001,
+                   "Expected the animation to have a delta of \(displacement), but it did not.")
   }
 
 }

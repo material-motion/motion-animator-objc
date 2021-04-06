@@ -48,7 +48,7 @@ class InitialVelocityTests: XCTestCase {
     animate(from: 0, to: 100, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
-    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+    addedAnimations.compactMap { $0 as? CASpringAnimation }.forEach { animation in
       if (animation.responds(to: #selector(getter: CASpringAnimation.initialVelocity))) {
         XCTAssertEqual(animation.initialVelocity, 0.5,
                        "from: \(animation.fromValue!), "
@@ -63,7 +63,7 @@ class InitialVelocityTests: XCTestCase {
     animate(from: 100, to: 0, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
-    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+    addedAnimations.compactMap { $0 as? CASpringAnimation }.forEach { animation in
       if (animation.responds(to: #selector(getter: CASpringAnimation.initialVelocity))) {
         XCTAssertEqual(animation.initialVelocity, 0.5,
                        "from: \(animation.fromValue!), "
@@ -78,7 +78,7 @@ class InitialVelocityTests: XCTestCase {
     animate(from: 0, to: 100, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
-    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+    addedAnimations.compactMap { $0 as? CASpringAnimation }.forEach { animation in
       if (animation.responds(to: #selector(getter: CASpringAnimation.initialVelocity))) {
         XCTAssertGreaterThan(animation.initialVelocity, 0,
                              "from: \(animation.fromValue!), "
@@ -93,7 +93,7 @@ class InitialVelocityTests: XCTestCase {
     animate(from: 0, to: 100, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
-    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+    addedAnimations.compactMap { $0 as? CASpringAnimation }.forEach { animation in
       if (animation.responds(to: #selector(getter: CASpringAnimation.initialVelocity))) {
         XCTAssertLessThan(animation.initialVelocity, 0,
                           "from: \(animation.fromValue!), "
@@ -108,7 +108,7 @@ class InitialVelocityTests: XCTestCase {
     animate(from: 100, to: 0, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
-    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+    addedAnimations.compactMap { $0 as? CASpringAnimation }.forEach { animation in
       if (animation.responds(to: #selector(getter: CASpringAnimation.initialVelocity))) {
         XCTAssertGreaterThan(animation.initialVelocity, 0,
                              "from: \(animation.fromValue!), "
@@ -123,7 +123,7 @@ class InitialVelocityTests: XCTestCase {
     animate(from: 100, to: 0, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
-    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+    addedAnimations.compactMap { $0 as? CASpringAnimation }.forEach { animation in
       if (animation.responds(to: #selector(getter: CASpringAnimation.settlingDuration))) {
         XCTAssertLessThan(animation.initialVelocity, 0,
                           "from: \(animation.fromValue!), "
@@ -138,7 +138,7 @@ class InitialVelocityTests: XCTestCase {
     animate(from: 0, to: 100, withVelocity: velocity)
 
     XCTAssertEqual(addedAnimations.count, 3)
-    addedAnimations.flatMap { $0 as? CASpringAnimation }.forEach { animation in
+    addedAnimations.compactMap { $0 as? CASpringAnimation }.forEach { animation in
       if (animation.responds(to: #selector(getter: CASpringAnimation.settlingDuration))) {
         XCTAssertEqual(animation.duration, animation.settlingDuration,
                        "from: \(animation.fromValue!), "
@@ -162,4 +162,3 @@ class InitialVelocityTests: XCTestCase {
                      layer: CALayer(), keyPath: .init(rawValue: "bounds.size"))
   }
 }
-

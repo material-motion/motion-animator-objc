@@ -46,7 +46,7 @@ class TapToBounceUIKitExampleViewController: UIViewController {
                      for: [.touchUpInside, .touchUpOutside, .touchDragExit])
   }
 
-  func didFocus(_ sender: UIButton) {
+  @objc func didFocus(_ sender: UIButton) {
     MotionAnimator.animate(withDuration: 0.8,
                            delay: 0,
                            usingSpringWithDamping: 0.5,
@@ -61,7 +61,7 @@ class TapToBounceUIKitExampleViewController: UIViewController {
     }, completion: nil)
   }
 
-  func didUnfocus(_ sender: UIButton) {
+  @objc func didUnfocus(_ sender: UIButton) {
     MotionAnimator.animate(withDuration: 0.8,
                            delay: 0,
                            usingSpringWithDamping: 0.5,
