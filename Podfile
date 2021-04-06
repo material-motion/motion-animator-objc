@@ -1,5 +1,6 @@
 workspace 'MotionAnimator.xcworkspace'
 use_frameworks!
+platform :ios, '10.0'
 
 target "MotionAnimatorCatalog" do
   pod 'CatalogByConvention'
