@@ -1,3 +1,7 @@
+# 5.0.0
+
+This major release drops Bazel support and support for iOS 9.
+
 # 4.0.1
 
 This patch release fixes a bug on iOS 14 affecting flickers when using animations that have no delay.
