@@ -18,7 +18,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #ifdef IS_BAZEL_BUILD
-#import "MotionInterchange.h"
+#import <MotionInterchange/MotionInterchange.h>
 #else
 #import <MotionInterchange/MotionInterchange.h>
 #endif
@@ -354,9 +354,7 @@ NS_SWIFT_NAME(MotionAnimator)
                   keyPath:(nonnull MDMAnimatableKeyPath)keyPath
                completion:(nullable void(^)(void))completion;
 
-/**
- To be deprecated. Use animateWithTraits:animations: instead.
- */
+/** To be deprecated. Use animateWithTraits:animations: instead. */
 - (void)animateWithTiming:(MDMMotionTiming)timing
                animations:(nonnull void(^)(void))animations;
 

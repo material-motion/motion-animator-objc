@@ -19,7 +19,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #ifdef IS_BAZEL_BUILD
-#import "MotionInterchange.h"
+#import <MotionInterchange/MotionInterchange.h>
 #else
 #import <MotionInterchange/MotionInterchange.h>
 #endif

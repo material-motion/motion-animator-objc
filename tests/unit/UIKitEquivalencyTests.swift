@@ -16,7 +16,7 @@
 
 import XCTest
 #if IS_BAZEL_BUILD
-import _MotionAnimator
+import MotionAnimator
 #else
 import MotionAnimator
 #endif
