@@ -17,6 +17,9 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
+API_DEPRECATED_BEGIN("Use standard UIKit/CALayer animation APIs instead.",
+                     ios(12, API_TO_BE_DEPRECATED))
+
 @interface MDMRegisteredAnimation : NSObject
 
 - (instancetype)initWithKey:(NSString *)key animation:(CABasicAnimation *)animation;
@@ -26,3 +29,5 @@
 @property(nonatomic, strong, readonly) CABasicAnimation *animation;
 
 @end
+
+API_DEPRECATED_END

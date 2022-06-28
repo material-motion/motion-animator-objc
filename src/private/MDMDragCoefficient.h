@@ -17,5 +17,10 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 
+API_DEPRECATED_BEGIN("Use standard UIKit/CALayer animation APIs instead.",
+                     ios(12, API_TO_BE_DEPRECATED))
+
 // Returns the simulator drag coefficient when being run in the simulator, or 1.0 otherwise.
 FOUNDATION_EXTERN CGFloat MDMSimulatorAnimationDragCoefficient(void);
+
+API_DEPRECATED_END

@@ -26,6 +26,9 @@
 #import "MDMAnimatableKeyPaths.h"
 #import "MDMCoreAnimationTraceable.h"
 
+API_DEPRECATED_BEGIN("Use standard UIKit/CALayer animation APIs instead.",
+                     ios(12, API_TO_BE_DEPRECATED))
+
 /**
  An animator adds Core Animation animations to a layer using animation traits.
  */
@@ -380,3 +383,5 @@ NS_SWIFT_NAME(MotionAnimator)
     __deprecated_msg("No longer needed for implicit animations of headless layers.");
 
 @end
+
+API_DEPRECATED_END

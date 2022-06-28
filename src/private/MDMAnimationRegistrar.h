@@ -17,6 +17,9 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
+API_DEPRECATED_BEGIN("Use standard UIKit/CALayer animation APIs instead.",
+                     ios(12, API_TO_BE_DEPRECATED))
+
 // Tracks and manipulates animations that have been added to a layer.
 @interface MDMAnimationRegistrar : NSObject
 
@@ -36,3 +39,5 @@
 - (void)removeAllAnimations;
 
 @end
+
+API_DEPRECATED_END

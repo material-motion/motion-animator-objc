@@ -24,6 +24,9 @@
 #import <MotionInterchange/MotionInterchange.h>
 #endif
 
+API_DEPRECATED_BEGIN("Use standard UIKit/CALayer animation APIs instead.",
+                     ios(12, API_TO_BE_DEPRECATED))
+
 // Returns a basic animation configured with the provided traits and scale factor.
 FOUNDATION_EXPORT
 CABasicAnimation *MDMAnimationFromTraits(MDMAnimationTraits *traits, CGFloat timeScaleFactor);
@@ -38,3 +41,5 @@ FOUNDATION_EXPORT BOOL MDMCanAnimationBeAdditive(NSString *keyPath, id toValue);
 // Not all animation value types support being additive. If an animation's value type was not
 // supported, the animation's values will not be modified.
 FOUNDATION_EXPORT void MDMConfigureAnimation(CABasicAnimation *animation, MDMAnimationTraits *traits);
+
+API_DEPRECATED_END

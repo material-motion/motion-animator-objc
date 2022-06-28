@@ -18,6 +18,11 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 
+API_DEPRECATED_BEGIN("Use standard UIKit/CALayer animation APIs instead.",
+                     ios(12, API_TO_BE_DEPRECATED))
+
 // Returns a timing function with the given control points.
 FOUNDATION_EXPORT
 CAMediaTimingFunction* MDMTimingFunctionWithControlPoints(CGFloat controlPoints[4]);
+
+API_DEPRECATED_END

@@ -16,6 +16,9 @@
 
 #import <Foundation/Foundation.h>
 
+API_DEPRECATED_BEGIN("Use standard UIKit/CALayer animation APIs instead.",
+                     ios(12, API_TO_BE_DEPRECATED))
+
 // Coerces the following UIKit/CoreGraphics values to Core Animation values:
 //
 // - UIBezierPath -> CGPath
@@ -24,3 +27,5 @@
 //
 // @param values All values of this array must be the same type.
 FOUNDATION_EXPORT NSArray* MDMCoerceUIKitValuesToCoreAnimationValues(NSArray *values);
+
+API_DEPRECATED_END

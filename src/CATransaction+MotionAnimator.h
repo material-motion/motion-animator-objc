@@ -17,6 +17,9 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
+API_DEPRECATED_BEGIN("Use standard UIKit/CALayer animation APIs instead.",
+                     ios(12, API_TO_BE_DEPRECATED))
+
 @interface CATransaction (MotionAnimator)
 
 /**
@@ -37,3 +40,5 @@
 + (void)mdm_setTimeScaleFactor:(nullable NSNumber *)timeScaleFactor;
 
 @end
+
+API_DEPRECATED_END
